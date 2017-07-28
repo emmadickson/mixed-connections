@@ -1,0 +1,92 @@
+<!--- DOCUMENTATION
+@Author: Emma Dickson
+NOTE: change to html file
+-->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body{
+        background-color: black;
+        width:100%;
+        height:100%;
+        overflow: hidden;
+      }
+      .scroll-left {
+        padding-top: 50px;
+         height: 70px;
+         overflow: hidden;
+         position: relative;
+      }
+      div{
+        padding:0;
+        margin:0;
+        border:0;
+      }
+      #center{
+        padding-top: 100px;
+        width:100%;
+        text-align: center;
+      }
+      a{
+        text-decoration: none;
+      }
+    </style>
+
+
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+
+    <title>Mixed Connections</title>
+
+  </head>
+
+    <body>
+
+      <div id="center">
+        <a href="missed.html"><blink style="font-family: 'VT323', monospace; font-size:60pt; white-space:nowrap; color:#00FF00">YOU MISSED SOMETHING</blink></a>
+        <br>
+        <br>
+        <div style="color:white; position:top; font-family: 'VT323', monospace; font-size:120pt; white-space:nowrap; color:white" id="logo">I</div>
+    </div>
+
+    <script>
+
+          var counter = 0;
+
+          var logos = ["I", "ME?", "YOU", "WE", "US", "THEM", "WHO?", "ME", "YOU?" ]
+
+          var elem = document.getElementById("logo");
+
+
+          // Move the element 10px on the right every 16ms
+          setInterval(function() {
+
+            if (counter >= logos.length-1){
+              counter = 0;
+            }
+            else{
+              counter++
+              elem.textContent = logos[counter]
+            }
+          }, 1000);
+
+      function blink() {
+        var blinks = document.getElementsByTagName('blink');
+        for (var i = blinks.length - 1; i >= 0; i--) {
+          var s = blinks[i];
+          s.style.visibility = (s.style.visibility === 'visible') ? 'hidden' : 'visible';
+        }
+        window.setTimeout(blink, 1000);
+      }
+      if (document.addEventListener) document.addEventListener("DOMContentLoaded", blink, false);
+      else if (window.addEventListener) window.addEventListener("load", blink, false);
+      else if (window.attachEvent) window.attachEvent("onload", blink);
+      else window.onload = blink;
+
+    </script>
+
+    </body>
+
+</html>

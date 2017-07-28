@@ -1,0 +1,132 @@
+
+button{
+  font-family: "Arial",sans-serif;
+  padding-top: 1px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 1px;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: auto;
+  outline-width: 5px;
+}
+
+h1{
+  font-family: 'Bungee', cursive;
+  font-size: 90px;
+  color: #9E0000;
+}
+input[type="submit"]
+{
+  background: none;
+  font-family: 'Bungee', cursive;
+  font-size: 90px;
+  color: #9E0000;
+  border: none;
+  display: inline;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  outline-offset: 0;
+}
+
+h1{
+  font-family: 'Bungee', cursive;
+  font-size: 90px;
+  color: #9E0000;
+}
+body{
+  background-color: #7ddbba;
+}
+p{
+  text-align: right;
+  color: #fff832;
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+}
+div{
+  color: #0e444c;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 100px;
+}
+/* Base Button Style */
+.btn {
+  position: relative;
+  display: block;
+  width: 250px;
+  margin: 20px auto;
+  padding: 10px;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+
+  color: #000;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  transform-style: flat;
+  transition: all 250ms ease-out;
+
+  &:before,
+  &:after {
+      content: "";
+      position: absolute;
+      z-index: -2;
+    	transition: all 250ms ease-out;
+  }
+}
+
+/* Paper effect – slightly raised off background */
+.paper {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
+  border-color: #dedede;
+}
+
+/* Curl effects – curls corners on hover */
+.paper-curl,
+.paper-curl-right {
+  &:before,
+  &:after {
+    bottom: 12px;
+    width: 50%;
+    height: 55%;
+    max-width: 200px;
+    max-height: 100px;
+	 box-shadow: 1px 8px 12px rgba(31, 31, 31, 0.6);
+  }
+  &:before {
+    left: 10px;
+  }
+  &:after {
+    right: 10px;
+  }
+
+  &:hover {
+    &:before,
+    &:after {
+      box-shadow: 1px 8px 12px rgba(31, 31, 31, 0.8);
+    }
+    &:before {
+	    transform: skew(-8deg) rotate(-3deg);
+    }
+    &:after {
+      transform: skew(8deg) rotate(3deg);
+    }
+  }
+}
+.paper-curl {
+  &:hover {
+    border-radius: 0 0 40% 40% / 0 0 30% 30%;
+  }
+}
+.paper-curl-right {
+  &:before {
+    display: none;
+  }
+
+  &:hover {
+    border-radius: 0 0 40% 0 / 0 0 30% 0;
+	}
+}

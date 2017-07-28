@@ -1,0 +1,161 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kalam|Permanent+Marker" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Dosis|Inconsolata|Muli|Open+Sans+Condensed:300|PT+Sans+Narrow|Playfair+Display|Trirong" rel="stylesheet">
+    <link id = "css" rel="stylesheet" href="css/missed.css">
+    <style>
+    </style>
+  </head>
+
+  <body>
+    <h1 id="title"> </h1>
+
+    <p id="missed-connection"> </p>
+  </body>
+
+  <script src="docs/db.txt"></script>
+  <script>
+    // 1. clean is a function used to remove blank spaces from the array of
+    // titles and posts and shuffle is a function used to shuffle the array of
+    // phrases. getRandomIntInclusive is a function designed to select a
+    // number randomly inclusive of ints.
+    Array.prototype.clean = function(deleteValue) {
+      for (var i = 0; i < this.length; i++) {
+        if (this[i] == deleteValue) {
+          this.splice(i, 1);
+          i--;
+        }
+      }
+      return this;
+    };
+
+    function shuffle(a) {
+        for (let i = a.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [a[i - 1], a[j]] = [a[j], a[i - 1]];
+        }
+    }
+
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    limit = 3;
+    count = 0;
+    var test = document.getElementById("title");
+
+    function changeCSS(evt) {
+
+      var css = document.getElementsByTagName('style')[0]
+      css.innerHTML = ""
+
+      var titleFontVariant = ['small-caps', 'normal']
+      var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
+      if (selectTitleFontVariant % 2 == 0){
+        selectTitleFontVariant = 0;
+      }
+      else{
+        selectTitleFontVariant = 1;
+      }
+      var titleFontWeight = Math.floor((Math.random() * 900) + 0);
+      var titleFontFamily = ["Times New Roman", "Georgia", "Arial", "Verdana", "Courier New", "Lucida Console"]
+      var selectTitleFontFamily = Math.floor((Math.random() * 5) + 0);
+      var titleFontStyle = ["normal", "italic", "oblique"]
+      var selectTitleFontStyle = Math.floor((Math.random() * 2) + 0);
+      var titleFontSize = Math.floor((Math.random() * 200) + 8);
+      var titleHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+
+      var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + '; font-size: ' + titleFontSize + 'px; color: ' + titleHexColor + '}';
+
+
+      var backgroundColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+
+      styles += 'body { background-color: ' + backgroundColor + '}';
+
+      var postFontVariant = ['small-caps', 'normal']
+      var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
+      if (selectPostFontVariant % 2 == 0){
+        selectPostFontVariant = 0;
+      }
+      else{
+        selectPostFontVariant = 1;
+      }
+      var postFontWeight = Math.floor((Math.random() * 900) + 0);
+      var postFontFamily = ["Times New Roman", "Georgia", "Arial", "Verdana", "Courier New", "Lucida Console"]
+      var selectPostFontFamily = Math.floor((Math.random() * 5) + 0);
+      var postFontStyle = ["normal", "italic", "oblique"]
+      var selectPostFontStyle = Math.floor((Math.random() * 2) + 0);
+      var postFontSize = Math.floor((Math.random() * 200) + 8);
+      var postHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+
+      styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
+
+
+      if (css.styleSheet) css.styleSheet.cssText = styles;
+      else css.appendChild(document.createTextNode(styles));
+      document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
+      document.getElementsByTagName("head")[0].appendChild(css);
+    }
+
+    test.addEventListener("click", changeCSS, false);
+
+    // 2. Set up Arrays to recieve titles and posts from the txt file.
+    titles = []
+    posts = []
+    // 3. posts the document up into lines and from individiaul lines into titles and posts
+    var linesOfText =  text.split("\n");
+    linesOfText = linesOfText.clean("")
+    for (var i = 0; i < linesOfText.length; i++){
+      var limbs = linesOfText[i].split("***");
+      titles.push(limbs[0]);
+      posts.push(limbs[1]);
+    }
+
+    // 4. Randomly select a title and display it in h1 id="title"
+    var randomTitle = titles[Math.floor(Math.random()*titles.length)];
+    var domTitle = document.getElementById('title');
+    domTitle.textContent = randomTitle;
+
+    // 5. Shuffle posts
+    shuffle(posts)
+
+    // 6. Break the posts up into sentences
+    phrases = [];
+    for (var k = 0; k < posts.length; k++){
+      var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
+      // 7. For now I'm breaking it up based on punctuation so if someone uses
+      // no puntuation I ignore the whole post.
+      if (sentences != null){
+        for (var j = 0; j < sentences.length; j++){
+          phrases.push(sentences[j]);
+        }
+      }
+    }
+
+    // 8. Shuffle sentences
+    shuffle(phrases)
+
+    // 9. Go through phrases and select 10
+    threads = [];
+
+    var postBody = " ";
+    while (threads.length < 10){
+      random = getRandomIntInclusive(0,phrases.length-1);
+      selection = phrases[random];
+      if (threads.indexOf(selection) === -1){
+        threads.push(selection);
+      }
+    }
+    postBody = threads.join(" ");
+
+    // 10. Take the post body and display it in the p id="missed-connection"
+    var domMissedConnection = document.getElementById('missed-connection');
+    domMissedConnection.textContent = postBody;
+
+
+  </script>
+
+</html>
