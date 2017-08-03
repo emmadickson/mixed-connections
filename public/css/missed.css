@@ -15,38 +15,22 @@ header{
   background: #eee;
   line-height: 1.925em;
   min-height: 1.1em;
-  padding: .3125em 0;
   width: 100%;
-  z-index: 1003;
-
 }
 
 h1{
   vertical-align: baseline;
   font-family: "Bitstream Vera Serif","Times New Roman",serif;
-  font-size: 1.4em;
+  font-size: 20px;
   font-weight: bold;
-  line-height: 1.4em;
-  text-align: center;
-}
-
-div{
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
   text-align: left;
 }
 
-input[type="submit"]
-{
-  background: none;
-  border: none;
-  display: inline;
-  font: inherit;
-  margin: 0;
-  padding: 0;
-  outline: none;
-  outline-offset: 0;
+p{
+  font-size: 16px;
+}
+
+body{
+  padding-left: 10px;
+  padding-right: 10px;
 }
