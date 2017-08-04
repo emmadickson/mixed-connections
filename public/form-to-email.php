@@ -5,20 +5,29 @@ if(!isset($_POST['submit']))
 	echo "error; you need to submit the form!";
 }
 $name = $_POST['name'];
+$visitor_email = $_POST['email'];
 $message = $_POST['message'];
 
 //Validate first
-if(empty($name))
+if(empty($name)||empty($visitor_email))
 {
     echo "Name and email are mandatory!";
     exit;
 }
 
+if(IsInjected($visitor_email))
+{
+    echo "Bad email value!";
+    exit;
+}
 
-$email_subject = "Missed Connection";
-$email_body = "You missed something:\n $message".
+$email_from = 'tom@amazing-designs.com';//<== update the email address
+$email_subject = "New Form submission";
+$email_body = "You have received a new message from the user $name.\n".
+    "Here is the message:\n $message".
 
 $to = "emma.jk.dickson@gmail.com";//<== update the email address
+$headers = "From: $email_from \r\n";
 $headers .= "Reply-To: $visitor_email \r\n";
 //Send the email!
 mail($to,$email_subject,$email_body,$headers);
