@@ -1,90 +1,219 @@
-<!--- DOCUMENTATION
-@Author: Emma Dickson
-NOTE: change to html file
--->
-
-
-<!DOCTYPE html>
+<!DOCTYPE>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link id = "css" rel="stylesheet" href="public/css/missed.css">
     <style>
-      html, body {
-        width:  100%;
-        height: 100%;
-        margin: 0px;
-        background-color: black;
-      }
-      div{
-        padding:0;
-        margin:0;
-        border:0;
-      }
-      #center{
-        padding-top: 100px;
-        width:100%;
-        height: 75%;
-        text-align: center;
-      }
-      a:link{
-        text-decoration: none;
-      }
     </style>
-
-
-    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
-
-
-    <title>Mixed Connections</title>
-
   </head>
 
-    <body>
+  <body>
+    <header><a href="...">CL</a>>newyork>all personals>missed connections</header>
+    <br>
+    <div id="button"><button type="button" onclick="window.location.href='public/reply.html'">Reply</button></div>
+    <h1 id="title"> </h1>
+    <p id="missed-connection"> </p>
+    <div id="button"><button type="button" onclick="mixConnections()">Next</button></div>
+  </body>
 
-      <div id="center">
-        <a href="public/missed.html"><blink style="font-family: 'VT323', monospace; font-size:60px; color:#00FF00">YOU MISSED SOMETHING</blink></a>
-        <br>
-        <br>
-        <div style="color:white; position:top; font-family: 'VT323', monospace; font-size:120px; white-space:nowrap; color:white" id="logo">I</div>
-    </div>
-
-    <script>
-
-          var counter = 0;
-
-          var logos = ["I", "ME?", "YOU", "WE", "US", "THEM", "WHO?", "ME", "YOU?" ]
-
-          var elem = document.getElementById("logo");
-
-
-          // Move the element 10px on the right every 16ms
-          setInterval(function() {
-
-            if (counter >= logos.length-1){
-              counter = 0;
-            }
-            else{
-              counter++
-              elem.textContent = logos[counter]
-            }
-          }, 1000);
-
-      function blink() {
-        var blinks = document.getElementsByTagName('blink');
-        for (var i = blinks.length - 1; i >= 0; i--) {
-          var s = blinks[i];
-          s.style.visibility = (s.style.visibility === 'visible') ? 'hidden' : 'visible';
+  <script src="public/docs/db.txt"></script>
+  <script>
+    // 1. clean is a function used to remove blank spaces from the array of
+    // titles and posts and shuffle is a function used to shuffle the array of
+    // phrases. getRandomIntInclusive is a function designed to select a
+    // number randomly inclusive of ints.
+    Array.prototype.clean = function(deleteValue) {
+      for (var i = 0; i < this.length; i++) {
+        if (this[i] == deleteValue) {
+          this.splice(i, 1);
+          i--;
         }
-        window.setTimeout(blink, 1000);
       }
-      if (document.addEventListener) document.addEventListener("DOMContentLoaded", blink, false);
-      else if (window.addEventListener) window.addEventListener("load", blink, false);
-      else if (window.attachEvent) window.attachEvent("onload", blink);
-      else window.onload = blink;
+      return this;
+    };
 
-    </script>
+    function shuffle(a) {
+        for (let i = a.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [a[i - 1], a[j]] = [a[j], a[i - 1]];
+        }
+    }
 
-    </body>
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    var titleDOM = document.getElementById("title");
+
+    // 2. Set up event listeners to change css and scramble title
+    function mixup(evt) {
+      var post = document.getElementById("missed-connection").textContent;
+      sentences = [];
+      var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
+      // 8. For now I'm breaking it up based on punctuation so if someone uses
+      // no puntuation I ignore the whole post.
+      if (phrase != null){
+        for (var j = 0; j < phrase.length; j++){
+          sentences.push(phrase[j]);
+        }
+      }
+      shuffle(sentences)
+      var newPostBody = sentences.join(' ');
+      document.getElementById("missed-connection").textContent = newPostBody;
+
+      var css = document.getElementsByTagName('style')[0]
+      css.innerHTML = ""
+
+      var titleFontVariant = ['small-caps', 'normal']
+      var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
+      if (selectTitleFontVariant % 2 == 0){
+        selectTitleFontVariant = 0;
+      }
+      else{
+        selectTitleFontVariant = 1;
+      }
+      var titleFontWeight = Math.floor((Math.random() * 900) + 0);
+      var titleFontFamily = ["Times New Roman", "Georgia", "Arial", "Verdana", "Courier New", "Lucida Console"]
+      var selectTitleFontFamily = Math.floor((Math.random() * 5) + 0);
+      var titleFontStyle = ["normal", "italic", "oblique"]
+      var selectTitleFontStyle = Math.floor((Math.random() * 2) + 0);
+      var titleFontSize = Math.floor((Math.random() * 20) + 8);
+      var titleHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+
+      var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: ' + titleHexColor + '}';
+
+
+      var backgroundColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+
+      styles += 'body { background-color: ' + backgroundColor + '}';
+
+      var postFontVariant = ['small-caps', 'normal']
+      var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
+      if (selectPostFontVariant % 2 == 0){
+        selectPostFontVariant = 0;
+      }
+      else{
+        selectPostFontVariant = 1;
+      }
+      var postFontWeight = Math.floor((Math.random() * 900) + 0);
+      var postFontFamily = ["Times New Roman", "Georgia", "Arial", "Verdana", "Courier New", "Lucida Console"]
+      var selectPostFontFamily = Math.floor((Math.random() * 5) + 0);
+      var postFontStyle = ["normal", "italic", "oblique"]
+      var selectPostFontStyle = Math.floor((Math.random() * 2) + 0);
+      var postFontSize = Math.floor((Math.random() * 50) + 14);
+      var postHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+
+      styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
+
+
+      if (css.styleSheet) css.styleSheet.cssText = styles;
+      else css.appendChild(document.createTextNode(styles));
+      document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
+      document.getElementsByTagName("head")[0].appendChild(css);
+    }
+
+    titleDOM.addEventListener("click", mixup, false);
+    var titleScramble = document.getElementById("title");
+
+
+    function scramble(originalText){
+      var master = originalText;
+      alphabet = [
+      "\u2020", "\u2021", "\u2022", "\u2023", "\u2024", "\u2025", "\u2026",
+      "\u2027", "\u2028", "\u2029", "\u2031", "\u2039", "\u203A", "\u203B"
+      , "\u203C", "\u203D", "\u203F", "\u2040", "\u2041", "\u2042", "\u2045"
+      , "\u2046", "\u2047", "\u2048", "\u204A", "\u204B", "\u2058", "\u2059"];
+      for (var j = 0; j < 3; j++){
+        var letterSelection = Math.floor((Math.random() * master.length) + 0);
+        var letter = master.indexOf(j);
+        var randomAlphabet = Math.floor((Math.random() * 25) + 0);
+        var replacementLetter = alphabet[randomAlphabet]
+
+        firstChunk = master.slice(0,letterSelection-1);
+        secondChunk = master.slice(letterSelection, master.length)
+        lengthCheck = firstChunk + replacementLetter + secondChunk
+        if (lengthCheck.length == master.length){
+            master = lengthCheck;
+        }
+      }
+
+      titleScramble.textContent = master
+    }
+
+    $("#title").hover(
+      function(){
+        var originalText = titleScramble.textContent;
+        interval = setInterval(function(){scramble(originalText)}, 150);
+        scramble(originalText)
+      },
+      function(){
+        clearInterval(interval)
+      });
+
+      function mixConnections(){
+        // 3. Set up Arrays to recieve titles and posts from the txt file.
+        titles = []
+        posts = []
+        // 4. posts the document up into lines and from individiaul lines into titles and posts
+
+          var linesOfText = entries
+          for (var i = 0; i < entries.length; i++){
+            var limbs = entries[i].split("***");
+            titles.push(limbs[0]);
+            posts.push(limbs[1]);
+          }
+
+        // 5. Randomly select a title and display it in h1 id="title"
+        var randomTitle = titles[Math.floor(Math.random()*titles.length)];
+        var domTitle = document.getElementById('title');
+        domTitle.textContent = randomTitle;
+
+        // 6. Shuffle posts
+        shuffle(posts)
+
+        // 7. Break the posts up into sentences
+        phrases = [];
+        for (var k = 0; k < posts.length; k++){
+          var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
+          // 8. For now I'm breaking it up based on punctuation so if someone uses
+          // no puntuation I ignore the whole post.
+          if (sentences != null){
+            for (var j = 0; j < sentences.length; j++){
+              phrases.push(sentences[j]);
+            }
+          }
+        }
+
+        // 9. Shuffle sentences
+        shuffle(phrases)
+
+        // 10. Go through phrases and select a random number
+        threads = [];
+
+        var postBody = " ";
+        var postLength = Math.floor((Math.random() * 6) + 2);
+        while (threads.length < postLength){
+          random = getRandomIntInclusive(0,phrases.length-1);
+          selection = phrases[random];
+          if (threads.indexOf(selection) === -1){
+            threads.push(selection);
+          }
+        }
+        postBody = threads.join(" ");
+
+        // 11. Take the post body and display it in the p id="missed-connection"
+        var domMissedConnection = document.getElementById('missed-connection');
+        domMissedConnection.textContent = postBody;
+      }
+
+      mixConnections()
+
+
+
+
+  </script>
 
 </html>
