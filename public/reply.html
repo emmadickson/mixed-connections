@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
 <html>
 <head>
 	<title>PHP form to email sample form</title>
@@ -25,6 +25,10 @@ label,a
 		<input type="text" name="name">
 	</p>
 	<p>
+		<label for='email'>Enter Email Address:</label><br>
+		<input type="text" name="email">
+	</p>
+	<p>
 		<label for='message'>Enter Message:</label> <br>
 		<textarea name="message"></textarea>
 	</p>
@@ -36,8 +40,12 @@ label,a
 // for details
 var frmvalidator  = new Validator("myemailform");
 frmvalidator.addValidation("name","req","Please provide your name");
-
+frmvalidator.addValidation("email","req","Please provide your email");
+frmvalidator.addValidation("email","email","Please enter a valid email address");
 </script>
-
+<p>
+<a href='http://www.html-form-guide.com/email-form/php-form-to-email.html'
+>PHP form to email article page</a>
+</p>
 </body>
 </html>
