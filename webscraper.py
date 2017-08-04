@@ -14,7 +14,7 @@ app = Flask(__name__)
 @app.route("/")
 def webscrape():
     # 1. Specify the local url
-    baseURL = "https://pittsburgh.craigslist.org"
+    baseURL = "https://newyork.craigslist.org"
     startURL = baseURL + "/search/mis"
 
     #socks.setdefaultproxy(proxy_type=socks.PROXY_TYPE_SOCKS5, addr="127.0.0.1", port=9050)
