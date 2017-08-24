@@ -26,9 +26,9 @@ h1{
   font-size: 28px;
   font-weight: bold;
   text-align: left;
-  position: relative;
+  position: absolute;
   overflow: hidden;
-  height: 10%;
+
 }
 
 p{
@@ -36,4 +36,6 @@ p{
   font-size: 18px;
   padding-left: 10px;
   padding-right: 10px;
+  padding-top: 150px;
+
 }
