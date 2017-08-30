@@ -1,2 +1,6 @@
 Flask==0.8
 gunicorn==19.4.5
+requests==0.11.1
+socks==1.6.7
+socket==0.2.4
+bs4==4.6.0
