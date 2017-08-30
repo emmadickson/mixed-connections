@@ -26,7 +26,7 @@ def webscrape():
     "https://pittsburgh.craigslist.org",
     "https://berlin.craigslist.de"]
 
-    totalPostNumber = 50
+    totalPostNumber = 10
     for x in range (0, totalPostNumber):
         randomUrl = random.randint(0,3)
         startURL = homeBases[randomUrl] + "/search/mis"
