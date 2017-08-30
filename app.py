@@ -7,7 +7,6 @@ import hashlib
 import re
 import datetime
 from random import shuffle
-from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 import random
 app = Flask(__name__)
 
