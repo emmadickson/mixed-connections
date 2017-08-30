@@ -12,7 +12,7 @@ import random
 app = Flask(__name__)
 
 @app.rout("/")
- def metrics():
+def metrics():
      content = get_file('index.html')
 
 @app.route("/bots")
