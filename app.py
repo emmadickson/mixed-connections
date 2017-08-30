@@ -10,9 +10,9 @@ from random import shuffle
 import random
 app = Flask(__name__)
 
-@app.route("/")
-def metrics():
-     content = get_file('index.html')
+@app.route('/')
+def render_static():
+    return "haaay"
 
 @app.route("/bots")
 def webscrape():
