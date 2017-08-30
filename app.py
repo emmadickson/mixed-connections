@@ -11,7 +11,11 @@ from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 import random
 app = Flask(__name__)
 
-@app.route("/")
+@app.rout("/")
+ def metrics():
+     content = get_file('index.html')
+
+@app.route("/bots")
 def webscrape():
     # 1. Specify the local url
     homeBases = ["https://newyork.craigslist.org",
@@ -81,7 +85,7 @@ def webscrape():
             bodyHash = hash_object.hexdigest()
 
             if (bodyHash not in hashes):
-                print "Add!"
+                print("Add!")
 
 
                 title = pageContent.select('title')[0].get_text()
@@ -108,3 +112,6 @@ def webscrape():
         text_file.close()
 
     return "Bling bling bitch do my own thing bitch"
+
+if __name__ == '__main__':
+    app.run()
