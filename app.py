@@ -10,7 +10,7 @@ from random import shuffle
 import random
 app = Flask(__name__)
 
-@app.rout("/")
+@app.route("/")
 def metrics():
      content = get_file('index.html')
 
