@@ -14,6 +14,10 @@ app = Flask(__name__)
 def render_static():
     return app.send_static_file('index.html')
 
+@app.route('/db')
+def render_static():
+    return app.send_static_file('db.html')
+
 @app.route("/bots")
 def webscrape():
     # 1. Specify the local url
