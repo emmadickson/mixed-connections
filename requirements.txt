@@ -1,2 +1,2 @@
-adium-theme-ubuntu==0.3.4
+
 pkg-resources==0.0.0
