@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def render_static():
-    return "haaay"
+    return app.send_static_file('index.html')
 
 @app.route("/bots")
 def webscrape():
