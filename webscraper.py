@@ -19,7 +19,7 @@ def webscrape():
     "https://pittsburgh.craigslist.org",
     "https://berlin.craigslist.de"]
 
-    totalPostNumber = 15
+    totalPostNumber = 50
     for x in range (0, totalPostNumber):
         randomUrl = random.randint(0,3)
         startURL = homeBases[randomUrl] + "/search/mis"
@@ -82,6 +82,8 @@ def webscrape():
 
             if (bodyHash not in hashes):
                 print "Add!"
+
+
                 title = pageContent.select('title')[0].get_text()
                 title = re.sub('\n', '', title)
                 title = (title).replace('"', "'")
@@ -100,6 +102,9 @@ def webscrape():
         for line in lines:
             if len(line) > 2:
                 text_file.write("\"" + line + "\",")
+                text_file.write(" ")
+
         text_file.write("];")
         text_file.close()
+
     return "Bling bling bitch do my own thing bitch"
