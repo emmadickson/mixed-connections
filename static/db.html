@@ -2,25 +2,9 @@
   <head>
 
     <script>
-      console.log("hiyo")
-      function readTextFile(file)
-      {
-          var rawFile = new XMLHttpRequest();
-          rawFile.open("GET", file, false);
-          rawFile.onreadystatechange = function ()
-          {
-              if(rawFile.readyState === 4)
-              {
-                  if(rawFile.status === 200 || rawFile.status == 0)
-                  {
-                      var allText = rawFile.responseText;
-                      alert(allText);
-                  }
-              }
-          }
-          rawFile.send(null);
-      }
-      var entries = readTextFile("file:db.txt");
+      console.log("hiyo boyo")
+
+      var entries = rawFile.open("GET", "db.txt", false);
 
       // 1. posts the document up into lines and from individiaul lines into titles and posts
       for (var i = 0; i < entries.length; i++){
