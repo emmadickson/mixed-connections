@@ -18,6 +18,10 @@ def render_static():
 def render_statics():
     return app.send_static_file('db.html')
 
+@app.route('/raw')
+def render_staticd():
+    return app.send_static_file('db.txt')
+
 @app.route("/bots")
 def webscrape():
     # 1. Specify the local url
