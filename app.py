@@ -20,7 +20,7 @@ def render_statics():
 
 @app.route('/raw')
 def render_staticd():
-    return app.send_static_file('db.txt')
+    return "var entries = []"
 
 @app.route("/bots")
 def webscrape():
