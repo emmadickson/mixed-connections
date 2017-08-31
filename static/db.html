@@ -1,9 +1,27 @@
 <html>
   <head>
 
-    <script type="text/javascript" src="db.txt"></script>
     <script>
       console.log("hiyo")
+      function readTextFile(file)
+      {
+          var rawFile = new XMLHttpRequest();
+          rawFile.open("GET", file, false);
+          rawFile.onreadystatechange = function ()
+          {
+              if(rawFile.readyState === 4)
+              {
+                  if(rawFile.status === 200 || rawFile.status == 0)
+                  {
+                      var allText = rawFile.responseText;
+                      alert(allText);
+                  }
+              }
+          }
+          rawFile.send(null);
+      }
+      var entries = readTextFile("file:db.txt");
+
       // 1. posts the document up into lines and from individiaul lines into titles and posts
       for (var i = 0; i < entries.length; i++){
         var limbs = entries[i].split("***");
