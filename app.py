@@ -14,6 +14,10 @@ app = Flask(__name__)
 def render_static():
     return app.send_static_file('index.html')
 
+@app.route('/sex')
+def render_static():
+    return "sawbe me"
+    
 @app.route('/db')
 def render_static():
     return app.send_static_file('db.html')
