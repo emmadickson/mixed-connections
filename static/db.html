@@ -36,12 +36,12 @@
 
       jQuery.get('/raw', function(data) {
          var entries = (data);
-         console.log('hidf')
-         console.log(entries)
+
 
          // 1. posts the document up into lines and from individiaul lines into titles and posts
          for (var i = 0; i < entries.length; i++){
            var limbs = entries[i].split("***");
+           console.log(limbs)
            var table = document.getElementById("botPosts");
            var row = table.insertRow(1);
            var cell1 = row.insertCell(0);
