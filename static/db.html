@@ -41,7 +41,7 @@
          console.log(entries.length)
          // 1. posts the document up into lines and from individiaul lines into titles and posts
          for (var i = 0; i < entries.length; i++){
-           if (entries[i].length > 2){
+           if (entries[i].length > 10){
              var limbs = entries[i].split("***");
              var table = document.getElementById("botPosts");
              var row = table.insertRow(1);
