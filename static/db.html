@@ -37,8 +37,8 @@
       jQuery.get('/raw', function(data) {
          var entries = (data);
 
-         entries = [].concat(entries);
         
+
          console.log(entries)
          // 1. posts the document up into lines and from individiaul lines into titles and posts
          for (var i = 0; i < entries.length; i++){
