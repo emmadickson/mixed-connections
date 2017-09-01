@@ -17,12 +17,12 @@
   </body>
 
   <script>
-
+    var entries = [];
     jQuery.get('/raw', function(data) {
       entries = data;
     });
 
-      
+
 
        // 1. clean is a function used to remove blank spaces from the array of
        // titles and posts and shuffle is a function used to shuffle the array of
