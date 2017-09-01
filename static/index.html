@@ -13,16 +13,17 @@
     <div id="button"><button type="button" onclick="window.location.href='public/reply.html'">Reply</button></div>
     <h1 id="title"> </h1>
     <p id="missed-connection"> </p>
-    <div id="button"><button type="button" onclick="mixConnections()">Next</button></div>
+    <div id="button"><button type="button" onclick="test()">Next</button></div>
   </body>
 
   <script>
     var entries = [];
-    jQuery.get('/raw', function(data) {
+    jQuery.get('/raw', function test(data) {
       entries = data;
+      console.log("PPPPPOOO")
     });
 
-
+    console.log(entries)
 
        // 1. clean is a function used to remove blank spaces from the array of
        // titles and posts and shuffle is a function used to shuffle the array of
