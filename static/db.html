@@ -35,11 +35,8 @@
     <script>
 
       jQuery.get('/raw', function(data) {
-         var entries = (data);
 
-        
-
-         console.log(entries)
+         console.log(data)
          // 1. posts the document up into lines and from individiaul lines into titles and posts
          for (var i = 0; i < entries.length; i++){
            var limbs = entries[i].split("***");
