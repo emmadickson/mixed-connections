@@ -38,6 +38,7 @@
 
         var entries = JSON.stringify(data)
         entries = entries.split("\\")
+        entries = entries.replace(/['"]+/g, '')
          console.log(entries.length)
          // 1. posts the document up into lines and from individiaul lines into titles and posts
          for (var i = 0; i < entries.length; i++){
