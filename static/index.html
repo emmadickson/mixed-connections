@@ -17,11 +17,11 @@
   </body>
 
   <script>
-    var entries = [];
-    jQuery.get('/raw', function test(data) {
+    function test(data) {
       entries = data;
       console.log("PPPPPOOO")
-    });
+    }
+    jQuery.get('/raw', );
 
     console.log(entries)
 
