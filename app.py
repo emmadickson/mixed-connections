@@ -112,13 +112,15 @@ def webscrape():
         text_file.write("var entries = [")
         for line in lines:
             if len(line) > 2:
-                print(line)
                 text_file.write("\"" + line + "\",")
                 text_file.write(" ")
 
         text_file.write("];")
         text_file.close()
 
+    with open('public/docs/db.txt', 'r') as f:
+        lines = f.read()
+        print(lines)
     return "Bling bling bitch do my own thing bitch"
 
 if __name__ == '__main__':
