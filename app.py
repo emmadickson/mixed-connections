@@ -57,7 +57,7 @@ def webscrape():
         with open('public/docs/db.txt', 'r') as f:
             lines = f.read()
         f.close()
-
+        console.log("lines")
         lines = lines[16:]
         lines = lines[:-5]
         lines = lines.split("\",\"")
