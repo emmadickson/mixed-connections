@@ -57,7 +57,7 @@ def webscrape():
         with open('public/docs/db.txt', 'r') as f:
             lines = f.read()
         f.close()
-        print(lines)
+
         lines = lines[16:]
         lines = lines[:-5]
         lines = lines.split("\",\"")
@@ -112,6 +112,7 @@ def webscrape():
         text_file.write("var entries = [")
         for line in lines:
             if len(line) > 2:
+                print(line)
                 text_file.write("\"" + line + "\",")
                 text_file.write(" ")
 
