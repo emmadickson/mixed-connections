@@ -167,10 +167,12 @@
 
              var linesOfText = entries
              for (var i = 0; i < entries.length; i++){
-               var limbs = entries[i].split("***");
+                if (entries[i].length > 10){
+                 var limbs = entries[i].split("***");
 
-               titles.push(limbs[0]);
-               posts.push(limbs[1]);
+                 titles.push(limbs[0]);
+                 posts.push(limbs[1]);
+               }
              }
              console.log(posts)
            // 5. Randomly select a title and display it in h1 id="title"
