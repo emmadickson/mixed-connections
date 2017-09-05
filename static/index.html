@@ -18,9 +18,6 @@
 
   <script>
 
-
-
-
        // 1. clean is a function used to remove blank spaces from the array of
        // titles and posts and shuffle is a function used to shuffle the array of
        // phrases. getRandomIntInclusive is a function designed to select a
@@ -171,7 +168,7 @@
                titles.push(limbs[0]);
                posts.push(limbs[1]);
              }
-
+             console.log(posts)
            // 5. Randomly select a title and display it in h1 id="title"
            var randomTitle = titles[Math.floor(Math.random()*titles.length)];
            var domTitle = document.getElementById('title');
