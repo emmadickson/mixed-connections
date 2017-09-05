@@ -187,7 +187,10 @@
 
            // 7. Break the posts up into sentences
            phrases = [];
+           console.log(posts)
            for (var k = 0; k < posts.length; k++){
+             console.log("HERLP")
+             console.log(posts[k])
              var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
              // 8. For now I'm breaking it up based on punctuation so if someone uses
              // no puntuation I ignore the whole post.
