@@ -13,17 +13,13 @@
     <div id="button"><button type="button" onclick="window.location.href='public/reply.html'">Reply</button></div>
     <h1 id="title"> </h1>
     <p id="missed-connection"> </p>
-    <div id="button"><button type="button" onclick="test()">Next</button></div>
+    <div id="button"><button type="button" onclick="mixConnections()">Next</button></div>
   </body>
 
   <script>
-    function test(data) {
-      entries = data;
-      console.log("PPPPPOOO")
-    }
-    jQuery.get('/raw', );
 
-    console.log(entries)
+
+
 
        // 1. clean is a function used to remove blank spaces from the array of
        // titles and posts and shuffle is a function used to shuffle the array of
@@ -160,6 +156,10 @@
          });
 
          function mixConnections(){
+
+           jQuery.get('/raw', function(data) {
+
+            var entries = JSON.stringify(data)
            // 3. Set up Arrays to recieve titles and posts from the txt file.
            titles = []
            posts = []
@@ -214,6 +214,7 @@
            var domMissedConnection = document.getElementById('missed-connection');
            domMissedConnection.textContent = postBody;
          }
+       }
 
          mixConnections()
 
