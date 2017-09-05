@@ -54,7 +54,7 @@ def webscrape():
         # 4. Read in the db info and store hashes of titles also remove last line
         # of js wrapping
         hashes = []
-        with open('public/docs/db.txt', 'r') as f:
+        with open('static/db.txt', 'r') as f:
             lines = f.read()
         f.close()
 
@@ -70,9 +70,9 @@ def webscrape():
                 hashes.append(h)
 
         # 5. Scrape the titles and postbody and add to db file
-        open('public/docs/db.txt', 'w').close()
+        open('static/db.txt', 'w').close()
 
-        text_file = open('public/docs/db.txt', 'w')
+        text_file = open('static/db.txt', 'w')
 
         for finalLink in finalLinks:
             #socks.setdefaultproxy(proxy_type=socks.PROXY_TYPE_SOCKS5, addr="127.0.0.1", port=9050)
@@ -118,7 +118,7 @@ def webscrape():
         text_file.write("];")
         text_file.close()
 
-    with open('public/docs/db.txt', 'r') as f:
+    with open('static/db.txt', 'r') as f:
         lines = f.read()
         print(lines)
     return "Bling bling bitch do my own thing bitch"
