@@ -158,6 +158,8 @@
 
             var entries = JSON.stringify(data)
             entries = entries.split("\\")
+            console.log(entries)
+            console.log(entries.length)
              // 3. Set up Arrays to recieve titles and posts from the txt file.
              titles = []
              posts = []
@@ -166,8 +168,7 @@
              var linesOfText = entries
              for (var i = 0; i < entries.length; i++){
                var limbs = entries[i].split("***");
-               console.log("LIMB")
-               console.log(limbs)
+
                titles.push(limbs[0]);
                posts.push(limbs[1]);
              }
