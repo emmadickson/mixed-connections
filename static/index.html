@@ -158,6 +158,7 @@
 
             var entries = JSON.stringify(data)
             entries = entries.split("\\")
+            entries = String(entries)
             entries.replace(/\"/g, "")
              // 3. Set up Arrays to recieve titles and posts from the txt file.
              titles = []
