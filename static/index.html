@@ -186,7 +186,7 @@
            // 7. Break the posts up into sentences
            phrases = [];
            for (var k = 0; k < posts.length; k++){
-             var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
+             var sentences = String(posts[k]).match( /[^\.!\?]+[\.!\?]+/g );
              // 8. For now I'm breaking it up based on punctuation so if someone uses
              // no puntuation I ignore the whole post.
              if (sentences != null){
