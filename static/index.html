@@ -3,7 +3,6 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link id = "css" rel="stylesheet" href="../public/css/missed.css">
 
   </head>
 
@@ -64,7 +63,7 @@
          document.getElementById("missed-connection").textContent = newPostBody;
 
          var css = document.getElementsByTagName('style')[0]
-         css.innerHTML = ""
+
 
          var titleFontVariant = ['small-caps', 'normal']
          var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
@@ -158,8 +157,7 @@
 
             var entries = JSON.stringify(data)
             entries = entries.split("\\")
-            console.log(entries)
-            console.log(entries.length)
+
              // 3. Set up Arrays to recieve titles and posts from the txt file.
              titles = []
              posts = []
@@ -174,7 +172,7 @@
                  posts.push(limbs[1]);
                }
              }
-             console.log(posts)
+
            // 5. Randomly select a title and display it in h1 id="title"
            var randomTitle = titles[Math.floor(Math.random()*titles.length)];
            var domTitle = document.getElementById('title');
