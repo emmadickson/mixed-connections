@@ -189,7 +189,7 @@
            phrases = [];
            console.log(posts)
            for (var k = 0; k < posts.length; k++){
-             if (posts[k].length > 10){
+             if (posts[k] != undefined){
                console.log("HERLP")
                console.log(posts[k])
                var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
