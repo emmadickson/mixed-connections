@@ -154,15 +154,10 @@
 
          var locationScramble = document.getElementById("locationText");
 
-         $("#locationText").hover(
-           function(){
-             var ogText = locationText.textContent;
-             interval = setInterval(function(){scramble(ogText, locationScramble)}, 150);
-             scramble(ogText, locationScramble)
-           },
-           function(){
-             clearInterval(interval)
-           });
+
+         var ogText = locationText.textContent;
+         interval = setInterval(function(){scramble(ogText, locationScramble)}, 150);
+            
 
          function mixConnections(){
 
