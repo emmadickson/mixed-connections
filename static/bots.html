@@ -31,6 +31,8 @@
     var positionInfo = element.getBoundingClientRect();
     var width = positionInfo.width;
     var start = windowLength + width;
+    element.style.left = start + "px;"
+    console.log(scroll.style.left)
     var int = 0
     setInterval(function(){
       int++;
@@ -45,6 +47,7 @@
       var scroll = document.getElementById('banner');
       console.log(scroll.style.left)
       scroll = start - 5 + "px;"
+      console.log(scroll.style.left)
     }, 300);
 
   </script>
