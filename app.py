@@ -118,7 +118,7 @@ def webscrape():
     with open('static/db.txt', 'r') as f:
         lines = f.read()
         print(lines)
-    return "Bling bling bitch do my own thing bitch"
+    return app.send_static_file('bots.html')
 
 if __name__ == '__main__':
     app.run()

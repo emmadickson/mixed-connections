@@ -17,9 +17,7 @@
   </body>
 
   <script>
-      homeBases = ["newyork",
-        "raleigh",
-        "pittsburgh"]
+      homeBases = ["newyork","raleigh","pittsburgh"]
 
        // 1. clean is a function used to remove blank spaces from the array of
        // titles and posts and shuffle is a function used to shuffle the array of
@@ -163,7 +161,7 @@
 
          var text = locationText.textContent;
          interval = setInterval(function(){
-           var newLocation = Math.floor((Math.random() * 2) + 0);
+           var newLocation = Math.floor((Math.random() * 2) + -1);
            locationText.textContent = homeBases[newLocation]
          }, 200);
 
