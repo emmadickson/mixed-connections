@@ -3,7 +3,7 @@
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <style>
       body{
-
+        background: black;
       }
       #banner{
         font-family: 'VT323', monospace;
@@ -23,12 +23,22 @@
   </body>
 
   <script>
-    var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]", ":[]"]
+    var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]"]
+    var start = document.getElementById('banner').style.left;
+    var int = 0
+    setInterval(function(){
+      int++;
+      if (int >= 4){
+        int = 0
+      }
+      var face = document.getElementById('mouth')
+      face.textContent = expressions[int]
+    }, 150);
 
     setInterval(function(){
       var scroll = document.getElementById('banner');
-          console.log(scroll.style.left)
-      scroll.style.left = scroll.style.left - 5;
+      console.log(scroll.style.left)
+      scroll.style.left = start - 5;
     }, 150);
 
   </script>
