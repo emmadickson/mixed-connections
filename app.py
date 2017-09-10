@@ -27,7 +27,8 @@ def webscrape():
     # 1. Specify the local url
     homeBases = ["https://newyork.craigslist.org",
     "https://raleigh.craigslist.org",
-    "https://pittsburgh.craigslist.org"]
+    "https://pittsburgh.craigslist.org",
+    "https://berlin.craigslist.de"]
 
     totalPostNumber = 10
     for x in range (0, totalPostNumber):
