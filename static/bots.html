@@ -20,7 +20,7 @@
   </head>
 
   <body>
-    <div id="banner"> Thank you for feeding me </div>
+    <marquee id="banner"> Thank you for feeding me </marquee>
     <div id="mouth">:|</div>
   </body>
 
@@ -41,12 +41,5 @@
       var face = document.getElementById('mouth')
       face.textContent = expressions[int]
     }, 150);
-
-    setInterval(function(){
-      var scroll = document.getElementById('banner');
-      console.log(scroll.style.left)
-      scroll = start - 5 + "px;"
-    }, 300);
-
   </script>
 </html>
