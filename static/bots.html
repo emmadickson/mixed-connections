@@ -9,14 +9,12 @@
         font-family: 'VT323', monospace;
         font-size: 76px;
         color:green;
-        left: 300px;
       }
       #mouth{
         font-family: 'VT323', monospace;
-        font-size: 90px;
+        font-size: 250px;
         color: white;
-        margin-right: auto;
-        margin-left: auto;
+        text-align: center;
       }
     </style>
   </head>
@@ -28,7 +26,11 @@
 
   <script>
     var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]"]
-    var start = 300;
+    var windowLength = window.innerWidth;
+    var element = document.getElementById('banner');
+    var positionInfo = element.getBoundingClientRect();
+    var width = positionInfo.width;
+    var start = windowLength + width;
     var int = 0
     setInterval(function(){
       int++;
@@ -42,8 +44,8 @@
     setInterval(function(){
       var scroll = document.getElementById('banner');
       console.log(scroll.style.left)
-      scroll = start -5 + "px;"
-    }, 1500);
+      scroll = start - 5 + "px;"
+    }, 300);
 
   </script>
 </html>
