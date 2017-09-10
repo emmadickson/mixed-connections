@@ -92,8 +92,6 @@ def webscrape():
 
             if (bodyHash not in hashes):
                 print("Add!")
-
-
                 title = pageContent.select('title')[0].get_text()
                 title = re.sub('\n', '', title)
                 title = (title).replace('"', "'")
