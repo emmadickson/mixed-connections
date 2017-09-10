@@ -118,7 +118,7 @@
        var titleScramble = document.getElementById("title");
 
 
-       function scramble(originalText){
+       function scramble(originalText, domElement){
          var master = originalText;
          alphabet = [
          "\u2020", "\u2021", "\u2022", "\u2023", "\u2024", "\u2025", "\u2026",
@@ -139,14 +139,14 @@
            }
          }
 
-         titleScramble.textContent = master
+         domElement.textContent = master
        }
 
        $("#title").hover(
          function(){
            var originalText = titleScramble.textContent;
-           interval = setInterval(function(){scramble(originalText)}, 150);
-           scramble(originalText)
+           interval = setInterval(function(){scramble(originalText, titleScramble)}, 150);
+           scramble(originalText, titleScramble)
          },
          function(){
            clearInterval(interval)
@@ -157,8 +157,8 @@
          $("#locationText").hover(
            function(){
              var ogText = locationText.textContent;
-             interval = setInterval(function(){scramble(ogText)}, 150);
-             scramble(ogText)
+             interval = setInterval(function(){scramble(ogText, locationScramble)}, 150);
+             scramble(ogText, locationScramble)
            },
            function(){
              clearInterval(interval)
