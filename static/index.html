@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <header> CL< <a href="/bots" id="locationText">pittsburgh</a> < missed connections</header> 
+    <header> CL< <a href="/bots" id="locationText">pittsburgh</a> < missed connections</header>
     <br>
     <div id="button"><button type="button" onclick="window.location.href='public/reply.html'">Reply</button></div>
     <h1 id="title"> </h1>
@@ -161,7 +161,7 @@
 
          var text = locationText.textContent;
          interval = setInterval(function(){
-           var newLocation = Math.floor((Math.random() * 2) + -1);
+           var newLocation = Math.floor((Math.random() * 2) + 0);
            locationText.textContent = homeBases[newLocation]
          }, 250);
 

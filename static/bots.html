@@ -1,18 +1,27 @@
 <html>
   <head>
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <style>
       body{
         background: black;
+      }
+      .mouth{
+        font-family: 'VT323', monospace;
       }
     </style>
   </head>
 
   <body>
-    <div id="mouth"></div>
+    <div id="banner"> Thank you for feeding me </div>
+    <div id="mouth">:|</div>
   </body>
 
   <script>
-    var expressions = [":o", ":0", ":D", ":|"]
-    
+    var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]", ":[]"]
+    setInterval(function(){
+      var scroll = document.getElementById('banner');
+      scroll.style.left = scroll.style.left - 5;
+    }, 150);
+
   </script>
 </html>
