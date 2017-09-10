@@ -9,7 +9,7 @@
         font-family: 'VT323', monospace;
         font-size: 76px;
         color:green;
-        left: 300;
+        left: 300px;
       }
       #mouth{
         font-family: 'VT323', monospace;
@@ -28,7 +28,7 @@
 
   <script>
     var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]"]
-    var start = document.getElementById('banner').style.left;
+    var start = 300;
     var int = 0
     setInterval(function(){
       int++;
@@ -42,7 +42,7 @@
     setInterval(function(){
       var scroll = document.getElementById('banner');
       console.log(scroll.style.left)
-
+      scroll = start -5 + "px;"
     }, 1500);
 
   </script>
