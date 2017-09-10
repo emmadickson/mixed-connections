@@ -3,14 +3,15 @@
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <style>
       body{
-        background: black;
+
       }
-      .banner{
+      #banner{
         font-family: 'VT323', monospace;
         font-size: 30px;
         color:green;
+        left: 300;
       }
-      .mouth{
+      #mouth{
         font-family: 'VT323', monospace;
       }
     </style>
@@ -23,8 +24,10 @@
 
   <script>
     var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]", ":[]"]
+
     setInterval(function(){
       var scroll = document.getElementById('banner');
+          console.log(scroll.style.left)
       scroll.style.left = scroll.style.left - 5;
     }, 150);
 
