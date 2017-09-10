@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <header><a href="...">CL</a>>newyork>all personals>missed connections</header>
+    <header><a href="...">CL</a><p id="locationText">newyork></p>all personals>missed connections</header>
     <br>
     <div id="button"><button type="button" onclick="window.location.href='public/reply.html'">Reply</button></div>
     <h1 id="title"> </h1>
@@ -152,6 +152,18 @@
            clearInterval(interval)
          });
 
+         var locationScramble = document.getElementById("locationText");
+
+         $("#locationText").hover(
+           function(){
+             var ogText = locationText.textContent;
+             interval = setInterval(function(){scramble(ogText)}, 150);
+             scramble(ogText)
+           },
+           function(){
+             clearInterval(interval)
+           });
+
          function mixConnections(){
 
            jQuery.get('/raw', function(data) {
@@ -187,11 +199,8 @@
 
            // 7. Break the posts up into sentences
            phrases = [];
-           console.log(posts)
            for (var k = 0; k < posts.length; k++){
              if (posts[k] != undefined){
-               console.log("HERLP")
-               console.log(posts[k])
                var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
                // 8. For now I'm breaking it up based on punctuation so if someone uses
                // no puntuation I ignore the whole post.
@@ -225,10 +234,7 @@
            domMissedConnection.textContent = postBody;
          })
        }
-
-         mixConnections()
-
-
+      mixConnections()
   </script>
 
 </html>
