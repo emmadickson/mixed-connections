@@ -17,6 +17,9 @@
   </body>
 
   <script>
+      homeBases = ["https://newyork.craigslist.org",
+        "https://raleigh.craigslist.org",
+        "https://pittsburgh.craigslist.org"]
 
        // 1. clean is a function used to remove blank spaces from the array of
        // titles and posts and shuffle is a function used to shuffle the array of
@@ -157,7 +160,13 @@
 
          var ogText = locationText.textContent;
          interval = setInterval(function(){scramble(ogText, locationScramble)}, 150);
-            
+
+         var text = locationText.textContent;
+         interval = setInterval(function(){
+           var newLocation = Math.floor((Math.random() * 2) + 0);
+           locationText.textContent = homeBases[newLocation]
+         }, 200);
+
 
          function mixConnections(){
 
