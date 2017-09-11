@@ -26,7 +26,7 @@
   </body>
 
   <script>
-    var expressions = [ ":[ " "<a href='/'>.</a>" "]", ":[ ]", ":[  ]", ":[ ]" ]
+    var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]"]
     var windowLength = window.innerWidth;
     var element = document.getElementById('banner');
     var positionInfo = element.getBoundingClientRect();
@@ -34,8 +34,10 @@
     var start = windowLength + width;
     element.style.left = start + "px;"
     var int = 0
+    
     setInterval(function(){
       int++;
+      console.log(int)
       if (int >= 4){
         int = 0
       }
