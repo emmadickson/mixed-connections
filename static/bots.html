@@ -12,10 +12,12 @@
         font-size: 250px;
         color: white;
         text-align: center;
+        width:100%;
 
       }
 
       .scroll-left {
+        top: -500;
         text-align: center;
         height: 50px;
         position: absolute;
@@ -50,9 +52,9 @@
       face.textContent = expressions[int]
       console.log(face.textContent)
       int++;
-    }, 250);
+    }, 350);
 
 
-    $(".scroll-left").animate({bottom: $(window).height()}, {duration: 1000});
+    $(".scroll-left").animate({bottom: -$(window).height()}, {duration: 1000});
   </script>
 </html>
