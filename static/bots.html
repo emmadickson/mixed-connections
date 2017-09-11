@@ -49,10 +49,11 @@
       if (int == 6){
         int = 0
       }
-      var face = document.getElementById('mouth')
-      face.innerHTML = expressions[int]
-      console.log(face.textContent)
+      $( "div" ).remove( "#mouth" );
+      var mouth = document.createElement("div")
+      mouth.textContent(expressions[int])
       int++;
+      document.body.appendChild(mouth)
     }, 1000);
 
 
