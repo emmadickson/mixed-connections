@@ -25,6 +25,14 @@
       height: 50px;
       overflow: hidden;
       position: relative;
+      transition: .3s all;
+      -webkit-transform: rotate(90deg);  /* to support Safari and Android browser */
+      -ms-transform: rotate(90deg);      /* to support IE 9 */
+      transform: rotate(90deg);
+      font-family: 'VT323', monospace;
+      font-size: 76px;
+      color:green;
+      text-align: center;
       }
       .scroll-left p {
       position: absolute;
@@ -67,8 +75,8 @@
   </head>
 
   <body>
-    <div class="vertical"> Thank you for feeding me </div>
-    <div id="mouth" class="scroll-left">:|</div>
+    <div class="scroll-left"> Thank you for feeding me </div>
+    <div id="mouth">:|</div>
   </body>
 
   <script>
