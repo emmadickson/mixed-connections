@@ -15,11 +15,29 @@
 
       }
 
+      .scroll-left {
+        text-align: center;
+        height: 50px;
+        overflow: hidden;
+        position: relative;
+        transition: .3s all;
+        -webkit-transform: rotate(90deg);  /* to support Safari and Android browser */
+        -ms-transform: rotate(90deg);      /* to support IE 9 */
+        transform: rotate(90deg);
+        font-family: 'VT323', monospace;
+        font-size: 76px;
+        color:green;
+        /* Starting position */
+        -moz-transform:translateX(100%);
+        -webkit-transform:translateX(100%);
+        transform:translateX(100%);
+      }
+
     </style>
   </head>
 
   <body>
-    <div id="scroll">  Thank you for feeding me  </div>
+    <div class="scroll-left"> <p> Thank you for feeding me </p> </div>
 
     <div id="mouth">:|</div>
   </body>
@@ -37,9 +55,9 @@
       var face = document.getElementById('mouth')
       face.textContent = expressions[int]
       console.log(expressions[int])
-    }, 150);
+    }, 250);
 
-    $('#scroll').children().animate({'margin-top': '-=' + ($('#scroll').children().height()-100)}, 1000);
 
+    $(".scroll-left").animate({top: -$(window).height()}, {duration: 10000});
   </script>
 </html>
