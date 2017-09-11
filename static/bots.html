@@ -18,7 +18,7 @@
       .scroll-left {
         text-align: center;
         height: 50px;
-        transition: .3s all;
+        position: absolute;
         -webkit-transform: rotate(90deg);  /* to support Safari and Android browser */
         -ms-transform: rotate(90deg);      /* to support IE 9 */
         transform: rotate(90deg);
@@ -37,13 +37,13 @@
   </body>
 
   <script>
-    var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]"]
+    var expressions = [":[]", ":[ ]", ":[  ]",  ":[   ]", ":[  ]", ":[ ]"]
 
     var int = 0
 
     setInterval(function(){
 
-      if (int == 4){
+      if (int == 6){
         int = 0
       }
       var face = document.getElementById('mouth')
