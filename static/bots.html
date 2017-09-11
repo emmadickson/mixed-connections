@@ -13,9 +13,9 @@
       }
       .vertical{
         transition: .3s all;
-        -webkit-transform: rotate(90deg);  /* to support Safari and Android browser */
-        -ms-transform: rotate(90deg);      /* to support IE 9 */
-        transform: rotate(90deg);
+        -webkit-transform: rotate(180deg);  /* to support Safari and Android browser */
+        -ms-transform: rotate(180deg);      /* to support IE 9 */
+        transform: rotate(180deg);
         font-family: 'VT323', monospace;
         font-size: 76px;
         color:green;
@@ -31,12 +31,7 @@
 
   <script>
     var expressions = [":[]", ":[ ]", ":[  ]", ":[ ]"]
-    var windowLength = window.innerWidth;
-    var element = document.getElementById('banner');
-    var positionInfo = element.getBoundingClientRect();
-    var width = positionInfo.width;
-    var start = windowLength + width;
-    element.style.left = start + "px;"
+
     var int = 0
 
     setInterval(function(){
