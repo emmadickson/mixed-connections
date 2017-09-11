@@ -11,17 +11,9 @@
         color: white;
         text-align: center;
       }
-      .vertical{
-        transition: .3s all;
-        -webkit-transform: rotate(90deg);  /* to support Safari and Android browser */
-        -ms-transform: rotate(90deg);      /* to support IE 9 */
-        transform: rotate(90deg);
-        font-family: 'VT323', monospace;
-        font-size: 76px;
-        color:green;
-        text-align: center;
-      }
+
       .scroll-left {
+        text-align: center;
       height: 50px;
       overflow: hidden;
       position: relative;
@@ -46,9 +38,9 @@
       -webkit-transform:translateX(100%);
       transform:translateX(100%);
       /* Apply animation to this element */
-      -moz-animation: scroll-left 20s linear infinite;
-      -webkit-animation: scroll-left 20s linear infinite;
-      animation: scroll-left 20s linear infinite;
+      -moz-animation: scroll-left 10s linear infinite;
+      -webkit-animation: scroll-left 10s linear infinite;
+      animation: scroll-left 10s linear infinite;
       }
       /* Move it (define the animation) */
       @-moz-keyframes scroll-left {
@@ -76,6 +68,7 @@
 
   <body>
     <div class="scroll-left"> <p> Thank you for feeding me </p> </div>
+
     <div id="mouth">:|</div>
   </body>
 
