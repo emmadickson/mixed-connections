@@ -1,5 +1,6 @@
 <html>
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <style>
       body{
@@ -28,6 +29,7 @@
       color:green;
       text-align: center;
       }
+
       .scroll-left p {
       position: absolute;
       width: 100%;
@@ -91,7 +93,9 @@
 
     var mouth = document.getElementsByClassName("scroll-left");
     setInterval(function(){
-      console.log(mouth.style.left)
+      var p = $( "p:first" );
+      var position = p.position();
+      console.log(position)
     }, 150);
   </script>
 </html>
