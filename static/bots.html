@@ -11,6 +11,7 @@
         font-size: 250px;
         color: white;
         text-align: center;
+
       }
 
       .scroll-left {
@@ -39,9 +40,9 @@
       -webkit-transform:translateX(100%);
       transform:translateX(100%);
       /* Apply animation to this element */
-      -moz-animation: scroll-right 20s linear infinite;
-      -webkit-animation: scroll-right 20s linear infinite;
-      animation: scroll-right 20s linear infinite;
+      -moz-animation: scroll-left 20s linear infinite;
+      -webkit-animation: scroll-left 20s linear infinite;
+      animation: scroll-left 20s linear infinite;
       }
       /* Move it (define the animation) */
       @-moz-keyframes scroll-left {
@@ -80,12 +81,17 @@
 
     setInterval(function(){
       int++;
-      console.log(int)
       if (int >= 4){
         int = 0
       }
       var face = document.getElementById('mouth')
       face.textContent = expressions[int]
+    }, 150);
+
+
+    var mouth = document.getElementsByClassName("scroll-left");
+    setInterval(function(){
+      console.log(mouth.style.left)
     }, 150);
   </script>
 </html>
