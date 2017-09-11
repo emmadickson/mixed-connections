@@ -93,8 +93,8 @@
 
     var mouth = document.getElementsByClassName("scroll-left")[0];
     setInterval(function(){
-      var p = $( "p:first" );
-      var pos = p.position();
+      var p = $("p:first");
+      var pos = p.offset();
       console.log(pos)
       var p1 = $("#mouth");
       var position1 = p1.position();
