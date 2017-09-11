@@ -95,8 +95,9 @@
     setInterval(function(){
       var p = $( "p:first" );
       var position = p.position();
-      var p1 = $( "#mouth" );
-      var position1 = p1.position1();
+      var p1 = $("#mouth");
+
+      var position1 = p1.position();
       if (position >= position1){
         var newText = mouth.textContent;
         newText = newText.substring(1)
