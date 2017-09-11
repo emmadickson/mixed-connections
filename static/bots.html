@@ -51,7 +51,7 @@
       }
       $( "div" ).remove( "#mouth" );
       var mouth = document.createElement("div")
-      mouth.textContent(expressions[int])
+      mouth.textContent = (expressions[int])
       mouth.id = "mouth"
       int++;
       console.log(mouth.textContent)
