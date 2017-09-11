@@ -93,12 +93,12 @@
 
     var mouth = document.getElementsByClassName("scroll-left")[0];
     setInterval(function(){
-      var p = $( "p:first" );
-      var position = p.position();
-      var p1 = $("#mouth");
-      var position1 = p1.position();
 
-      if (position.top >= position1.top){
+      var pos = ( "p:first" ).position();
+  
+      var position1 = $("#mouth").position();
+
+      if (pos.top >= position1.top){
         var newText = mouth.textContent;
         newText = newText.substring(1)
         mouth.textContent = newText;
