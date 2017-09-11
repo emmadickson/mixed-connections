@@ -19,7 +19,7 @@
   </head>
 
   <body>
-    <div class="scroll">  Thank you for feeding me  </div>
+    <div id="scroll">  Thank you for feeding me  </div>
 
     <div id="mouth">:|</div>
   </body>
@@ -36,7 +36,7 @@
       }
       var face = document.getElementById('mouth')
       face.textContent = expressions[int]
-      console.log(expressions[ints])
+      console.log(expressions[int])
     }, 150);
 
     $('#scroll').children().animate({'margin-top': '-=' + ($('#scroll').children().height()-100)}, 1000);
