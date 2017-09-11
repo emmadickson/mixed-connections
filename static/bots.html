@@ -31,7 +31,7 @@
   </head>
 
   <body>
-    <div class="scroll-left"> <p> Thank you for feeding me </p> </div>
+    <div class="scroll-left"> Thank you for feeding me  </div>
 
     <div id="mouth">:|</div>
   </body>
@@ -42,14 +42,14 @@
     var int = 0
 
     setInterval(function(){
-      int++;
+
       if (int >= 4){
         int = 0
       }
       var face = document.getElementById('mouth')
       face.textContent = expressions[int]
-      console.log(expressions[int])
       console.log(face.textContent)
+      int++;
     }, 250);
 
 
