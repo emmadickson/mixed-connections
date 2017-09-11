@@ -96,14 +96,14 @@
       var p = $( "p:first" );
       var position = p.position();
       var p1 = $("#mouth");
-
       var position1 = p1.position();
-      if (position >= position1){
+
+      if (position.top >= position1.top){
         var newText = mouth.textContent;
         newText = newText.substring(1)
         mouth.textContent = newText;
       }
-    
+
     }, 150);
   </script>
 </html>
