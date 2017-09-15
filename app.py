@@ -27,12 +27,11 @@ def webscrape():
     # 1. Specify the local url
     homeBases = ["https://newyork.craigslist.org",
     "https://raleigh.craigslist.org",
-    "https://pittsburgh.craigslist.org",
-    "https://berlin.craigslist.de"]
+    "https://pittsburgh.craigslist.org"]
 
     totalPostNumber = 10
     for x in range (0, totalPostNumber):
-        randomUrl = random.randint(0,3)
+        randomUrl = random.randint(0,2)
         startURL = homeBases[randomUrl] + "/search/mis"
 
         #socks.setdefaultproxy(proxy_type=socks.PROXY_TYPE_SOCKS5, addr="127.0.0.1", port=9050)
@@ -93,8 +92,6 @@ def webscrape():
 
             if (bodyHash not in hashes):
                 print("Add!")
-
-
                 title = pageContent.select('title')[0].get_text()
                 title = re.sub('\n', '', title)
                 title = (title).replace('"', "'")
@@ -121,7 +118,7 @@ def webscrape():
     with open('static/db.txt', 'r') as f:
         lines = f.read()
         print(lines)
-    return "Bling bling bitch do my own thing bitch"
+    return app.send_static_file('bots.html')
 
 if __name__ == '__main__':
     app.run()
