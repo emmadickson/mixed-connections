@@ -34,31 +34,48 @@
   </head>
 
   <body>
-    <div class="scroll-left"> Thank you for feeding me  </div>
 
-    <div id="mouth">:|</div>
+     <img id="glitch" >
+
   </body>
 
+  <script id="glitch" src = "images/test.txt"></script>
   <script>
-    var expressions = [":[]", ":[ ]", ":[  ]",  ":[   ]", ":[  ]", ":[ ]"]
+    var longshot = document.getElementById('glitch')
+    function hexToBase64(hexstring) {
+      return btoa(hexstring.match(/\w{2}/g).map(function(a) {
+          return String.fromCharCode(parseInt(a, 16));
+      }).join(""));
+    }
+    header = mouthmouth.slice(0, 18)
+    width = mouthmouth.slice(18, 24)
+    height = mouthmouth.slice(24, 30)
+    packed_byte = mouthmouth.slice(30,32)
+    background_color_index = mouthmouth.slice(32,35)
+    pixel_aspect_ratio = mouthmouth.slice(35,38)
+    global_color_table = mouthmouth.slice(38,74)
+    graphics_control_ext = /*mouthmouth.slice(74,98)*/ '21 F9 04 00 00 00 00 00'
+    image_descriptor = mouthmouth.slice(98, 112)
+    and_the_rest = mouthmouth.slice(112, mouthmouth.length)
+    base = hexToBase64(mouthmouth);
 
-    var int = 0
+    console.log("header : " + header)
+    console.log("logical screen descriptor")
+    console.log("width: " + width)
+    console.log("height: " + height)
+    console.log("packed byte: " + packed_byte)
+    console.log("background index: " + background_color_index)
+    console.log("pixel aspect ratio: " + pixel_aspect_ratio)
+    console.log("global color table: " + global_color_table)
+    console.log("graphics control ext: " + graphics_control_ext)
+    console.log("image descriptor: " + image_descriptor)
+    console.log("and the rest: " + and_the_rest)
+    longshot.src = "data:image/png;base64," + base;
+    var iteration = base;
 
-    setInterval(function(){
-
-      if (int == 6){
-        int = 0
-      }
-      $( "div" ).remove( "#mouth" );
-      var mouth = document.createElement("div")
-      mouth.textContent = (expressions[int])
-      mouth.id = "mouth"
-      int++;
-      console.log(mouth.textContent)
-      document.body.appendChild(mouth)
-    }, 1000);
-
-
-    $(".scroll-left").animate({bottom: -$(window).height() - 300}, {duration: 10000});
+    iteration = header + width + height + packed_byte + background_color_index + pixel_aspect_ratio + global_color_table + graphics_control_ext + image_descriptor + and_the_rest
+    iteration = hexToBase64(iteration)
+    longshot.src = "data:image/png;base64," + iteration
+    //$(".scroll-left").animate({bottom: -$(window).height() - 300}, {duration: 10000});
   </script>
 </html>
