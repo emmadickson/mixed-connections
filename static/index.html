@@ -106,8 +106,9 @@
            var postFontSize = Math.floor((Math.random() * 50) + 14);
            var postHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
 
-           element.style = ' { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
-           console.log(element)
+           style = ' { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
+           element.style = style;
+           console.log(style)
            document.body.appendChild(element)
 
 
