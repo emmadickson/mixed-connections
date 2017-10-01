@@ -88,8 +88,7 @@
          styles += 'body { background-color: ' + backgroundColor + '}';
 
          for (var k = 0; k <= sentences.length; k++){
-           var element = document.createElement('span');
-           element.id = "missed-connection"
+           var element = document.getElementById(k);
            var postFontVariant = ['small-caps', 'normal']
            var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
            if (selectPostFontVariant % 2 == 0){
@@ -237,8 +236,11 @@
            postBody = threads.join(" ");
 
            // 11. Take the post body and display it in the p id="missed-connection"
-           var domMissedConnection = document.getElementById('missed-connection');
-           domMissedConnection.textContent = postBody;
+           for (var l = 0; l <= phrases.length; l++){
+             var domMissedConnection = document.createElement('span');
+             domMissedConnection.textContent = phrases[l];
+           }
+
          })
        }
       mixConnections()
