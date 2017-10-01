@@ -236,6 +236,7 @@
            // 11. Take the post body and display it in the p id="missed-connection"
            for (var l = 0; l <= threads.length; l++){
              var domMissedConnection = document.createElement('span');
+             domMissedConnection.id = l;
              domMissedConnection.textContent = phrases[l];
              document.body.appendChild(domMissedConnection)
 
