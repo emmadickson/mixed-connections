@@ -11,6 +11,7 @@
     <header> CL< <a href="/bots" id="locationText">pittsburgh</a> < missed connections</header>
     <br>
     <h1 id="title"> </h1>
+    <p id="missed-connection"> </p>
     <div id="button"><button type="button" onclick="mixConnections()">Next</button></div>
   </body>
 
@@ -48,9 +49,8 @@
 
        // 2. Set up event listeners to change css and scramble title
        function mixup(evt) {
-         var post = document.getElementsByTagName('span')
+         var post = document.getElementById("missed-connection").textContent;
          sentences = [];
-         
          var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
          // 8. For now I'm breaking it up based on punctuation so if someone uses
          // no puntuation I ignore the whole post.
