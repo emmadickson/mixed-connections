@@ -106,13 +106,9 @@
            var postFontSize = Math.floor((Math.random() * 50) + 14);
            var postHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
 
-           element.id = k;
-
            styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
-           console.log(element)
-           console.log(styles)
-           document.body.appendChild(element)
 
+           document.body.appendChild(element)
            if (css.styleSheet) css.styleSheet.cssText = styles;
            else css.appendChild(document.createTextNode(styles));
            document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
