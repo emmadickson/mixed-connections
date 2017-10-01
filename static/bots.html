@@ -7,6 +7,13 @@
         background: black;
         overflow: hidden;
       }
+      #mouth{
+        font-family: 'VT323', monospace;
+        font-size: 250px;
+        color: white;
+        text-align: center;
+        width:100%;
+      }
       .scroll-left {
         margin-left: auto;
         margin-right: auto;
@@ -20,7 +27,6 @@
         font-size: 76px;
         color:#00FF00;
       }
-
     </style>
   </head>
 
@@ -38,69 +44,31 @@
           return String.fromCharCode(parseInt(a, 16));
       }).join(""));
     }
-
-    function hex2bin(hex){
-      return ("00000000" + (parseInt(hex, 16)).toString(2)).substr(-8);
-    }
-
-    var body_of_evidence = mouthmouth.split(" ");
-
-    header = {
-      signature: body_of_evidence.slice(0,3),
-      version: body_of_evidence.slice(3,6)
-    }
-
-    logical_screen_descriptor = {
-      width: body_of_evidence.slice(6,8),
-      height: body_of_evidence.slice(8,10),
-      packed_byte: {full_byte: body_of_evidence.slice(10,11)},
-      background_color_index: body_of_evidence.slice(11,12),
-      pixel_aspect_ratio: body_of_evidence.slice(12,13),
-    }
-
-    logical_screen_descriptor.packed_byte.global_color_table_flag = logical_screen_descriptor.packed_byte.full_byte.slice(0,1),
-    logical_screen_descriptor.packed_byte.color_resolution = logical_screen_descriptor.packed_byte.full_byte.slice(1,4),
-    logical_screen_descriptor.packed_byte.sort_flag = logical_screen_descriptor.packed_byte.full_byte.slice(4,5),
-    logical_screen_descriptor.packed_byte.size_of_global_color_table = logical_screen_descriptor.packed_byte.full_byte.slice(5,8)
-
-    /* The size of the global color table is determined by the value in the
-    packed byte of the logical screen descriptor. As we mentioned before, if
-    the value from that byte is N, then the actual number of colors stored is
-    2^(N+1). This means that the global color table will take up 3*2^(N+1)
-    bytes in the stream.*/
-
-    size_of_global_color_table_decimal = parseInt(logical_screen_descriptor.packed_byte.size_of_global_color_table, 2);
-    size_of_global_color_table_bytes = (3*2**(size_of_global_color_table_decimal + 1))
-    console.log(size_of_global_color_table_decimal)
-    global_color_table = body_of_evidence.slice(38, size_of_global_color_table_bytes)
-
-    graphics_control_ext = {
-      full_byte: body_of_evidence.slice(size_of_global_color_table_bytes, size_of_global_color_table_bytes+8)
-    }
-
-    //image_descriptor = mouthmouth.slice(98, 112)
-    and_the_rest = mouthmouth.slice(size_of_global_color_table_bytes, mouthmouth.length)
+    header = mouthmouth.slice(0, 18)
+    width = mouthmouth.slice(18, 24)
+    height = mouthmouth.slice(24, 30)
+    packed_byte = mouthmouth.slice(30,32)
+    background_color_index = mouthmouth.slice(32,35)
+    pixel_aspect_ratio = mouthmouth.slice(35,38)
+    global_color_table = mouthmouth.slice(38,74)
+    graphics_control_ext = /*mouthmouth.slice(74,98)*/ '21 F9 04 00 00 00 00 00'
+    image_descriptor = mouthmouth.slice(98, 112)
+    and_the_rest = mouthmouth.slice(112, mouthmouth.length)
     base = hexToBase64(mouthmouth);
-
-    console.log("header.signature: " + header.signature)
-    console.log("header.version: " + header.version)
-
-    console.log("logical_screen_descriptor.width: " + logical_screen_descriptor.width)
-    console.log("logical_screen_descriptor.height: " + logical_screen_descriptor.height)
-    console.log("logical_screen_descriptor.packed byte: " + logical_screen_descriptor.packed_byte)
-    console.log("logical_screen_descriptor.background index: " + logical_screen_descriptor.background_color_index)
-    console.log("logical_screen_descriptor. pixel aspect ratio: " + logical_screen_descriptor.pixel_aspect_ratio)
-
-    console.log("packed")
-
+    console.log("header : " + header)
+    console.log("logical screen descriptor")
+    console.log("width: " + width)
+    console.log("height: " + height)
+    console.log("packed byte: " + packed_byte)
+    console.log("background index: " + background_color_index)
+    console.log("pixel aspect ratio: " + pixel_aspect_ratio)
     console.log("global color table: " + global_color_table)
-    console.log("graphics control extension: " + graphics_control_ext.full_byte)
+    console.log("graphics control ext: " + graphics_control_ext)
+    console.log("image descriptor: " + image_descriptor)
     console.log("and the rest: " + and_the_rest)
-
     longshot.src = "data:image/png;base64," + base;
     var iteration = base;
-
-    iteration = header + width + height + packed_byte + background_color_index + pixel_aspect_ratio + global_color_table + and_the_rest
+    iteration = header + width + height + packed_byte + background_color_index + pixel_aspect_ratio + global_color_table + graphics_control_ext + image_descriptor + and_the_rest
     iteration = hexToBase64(iteration)
     longshot.src = "data:image/png;base64," + iteration
     //$(".scroll-left").animate({bottom: -$(window).height() - 300}, {duration: 10000});
