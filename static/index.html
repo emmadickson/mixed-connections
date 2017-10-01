@@ -88,7 +88,8 @@
          styles += 'body { background-color: ' + backgroundColor + '}';
 
          for (var k = 0; k <= sentences.length; k++){
-           var element = document.getElementById(k);
+           var element = document.createElement('span');
+           element.id = "missed-connection"
            var postFontVariant = ['small-caps', 'normal']
            var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
            if (selectPostFontVariant % 2 == 0){
@@ -107,7 +108,7 @@
 
            element.id = k;
 
-           styles += ' #' + k + ' { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '} ';
+           styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
            console.log(element)
            console.log(styles)
            document.body.appendChild(element)
