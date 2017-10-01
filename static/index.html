@@ -108,10 +108,10 @@
 
            element.id = k;
 
-           styles += '#' + k + ' { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
-
+           styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
+           console.log(element)
+           console.log(styles)
            document.body.appendChild(element)
-
 
            if (css.styleSheet) css.styleSheet.cssText = styles;
            else css.appendChild(document.createTextNode(styles));
