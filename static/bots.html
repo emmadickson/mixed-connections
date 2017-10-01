@@ -44,6 +44,8 @@
           return String.fromCharCode(parseInt(a, 16));
       }).join(""));
     }
+
+
     header = mouthmouth.slice(0, 18)
     width = mouthmouth.slice(18, 24)
     height = mouthmouth.slice(24, 30)
@@ -55,6 +57,7 @@
     image_descriptor = mouthmouth.slice(98, 112)
     and_the_rest = mouthmouth.slice(112, mouthmouth.length)
     base = hexToBase64(mouthmouth);
+
     console.log("header : " + header)
     console.log("logical screen descriptor")
     console.log("width: " + width)
