@@ -89,7 +89,6 @@
 
          for (var k = 0; k <= sentences.length; k++){
            var element = document.getElementById(k);
-           console.log(element)
            var postFontVariant = ['small-caps', 'normal']
            var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
            if (selectPostFontVariant % 2 == 0){
@@ -105,6 +104,8 @@
            var selectPostFontStyle = Math.floor((Math.random() * 2) + 0);
            var postFontSize = Math.floor((Math.random() * 50) + 14);
            var postHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+
+           element.id = k;
 
            styles += ' #' + k + ' { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '} ';
            console.log(element)
@@ -223,6 +224,7 @@
            // 10. Go through phrases and select a random number
            threads = [];
 
+           var postBody = " ";
            var postLength = Math.floor((Math.random() * 5) + 2);
            while (threads.length < postLength){
              random = getRandomIntInclusive(0,phrases.length-1);
@@ -231,15 +233,11 @@
                threads.push(selection);
              }
            }
+           postBody = threads.join(" ");
 
            // 11. Take the post body and display it in the p id="missed-connection"
-           for (var l = 0; l <= threads.length; l++){
-             var domMissedConnection = document.createElement('span');
-             domMissedConnection.id = l;
-             domMissedConnection.textContent = phrases[l];
-             document.body.appendChild(domMissedConnection)
-           }
-
+           var domMissedConnection = document.getElementById('missed-connection');
+           domMissedConnection.textContent = postBody;
          })
        }
       mixConnections()
