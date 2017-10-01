@@ -27,12 +27,13 @@ def webscrape():
     # 1. Specify the local url
     homeBases = ["https://newyork.craigslist.org",
     "https://raleigh.craigslist.org",
-    "https://pittsburgh.craigslist.org",
-    "https://berlin.craigslist.de"]
+    "https://pittsburgh.craigslist.org"]
+
+    links = []
 
     totalPostNumber = 10
     for x in range (0, totalPostNumber):
-        randomUrl = random.randint(0,3)
+        randomUrl = random.randint(0,2)
         startURL = homeBases[randomUrl] + "/search/mis"
 
         #socks.setdefaultproxy(proxy_type=socks.PROXY_TYPE_SOCKS5, addr="127.0.0.1", port=9050)
@@ -42,19 +43,16 @@ def webscrape():
         response = requests.get(startURL).text
 
         soup = bs4.BeautifulSoup(response, "html.parser")
-        links = soup.select('p.result-info a[href^=/]')
-        links = [a.attrs.get('href') for a in soup.select('p.result-info a[href^=/]')]
-        shuffle(links)
+        for link in soup.findAll('a', href=True, text=''):
+                if ('html' in link['href']):
+                    links.append( link['href'] )
 
-        # 3. Go through the links and add the base url to create final links
-        finalLinks = []
-        finalLink = homeBases[randomUrl] + links[0]
-        finalLinks.append(finalLink)
+        shuffle(links)
 
         # 4. Read in the db info and store hashes of titles also remove last line
         # of js wrapping
         hashes = []
-        with open('public/docs/db.txt', 'r') as f:
+        with open('static/db.txt', 'r') as f:
             lines = f.read()
         f.close()
 
@@ -70,44 +68,40 @@ def webscrape():
                 hashes.append(h)
 
         # 5. Scrape the titles and postbody and add to db file
-        open('public/docs/db.txt', 'w').close()
+        open('static/db.txt', 'w').close()
 
-        text_file = open('public/docs/db.txt', 'w')
+        text_file = open('static/db.txt', 'w')
+        finalLink = links[0]
 
-        for finalLink in finalLinks:
-            #socks.setdefaultproxy(proxy_type=socks.PROXY_TYPE_SOCKS5, addr="127.0.0.1", port=9050)
-            #socket.socket = socks.socksocket
-            response = requests.get(finalLink)
-            pageContent = bs4.BeautifulSoup(response.text, "html.parser")
-            body = pageContent.select('section#postingbody')[0].get_text()
-            body = body.split("QR Code Link to This Post")[1]
-            body = re.sub('\n', '', body)
-            body = (body).replace('"', "'")
-            body = body.rstrip()
-            body = body.encode('utf-8')
+        response = requests.get(finalLink)
+        pageContent = bs4.BeautifulSoup(response.text, "html.parser")
+        body = pageContent.select('section#postingbody')[0].get_text()
+        body = body.split("QR Code Link to This Post")[1]
+        body = re.sub('\n', '', body)
+        body = (body).replace('"', "'")
+        body = body.rstrip()
+        body = body.encode('utf-8')
 
-            # 6. Hash title and check to see if we've already stored it.
-            # If not construct db entry and add it to file
-            hash_object = hashlib.md5(body)
-            bodyHash = hash_object.hexdigest()
+        # 6. Hash title and check to see if we've already stored it.
+        # If not construct db entry and add it to file
+        hash_object = hashlib.md5(body)
+        bodyHash = hash_object.hexdigest()
 
-            if (bodyHash not in hashes):
-                print("Add!")
-
-
-                title = pageContent.select('title')[0].get_text()
-                title = re.sub('\n', '', title)
-                title = (title).replace('"', "'")
-                title = title.encode('utf-8')
-                today = datetime.date.today()
-                location = homeBases[randomUrl]
-                if ".org" in location:
-                    location = homeBases[randomUrl][8:-15]
-                else:
-                    location = homeBases[randomUrl][8:-14]
-                print location
-                dbEntry = title + " *** " + body + " *** " + bodyHash + "*** Location: " + location + " *** Time: " + str(today)
-                lines.append(dbEntry)
+        if (bodyHash not in hashes):
+            print("Add!")
+            title = pageContent.select('title')[0].get_text()
+            title = re.sub('\n', '', title)
+            title = (title).replace('"', "'")
+            title = title.encode('utf-8')
+            today = datetime.date.today()
+            location = homeBases[randomUrl]
+            if ".org" in location:
+                location = homeBases[randomUrl][8:-15]
+            else:
+                location = homeBases[randomUrl][8:-14]
+            print location
+            dbEntry = title + " *** " + body + " *** " + bodyHash + "*** Location: " + location + " *** Time: " + str(today)
+            lines.append(dbEntry)
 
         text_file.write("var entries = [")
         for line in lines:
