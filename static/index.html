@@ -224,7 +224,6 @@
            // 10. Go through phrases and select a random number
            threads = [];
 
-           var postBody = " ";
            var postLength = Math.floor((Math.random() * 5) + 2);
            while (threads.length < postLength){
              random = getRandomIntInclusive(0,phrases.length-1);
@@ -233,10 +232,9 @@
                threads.push(selection);
              }
            }
-           postBody = threads.join(" ");
 
            // 11. Take the post body and display it in the p id="missed-connection"
-           for (var l = 0; l <= phrases.length; l++){
+           for (var l = 0; l <= threads.length; l++){
              var domMissedConnection = document.createElement('span');
              domMissedConnection.textContent = phrases[l];
              document.body.appendChild(domMissedConnection)
