@@ -112,7 +112,7 @@ def webscrape():
         text_file.write("];")
         text_file.close()
 
-    return "Bling bling bitch do my own thing bitch"
+    return app.send_static_file('bots.html')
 
 if __name__ == '__main__':
     app.run()
