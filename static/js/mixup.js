@@ -93,14 +93,6 @@ function scramble(originalText, domElement){
   domElement.textContent = master
 }
 
-function makeid() {
-  var text = "";
-  var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < 6; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
-}
-
 
 // 2. Set up event listeners to change css and scramble title
 function mixup(evt) {
@@ -133,12 +125,13 @@ function mixup(evt) {
   var titleFontStyle = ["normal", "italic", "oblique"]
   var selectTitleFontStyle = Math.floor((Math.random() * 2) + 0);
   var titleFontSize = Math.floor((Math.random() * 20) + 8);
-  var titleHexColor = makeid();
+  var titleHexColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
   var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: #' + titleHexColor + '}';
 
 
-  var backgroundColor =  makeid();
+  var backgroundColor =  '#'+Math.floor(Math.random()*16777215).toString(16);
+;
 
   styles += 'body { background-color: #' + backgroundColor + '}';
 
@@ -159,7 +152,7 @@ function mixup(evt) {
     var postFontStyle = ["normal", "italic", "oblique"]
     var selectPostFontStyle = Math.floor((Math.random() * 2) + 0);
     var postFontSize = Math.floor((Math.random() * 50) + 14);
-    var postHexColor = '#' + makeid();
+    var postHexColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
     styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
 
