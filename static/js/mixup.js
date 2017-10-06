@@ -158,7 +158,6 @@ function mixup(evt) {
 
     styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
 
-    document.body.appendChild(element)
 
     if (css.styleSheet) {
       css.styleSheet.cssText = styles;
