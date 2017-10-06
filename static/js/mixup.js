@@ -109,7 +109,7 @@ function mixup(evt) {
   shuffle(sentences)
 
   if(document.getElementsByTagName('style')[0]){
-    css = (document.getElementsByTagName('style')[0]
+    css = document.getElementsByTagName('style')[0]
     css.textContent = "";
   }
   else{
