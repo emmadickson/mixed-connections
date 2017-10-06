@@ -29,6 +29,7 @@ function gif_components(mouthmouth){
     //global color table
     global_color_table_length = Math.round(3*(2 ** (logical_screen_descriptor.packed_field.size_of_global_color_table + 1)))
     global_color_table = mouthmouth_bytes.slice(0, global_color_table_length)
+    colors = []
     mouthmouth_bytes = mouthmouth_bytes.slice(global_color_table_length,mouthmouth_bytes.length)
   }
 
@@ -150,7 +151,7 @@ function gif_components(mouthmouth){
     graphics_control_ext:graphics_control_ext,
     image_descriptor:image_descriptor,
     image_data:image_data,
-    trailer:trailer
+    trailer:trailer,
   }
 
   return total_package
