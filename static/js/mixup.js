@@ -127,13 +127,13 @@ function mixup(evt) {
   var titleFontSize = Math.floor((Math.random() * 20) + 8);
   var titleHexColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
-  var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: #' + titleHexColor + '}';
+  var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: ' + titleHexColor + '}';
 
 
   var backgroundColor =  '#'+Math.floor(Math.random()*16777215).toString(16);
 ;
 
-  styles += 'body { background-color: #' + backgroundColor + '}';
+  styles += 'body { background-color: ' + backgroundColor + '}';
 
   for (var k = 0; k <= sentences.length; k++){
     var element = document.createElement('span');
