@@ -95,7 +95,7 @@ function scramble(originalText, domElement){
 
 function makeid() {
   var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
   for (var i = 0; i < 6; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
@@ -118,7 +118,7 @@ function mixup(evt) {
 
   var css = document.getElementsByTagName('style')[0]
   var css = document.createElement("style");
-
+  css.textContent = "";
   var titleFontVariant = ['small-caps', 'normal']
   var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
   if (selectTitleFontVariant % 2 == 0){
