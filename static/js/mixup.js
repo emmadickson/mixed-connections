@@ -157,8 +157,13 @@ function mixup(evt) {
     styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
 
     document.body.appendChild(element)
+
     if (css.styleSheet) css.styleSheet.cssText = styles;
-    else css.appendChild(document.createTextNode(styles));
+    else
+      for (var i = 0; i < css.childNodes.length; i++){
+        css.removeChild(childNodes[i])
+      }
+    css.appendChild(document.createTextNode(styles));
     document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
     document.getElementsByTagName("head")[0].appendChild(css);
   }
