@@ -108,8 +108,12 @@ function mixup(evt) {
   }
   shuffle(sentences)
 
-  var css = document.getElementsByTagName('style')[0]
-
+  if(document.getElementsByTagName('style')[0]){
+    css = document.getElementsByTagName('style')[0]
+  }
+  else{
+    var css = document.createElement("style");
+  }
   css.textContent = "";
   var titleFontVariant = ['small-caps', 'normal']
   var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
