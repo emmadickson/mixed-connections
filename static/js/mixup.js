@@ -138,7 +138,7 @@ function mixup(evt) {
   var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: ' + titleHexColor + '}';
 
 
-  var backgroundColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+  var backgroundColor = '#' + makeid();
 
   styles += 'body { background-color: ' + backgroundColor + '}';
 
