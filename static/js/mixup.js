@@ -135,12 +135,12 @@ function mixup(evt) {
   var titleFontSize = Math.floor((Math.random() * 20) + 8);
   var titleHexColor = makeid();
 
-  var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: ' + titleHexColor + '}';
+  var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: #' + titleHexColor + '}';
 
 
   var backgroundColor =  makeid();
 
-  styles += 'body { background-color: ' + backgroundColor + '}';
+  styles += 'body { background-color: #' + backgroundColor + '}';
 
   for (var k = 0; k <= sentences.length; k++){
     var element = document.createElement('span');
@@ -159,7 +159,7 @@ function mixup(evt) {
     var postFontStyle = ["normal", "italic", "oblique"]
     var selectPostFontStyle = Math.floor((Math.random() * 2) + 0);
     var postFontSize = Math.floor((Math.random() * 50) + 14);
-    var postHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+    var postHexColor = '#' + makeid();
 
     styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
 
