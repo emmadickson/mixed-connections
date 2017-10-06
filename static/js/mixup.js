@@ -176,6 +176,5 @@ function mixup(evt) {
     }
 
 
-    document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
-    document.getElementsByTagName("head")[0].appendChild(css);
+    document.getElementsByTagName("head").appendChild(css);
   }
