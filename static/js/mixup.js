@@ -162,8 +162,8 @@ function mixup(evt) {
       for (var i = 0; i < css.childNodes.length; i++){
         css.removeChild(childNodes[i])
       }
-      css.styleSheet.cssText = styles;
-      console.log()
+      css.styleSheet = styles;
+      console.log(css.styleSheet)
       css.appendChild(document.createTextNode(styles));
     }
 
