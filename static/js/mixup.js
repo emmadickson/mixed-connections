@@ -107,11 +107,11 @@ function mixup(evt) {
     }
   }
   shuffle(sentences)
-  if (document.getElementsByTagName('style')){
-    for(var j = 0; j < document.getElementsByTagName('style').childNodes.length; j++){
-      document.getElementsByTagName('style').removeChild(childNodes[j])
-    }
-  }
+  Array.prototype.slice.call(document.getElementsByTagName('style')).forEach(
+  function(item) {
+    item.remove();
+    // or item.parentNode.removeChild(item); for older browsers (Edge-)
+  });
 
   var css = document.createElement("style");
 
