@@ -110,7 +110,6 @@ function mixup(evt) {
 
   var css = document.getElementsByTagName('style')[0]
   var css = document.createElement("style");
-  css.textContent = "";
   var titleFontVariant = ['small-caps', 'normal']
   var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
   if (selectTitleFontVariant % 2 == 0){
