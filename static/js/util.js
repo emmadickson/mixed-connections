@@ -12,3 +12,11 @@ function bin_to_dec(bstr) {
   return parseInt((bstr + '')
   .replace(/[^01]/gi, ''), 2);
 }
+
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  for (var i = 0; i < 2; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
