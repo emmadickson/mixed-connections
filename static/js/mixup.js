@@ -109,12 +109,14 @@ function mixup(evt) {
   shuffle(sentences)
 
   if(document.getElementsByTagName('style')[0]){
-    css = document.getElementsByTagName('style')[0]
+    css = (document.getElementsByTagName('style')[0]
+    css.textContent = "";
   }
   else{
     var css = document.createElement("style");
+
   }
-  css.textContent = "";
+
   var titleFontVariant = ['small-caps', 'normal']
   var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
   if (selectTitleFontVariant % 2 == 0){
@@ -135,11 +137,12 @@ function mixup(evt) {
 
 
   var backgroundColor =  '#'+Math.floor(Math.random()*16777215).toString(16);
-;
+
 
   styles += 'body { background-color: ' + backgroundColor + '}';
 
 
+    element = document.getElementById('missed-connection')
     var postFontVariant = ['small-caps', 'normal']
     var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
     if (selectPostFontVariant % 2 == 0){
@@ -158,6 +161,7 @@ function mixup(evt) {
 
     styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
 
+    document.body.appendChild(element)
 
     if (css.styleSheet) {
       css.styleSheet.cssText = styles;
