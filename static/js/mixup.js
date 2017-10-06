@@ -107,9 +107,9 @@ function mixup(evt) {
     }
   }
   shuffle(sentences)
-
-  var css = document.getElementsByTagName('style')[0]
   var css = document.createElement("style");
+
+  console.log(css)
   var titleFontVariant = ['small-caps', 'normal']
   var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
   if (selectTitleFontVariant % 2 == 0){
@@ -161,6 +161,7 @@ function mixup(evt) {
     else
       for (var i = 0; i < css.childNodes.length; i++){
         css.removeChild(childNodes[i])
+        css.styleSheet.cssText = styles;
         css.appendChild(document.createTextNode(styles));
       }
 
