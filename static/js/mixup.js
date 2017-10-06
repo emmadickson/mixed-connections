@@ -107,6 +107,12 @@ function mixup(evt) {
     }
   }
   shuffle(sentences)
+  if (document.getElementsByTagName('style')){
+    for(var j = 0; j < document.getElementsByTagName('style').childNodes.length; j++){
+      document.getElementsByTagName('style').removeChild(childNodes[j])
+    }
+  }
+
   var css = document.createElement("style");
 
   console.log(css)
