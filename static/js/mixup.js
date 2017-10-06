@@ -175,6 +175,6 @@ function mixup(evt) {
       css.appendChild(document.createTextNode(styles));
     }
 
-
+    console.log(css)
     document.getElementsByTagName("head").appendChild(css);
   }
