@@ -12,19 +12,15 @@ app = Flask(__name__, static_url_path='')
 
 @app.route('/')
 def render_static():
-    return app.send_static_file('index.html')
+    return app.send_static_file('html/index.html')
 
 @app.route('/db')
 def render_statics():
-    return app.send_static_file('db.html')
+    return app.send_static_file('html/db.html')
 
 @app.route('/raw')
 def render_staticd():
     return app.send_static_file('db.txt')
-
-@app.route('/glitch')
-def render_staticy():
-    return app.send_static_file('images/test.txt')
 
 @app.route("/bots")
 def webscrape():
