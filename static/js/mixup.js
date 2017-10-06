@@ -93,6 +93,15 @@ function scramble(originalText, domElement){
   domElement.textContent = master
 }
 
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  for (var i = 0; i < 2; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
+
+
 // 2. Set up event listeners to change css and scramble title
 function mixup(evt) {
   var post = document.getElementById("missed-connection").textContent;
@@ -124,7 +133,7 @@ function mixup(evt) {
   var titleFontStyle = ["normal", "italic", "oblique"]
   var selectTitleFontStyle = Math.floor((Math.random() * 2) + 0);
   var titleFontSize = Math.floor((Math.random() * 20) + 8);
-  var titleHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+  var titleHexColor = makeid();
 
   var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: ' + titleHexColor + '}';
 
