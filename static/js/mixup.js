@@ -135,9 +135,7 @@ function mixup(evt) {
 
   styles += 'body { background-color: ' + backgroundColor + '}';
 
-  for (var k = 0; k <= sentences.length; k++){
-    var element = document.createElement('span');
-    element.id = "missed-connection"
+
     var postFontVariant = ['small-caps', 'normal']
     var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
     if (selectPostFontVariant % 2 == 0){
@@ -170,4 +168,3 @@ function mixup(evt) {
     document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
     document.getElementsByTagName("head")[0].appendChild(css);
   }
-}
