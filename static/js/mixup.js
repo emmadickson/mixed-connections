@@ -158,12 +158,15 @@ function mixup(evt) {
 
     document.body.appendChild(element)
 
-    if (css.styleSheet) css.styleSheet.cssText = styles;
+    if (css.styleSheet) {
+      css.styleSheet.cssText = styles;
+    }
     else
       for (var i = 0; i < css.childNodes.length; i++){
         css.removeChild(childNodes[i])
+        css.appendChild(document.createTextNode(styles));
       }
-    css.appendChild(document.createTextNode(styles));
+
     document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
     document.getElementsByTagName("head")[0].appendChild(css);
   }
