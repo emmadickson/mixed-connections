@@ -8,7 +8,7 @@ import re
 import datetime
 from random import shuffle
 import random
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 @app.route('/')
 def render_static():
@@ -117,6 +117,7 @@ def webscrape():
         text_file.close()
 
     return app.send_static_file('bots.html')
+
 
 if __name__ == '__main__':
     app.run()
