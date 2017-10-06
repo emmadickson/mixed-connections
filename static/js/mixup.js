@@ -1,5 +1,9 @@
 function mixConnections(){
-
+  Array.prototype.slice.call(document.getElementsByTagName('style')).forEach(
+  function(item) {
+    item.remove();
+    // or item.parentNode.removeChild(item); for older browsers (Edge-)
+  });
   jQuery.get('/raw', function(data) {
 
    var entries = JSON.stringify(data)
@@ -115,7 +119,6 @@ function mixup(evt) {
 
   var css = document.createElement("style");
 
-  console.log(css)
   var titleFontVariant = ['small-caps', 'normal']
   var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
   if (selectTitleFontVariant % 2 == 0){
@@ -169,7 +172,6 @@ function mixup(evt) {
         css.removeChild(childNodes[i])
       }
       css.styleSheet = styles;
-      console.log(css.styleSheet)
       css.appendChild(document.createTextNode(styles));
     }
 
