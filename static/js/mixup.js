@@ -31,10 +31,8 @@ function scramble(originalText, domElement){
 
 
 // 2. Set up event listeners to change css and scramble title
-function mixup(evt) {
-  console.log('click')
+function mixup(evt, count) {
   var post = document.getElementById("missed-connection");
-  console.log("original text " + post.textContent)
   sentences = [];
   var phrase = post.textContent.match( /[^\.!\?]+[\.!\?]+/g );
   // 8. For now I'm breaking it up based on punctuation so if someone uses
@@ -45,9 +43,9 @@ function mixup(evt) {
     }
   }
   shuffle(sentences)
-  console.log(sentences)
   post.textContent = sentences.join(' ')
-  console.log('post conent ' + post.textContent)
+  count = count + 1;
+  return count
 }
 
 function mixConnections(){
