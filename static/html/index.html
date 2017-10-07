@@ -23,7 +23,6 @@
        var titleDOM = document.getElementById("title");
        titleDOM.addEventListener("click", mixup, false);
        var titleScramble = document.getElementById("title");
-
        $("#title").hover(
          function(){
            var originalText = titleScramble.textContent;
@@ -33,11 +32,9 @@
          function(){
            clearInterval(interval)
          });
-
          var locationScramble = document.getElementById("locationText");
          var ogText = locationText.textContent;
          interval = setInterval(function(){scramble(ogText, locationScramble)}, 150);
-
          var text = locationText.textContent;
          interval = setInterval(function(){
            var newLocation = Math.floor((Math.random() * 2) + 0);
