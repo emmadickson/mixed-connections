@@ -109,7 +109,6 @@ function mixup(evt) {
   shuffle(sentences)
   var css = document.createElement("style");
 
-  console.log(css)
   var titleFontVariant = ['small-caps', 'normal']
   var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
   if (selectTitleFontVariant % 2 == 0){
@@ -168,3 +167,25 @@ function mixup(evt) {
     document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
     document.getElementsByTagName("head")[0].appendChild(css);
   }
+
+function scramble(originalText, domElement){
+  var master = originalText;
+  alphabet = [
+  "\u2020", "\u2021", "\u2022", "\u2023", "\u2024", "\u2025", "\u2026",
+  "\u2027", "\u2028", "\u2029", "\u2031", "\u2039", "\u203A", "\u203B"
+  , "\u203C", "\u203D", "\u203F", "\u2040", "\u2041", "\u2042", "\u2045"
+  , "\u2046", "\u2047", "\u2048", "\u204A", "\u204B", "\u2058", "\u2059"];
+  for (var j = 0; j < 3; j++){
+    var letterSelection = Math.floor((Math.random() * master.length) + 0);
+    var letter = master.indexOf(j);
+    var randomAlphabet = Math.floor((Math.random() * 25) + 0);
+    var replacementLetter = alphabet[randomAlphabet]
+    firstChunk = master.slice(0,letterSelection-1);
+    secondChunk = master.slice(letterSelection, master.length)
+    lengthCheck = firstChunk + replacementLetter + secondChunk
+    if (lengthCheck.length == master.length){
+        master = lengthCheck;
+    }
+  }
+  domElement.textContent = master
+}
