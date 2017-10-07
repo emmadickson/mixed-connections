@@ -2,13 +2,14 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link id = "css" rel="stylesheet" href="../css/missed.css">
 
   </head>
 
   <body>
-    <header> CL< <a href="/bots" id="locationText">pittsburgh</a> < missed connections</header>
+    <header> <img src="../images/phi.png" > < <a href="/bots" id="locationText">pittsburgh</a> < missed connections</header>
     <br>
     <h1 id="title"> </h1>
     <p id="missed-connection"> </p>
@@ -42,7 +43,7 @@
            var newLocation = Math.floor((Math.random() * 2) + 0);
            locationText.textContent = homeBases[newLocation]
          }, 250);
-         
+
       mixConnections()
   </script>
 
