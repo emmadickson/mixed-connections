@@ -173,7 +173,7 @@ function mixup(evt) {
         css.styleSheet.cssText = styles;
         css.appendChild(document.createTextNode(styles));
       }
-        css = document.createElement(style)
+        css = document.createElement('style')
         css.styleSheet = style
     }
 
@@ -237,7 +237,7 @@ function mixConnections(){
 
   // 6. Shuffle posts
   shuffle(posts)
-
+  console.log(posts)
   // 7. Break the posts up into sentences
   phrases = [];
   for (var k = 0; k < posts.length; k++){
