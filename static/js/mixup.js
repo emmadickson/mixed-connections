@@ -36,7 +36,7 @@ function mixup(evt) {
   var post = document.getElementById("missed-connection");
   console.log("original text " + post.textContent)
   sentences = [];
-  var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
+  var phrase = post.textContent.match( /[^\.!\?]+[\.!\?]+/g );
   // 8. For now I'm breaking it up based on punctuation so if someone uses
   // no puntuation I ignore the whole post.
   if (phrase != null){
