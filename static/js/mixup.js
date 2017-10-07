@@ -105,7 +105,6 @@ function scramble(originalText, domElement){
 function mixup(evt) {
   console.log("Haaaaaaaalp meeee")
   var post = document.getElementById("missed-connection").textContent;
-  console.log(post)
   sentences = [];
   var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
   // 8. For now I'm breaking it up based on punctuation so if someone uses
@@ -116,7 +115,7 @@ function mixup(evt) {
     }
   }
   shuffle(sentences)
-
+  console.log(sentences)
   var css = document.createElement("style");
 
   var titleFontVariant = ['small-caps', 'normal']
@@ -174,7 +173,7 @@ function mixup(evt) {
         css.appendChild(document.createTextNode(styles));
       }
         css = document.createElement('style')
-        css.styleSheet = style
+        css.styleSheet = styles
     }
 
     console.log(css)
