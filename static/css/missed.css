@@ -22,22 +22,15 @@ header{
 h1{
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom: 25px;
   font-family: "Bitstream Vera Serif","Times New Roman",serif;
   font-size: 28px;
   font-weight: bold;
   text-align: left;
-  position: absolute;
+  position: relative;
   overflow: hidden;
 }
 
-p{
-  vertical-align: top;
-  font-size: 18px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 150px;
-
-}
 img{
   padding-left: 10px;
   width:13px;
@@ -45,7 +38,34 @@ img{
 }
 
 #hidden{
-  z-index: -100;
   color: rgb(255,255,255);
-  font-size: 100px;
+  font-size: 50px;
+}
+
+#text{
+  position: relative;
+}
+#hidden {
+    position:absolute;
+    left:0;
+    top:0;
+    height:300px;
+    width:1000px;
+    color: rgb(255,255,255);
+    font-size: 100px;
+    z-index:1;
+}
+#missed-connection {
+    position:absolute;
+    left:0;
+    top:0;
+    height:300px;
+    width:1000px;
+    z-index:2;
+}
+
+#container {
+    position : relative;
+    height:500px;
+    width:1000px;
 }
