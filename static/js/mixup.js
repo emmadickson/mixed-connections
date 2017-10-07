@@ -98,6 +98,7 @@ function scramble(originalText, domElement){
 function mixup(evt) {
   console.log("Haaaaaaaalp meeee")
   var post = document.getElementById("missed-connection").textContent;
+  console.log(post)
   sentences = [];
   var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
   // 8. For now I'm breaking it up based on punctuation so if someone uses
@@ -108,6 +109,7 @@ function mixup(evt) {
     }
   }
   shuffle(sentences)
+
   var css = document.createElement("style");
 
   var titleFontVariant = ['small-caps', 'normal']
@@ -135,7 +137,7 @@ function mixup(evt) {
   styles += 'body { background-color: ' + backgroundColor + '}';
 
 
-    element = document.getElementById('missed-connection')
+    element = post
     var postFontVariant = ['small-caps', 'normal']
     var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
     if (selectPostFontVariant % 2 == 0){
@@ -153,7 +155,7 @@ function mixup(evt) {
     var postHexColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
     styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
-
+    console.log(styles)
 
     if (css.styleSheet) {
       css.styleSheet.cssText = styles;
