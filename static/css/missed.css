@@ -37,14 +37,6 @@ img{
   height:13px;
 }
 
-#hidden{
-  color: rgb(255,255,255);
-  font-size: 50px;
-}
-
-#text{
-  position: relative;
-}
 #hidden {
     position:absolute;
     left:0;
@@ -53,10 +45,12 @@ img{
     width:1000px;
     color: rgb(255,255,255);
     font-size: 100px;
+    padding-left: 25px;
     z-index:1;
 }
 #missed-connection {
     position:absolute;
+    padding-left: 25px;
     left:0;
     top:0;
     height:300px;
