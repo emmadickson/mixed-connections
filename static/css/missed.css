@@ -43,3 +43,9 @@ img{
   width:13px;
   height:13px;
 }
+
+#hidden{
+  z-index: -100;
+  color: rgb(255,255,255);
+  font-size: 100px;
+}
