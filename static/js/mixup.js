@@ -1,3 +1,10 @@
+function shuffle(a) {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+}
+
 function mixConnections(){
 
   jQuery.get('/raw', function(data) {
@@ -160,13 +167,18 @@ function mixup(evt) {
     if (css.styleSheet) {
       css.styleSheet.cssText = styles;
     }
-    else
+    else{
       for (var i = 0; i < css.childNodes.length; i++){
         css.removeChild(childNodes[i])
         css.styleSheet.cssText = styles;
         css.appendChild(document.createTextNode(styles));
       }
+        css = document.createElement(style)
+        css.styleSheet = style
+    }
+
     console.log(css)
+
     document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
     document.getElementsByTagName("head")[0].appendChild(css);
   }
