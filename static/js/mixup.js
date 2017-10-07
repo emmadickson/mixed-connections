@@ -1,3 +1,63 @@
+// 2. Set up event listeners to change css and scramble title
+       function mixup(evt) {
+         var post = document.getElementById("missed-connection").textContent;
+         sentences = [];
+         var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
+         // 8. For now I'm breaking it up based on punctuation so if someone uses
+         // no puntuation I ignore the whole post.
+         if (phrase != null){
+           for (var j = 0; j < phrase.length; j++){
+             sentences.push(phrase[j]);
+           }
+         }
+         shuffle(sentences)
+         var css = document.getElementsByTagName('style')[0]
+         var css = document.createElement("style");
+         var titleFontVariant = ['small-caps', 'normal']
+         var selectTitleFontVariant = Math.floor((Math.random() * 500) + 0);
+         if (selectTitleFontVariant % 2 == 0){
+           selectTitleFontVariant = 0;
+         }
+         else{
+           selectTitleFontVariant = 1;
+         }
+         var titleFontWeight = Math.floor((Math.random() * 900) + 0);
+         var titleFontFamily = ["Times New Roman", "Georgia", "Arial", "Verdana", "Courier New", "Lucida Console"]
+         var selectTitleFontFamily = Math.floor((Math.random() * 5) + 0);
+         var titleFontStyle = ["normal", "italic", "oblique"]
+         var selectTitleFontStyle = Math.floor((Math.random() * 2) + 0);
+         var titleFontSize = Math.floor((Math.random() * 20) + 8);
+         var titleHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+         var styles = '#title { font-variant: ' + titleFontVariant[selectTitleFontVariant] + ';font-weight: ' + titleFontWeight + '; font-style: ' + titleFontStyle[selectTitleFontStyle] + '; font-family: ' + titleFontFamily[selectTitleFontFamily] + 'px; color: ' + titleHexColor + '}';
+         var backgroundColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+         styles += 'body { background-color: ' + backgroundColor + '}';
+         for (var k = 0; k <= sentences.length; k++){
+           var element = document.createElement('span');
+           element.id = "missed-connection"
+           var postFontVariant = ['small-caps', 'normal']
+           var selectPostFontVariant = Math.floor((Math.random() * 500) + 0);
+           if (selectPostFontVariant % 2 == 0){
+             selectPostFontVariant = 0;
+           }
+           else{
+             selectPostFontVariant = 1;
+           }
+           var postFontWeight = Math.floor((Math.random() * 900) + 0);
+           var postFontFamily = ["Times New Roman", "Georgia", "Arial", "Verdana", "Courier New", "Lucida Console"]
+           var selectPostFontFamily = Math.floor((Math.random() * 5) + 0);
+           var postFontStyle = ["normal", "italic", "oblique"]
+           var selectPostFontStyle = Math.floor((Math.random() * 2) + 0);
+           var postFontSize = Math.floor((Math.random() * 50) + 14);
+           var postHexColor = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+           styles += '#missed-connection { font-variant: ' + postFontVariant[selectPostFontVariant] + ';font-weight: ' + postFontWeight + '; font-style: ' + postFontStyle[selectPostFontStyle] + '; font-family: ' + titleFontFamily[selectPostFontFamily] + '; font-size: ' + postFontSize + 'px; color: ' + postHexColor + '}';
+           document.body.appendChild(element)
+           if (css.styleSheet) css.styleSheet.cssText = styles;
+           else css.appendChild(document.createTextNode(styles));
+           document.getElementsByTagName("head")[0].removeChild(document.getElementsByTagName("head")[0].childNodes[0])
+           document.getElementsByTagName("head")[0].appendChild(css);
+         }
+       }
+
 function mixConnections(){
           jQuery.get('/raw', function(data) {
            var entries = JSON.stringify(data)
