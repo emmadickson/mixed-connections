@@ -31,7 +31,7 @@ function scramble(originalText, domElement){
 
 
 // 2. Set up event listeners to change css and scramble title
-function mixup(evt, count) {
+function mixup(evt) {
   var post = document.getElementById("missed-connection");
   sentences = [];
   var phrase = post.textContent.match( /[^\.!\?]+[\.!\?]+/g );
@@ -45,7 +45,7 @@ function mixup(evt, count) {
   shuffle(sentences)
   post.textContent = sentences.join(' ')
   count = count + 1;
-  return count
+
 }
 
 function mixConnections(){
