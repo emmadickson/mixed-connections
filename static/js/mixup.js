@@ -44,7 +44,7 @@ function mixup(evt) {
     }
   }
   shuffle(sentences)
-  post.textContent = sentences.join(' ')
+  post = sentences.join(' ')
   console.log('post conent ' + post.textContent)
 }
 
