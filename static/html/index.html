@@ -51,6 +51,18 @@
            locationText.textContent = homeBases[newLocation]
          }, 250);
 
+         var fib = document.getElementById('locationText')
+         console.log(fib)
+         var fib_flag = false;
+         fib.onclick =
+         function test(){
+           console.log('clicked')
+         }
+         fib.addEventListener("click", function(){
+           console.log('clicked');
+           fib_flag = true;
+         });
+
       mixConnections()
   </script>
 
