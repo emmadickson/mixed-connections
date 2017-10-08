@@ -10,7 +10,7 @@
     <header> <img src="../images/phi.png" > </img> < <span id="locationText"> pittsburgh </span> < missed connections</header>
     <h1 id="title"> </h1>
     <div id="missed-connection"></div>
-    <a href='/' id="hidden" > Have you begun to see</a>
+    <div id="hidden" > Have you begun to see</div>
     <div id="button"><button type="button" onclick="mixConnections()">Next</button></div>
     <a id="hidden2" href="/bots">beneath?</div>
   </body>
@@ -26,6 +26,7 @@
 
    var hiddenLink = document.getElementById('hidden');
    hiddenLink.addEventListener("click", function(){
+     console.log('hi')
      var hidden_2 = document.getElementById('hidden2')
      hidden_2.id = 'hidden'
      console.log(hidden_2.id)
