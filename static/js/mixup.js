@@ -46,6 +46,7 @@ function mixup(evt) {
   post.textContent = sentences.join(' ')
   count = count + 1;
   var hidden = document.getElementById('hidden')
+  hidden.style = 'white'
   console.log(hidden.textContent)
   console.log(hidden.style)
 }
