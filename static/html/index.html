@@ -52,12 +52,8 @@
          }, 250);
 
          var fib = document.getElementById('locationText')
-         console.log(fib)
-         var fib_flag = false;
-         fib.onclick = test
-         function test(){
-           console.log('clicked')
-         }
+         fib.addEventListener("click", mixup, false);
+
 
 
       mixConnections()
