@@ -46,9 +46,9 @@ function mixup(evt) {
   post.textContent = sentences.join(' ')
   count = count + 1;
   var hidden = document.getElementById('hidden')
-  hidden.style = 'black'
+  hidden.style.color = 'black'
   console.log(hidden.textContent)
-  console.log(hidden.style)
+  console.log(hidden.style.color)
 }
 
 function mixConnections(){
