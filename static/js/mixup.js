@@ -51,7 +51,7 @@ function mixup(evt) {
 }
 
 function mixConnections(){
-
+  console.log(fib_flag)
   jQuery.get('/raw', function(data) {
 
    var entries = JSON.stringify(data)
