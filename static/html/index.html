@@ -24,12 +24,10 @@
    titleDOM.addEventListener("click", mixup, false);
    var titleScramble = document.getElementById("title");
 
+   var beneath_flag = false;
    var hiddenLink = document.getElementById('hidden');
    hiddenLink.addEventListener("click", function(){
-     console.log('hi')
-     var hidden_2 = document.getElementById('hidden2')
-     hidden_2.id = 'hidden'
-     console.log(hidden_2.id)
+     beneath_flag = true;
    });
 
    $("#title").hover(

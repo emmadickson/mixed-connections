@@ -46,8 +46,12 @@ function mixup(evt) {
   post.textContent = sentences.join(' ')
   count = count + 1;
   var hidden = document.getElementById('hidden')
+  var hidden2 = document.getElementById('hidden2')
   var color_value = 255 - count/4;
   hidden.style.color = "rgb(" + color_value + "," + color_value+ "," + color_value + ")"
+  if (beneath_flag == true){
+    hidden2.style.color = "rgb(" + color_value + "," + color_value+ "," + color_value + ")"
+  }
 }
 
 function mixConnections(){
