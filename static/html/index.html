@@ -3,17 +3,14 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link id = "css" rel="stylesheet" href="../css/missed.css">
-
   </head>
 
   <body>
     <header> <img src="../images/phi.png" > </img> < <span id="locationText"> pittsburgh </span> < missed connections</header>
-
     <h1 id="title"> </h1>
     <div id="missed-connection"></div>
-    <div id="hidden" > Have you begun to see</div>
+    <a id="hidden" > Have you begun to see</a>
     <div id="button"><button type="button" onclick="mixConnections()">Next</button></div>
     <a id="hidden2" href="/bots">beneath?</div>
   </body>
@@ -21,45 +18,35 @@
   <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/constants.js"></script>
   <script type="text/javascript" src="js/mixup.js"></script>
-
   <script>
-       var titleDOM = document.getElementById("title");
-       var count = 0;
-       titleDOM.addEventListener("click", mixup, false);
-       var titleScramble = document.getElementById("title");
+   var titleDOM = document.getElementById("title");
+   var count = 0;
+   titleDOM.addEventListener("click", mixup, false);
+   var titleScramble = document.getElementById("title");
 
-       $("#title").hover(
-         function(){
-           var originalText = titleScramble.textContent;
-           interval = setInterval(function(){scramble(originalText, titleScramble)}, 150);
-           scramble(originalText, titleScramble)
-         },
-         function(){
-           clearInterval(interval)
-         });
+   var hiddenLink = document.getElementById('hidden');
+   hiddenLink.addEventListener("click", function(){ alert("Hello World!"); });
+   
+   $("#title").hover(
+     function(){
+       var originalText = titleScramble.textContent;
+       interval = setInterval(function(){scramble(originalText, titleScramble)}, 150);
+       scramble(originalText, titleScramble)
+     },
+     function(){
+       clearInterval(interval)
+     });
 
-         var locationScramble = document.getElementById("locationText");
-         var ogText = locationText.textContent;
-         interval = setInterval(function(){scramble(ogText, locationScramble)}, 150);
-         var text = locationText.textContent;
-         interval = setInterval(function(){
-           var newLocation = Math.floor((Math.random() * 2) + 0);
-           locationText.textContent = homeBases[newLocation]
-         }, 250);
+     var locationScramble = document.getElementById("locationText");
+     var ogText = locationText.textContent;
+     interval = setInterval(function(){scramble(ogText, locationScramble)}, 150);
+     var text = locationText.textContent;
+     interval = setInterval(function(){
+       var newLocation = Math.floor((Math.random() * 2) + 0);
+       locationText.textContent = homeBases[newLocation]
+     }, 250);
 
-         var fib = document.getElementById('locationText')
-         console.log(fib)
-         var fib_flag = false;
-         fib.onclick =
-         function test(){
-           console.log('clicked')
-         }
-         fib.addEventListener("click", function(){
-           console.log('clicked');
-           fib_flag = true;
-         });
-
-      mixConnections()
+     mixConnections()
   </script>
 
 </html>
