@@ -47,7 +47,7 @@ function mixup(evt) {
   count = count + 1;
   var hidden = document.getElementById('hidden')
   var color_value = 255 - count;
-  hidden.style.color = rgb(color_value, color_value, color_value)
+  hidden.style.color = 'rgb(color_value, color_value, color_value)'
 }
 
 function mixConnections(){
