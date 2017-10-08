@@ -45,14 +45,13 @@ function mixup(evt) {
   shuffle(sentences)
   post.textContent = sentences.join(' ')
   count = count + 1;
-  count2 = count2 + 1;
-  console.log(count2)
   var hidden = document.getElementById('hidden')
   var hidden2 = document.getElementById('hidden2')
   var color_value = 255 - count/4;
-  var color_value2 = 255 - count2/4;
+  var color_value2 = 255 - count2/8;
   hidden.style.color = "rgb(" + color_value + "," + color_value+ "," + color_value + ")"
   if (beneath_flag == true){
+    count2 = count2 + 1;
     hidden2.style.color = "rgb(" + color_value2 + "," + color_value2 + "," + color_value2 + ")"
   }
 }
