@@ -1,38 +1,23 @@
 body{
   border: 0;
   margin:0;
-}
-
-div#button{
-  position: absolute;
-  left:0;
-  top:100;
-  padding-top: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
+  position: relative;
+  overflow: hidden;
 }
 
 header{
+  position: absolute;
+  top:0;
+  left:5;
+  min-height: 20px;
+  height:8px;
+  width: 100%;
   padding-top: 5px;
   display: block;
   border-bottom: 1px #ccc solid;
   background: #eee;
-  min-height: 1.5em;
   font-size: 16px;
   vertical-align: top;
-  width: 100%;
-}
-
-h1{
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 25px;
-  font-family: "Bitstream Vera Serif","Times New Roman",serif;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
 }
 
 img{
@@ -41,29 +26,55 @@ img{
   height:13px;
 }
 
-#hidden {
-    position:absolute;
-    left:0;
-    top:0;
-    height:100px;
-    width:1000px;
-    color: rgb(255,255,255);
-    font-size: 100px;
-    padding-left: 25px;
-    z-index:1;
-}
-#missed-connection {
-    position:absolute;
-    padding-left: 25px;
-    left:0;
-    top:0;
-    height:100px;
-    width:1000px;
-    z-index:2;
+h1{
+  position: absolute;
+  top: 25;
+  left:5;
+  height:75px;
+  width:100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 25px;
+  font-family: "Bitstream Vera Serif","Times New Roman",serif;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: left;
 }
 
-#container {
-    position : relative;
-    height:100px;
-    width:1000px;
+#missed-connection {
+  position:absolute;
+  top:100;
+  left:5;
+  padding-left: 25px;
+  left:0;
+  top:0;
+  height:100px;
+  width:100%;
+  z-index:2;
+}
+
+
+#hidden {
+  position:absolute;
+  left:0;
+  top:0;
+  height:100;
+  width:100%
+  color: rgb(255,255,255);
+  font-size: 100px;
+  padding-left: 25px;
+  z-index:1;
+}
+div#button{
+  position: absolute;
+  left:0;
+  top:100;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#hidden2 {
+  position: absolute;
+  color: rgb(255,255,255);
+  font-size: 100px;
 }
