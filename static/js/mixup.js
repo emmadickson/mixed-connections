@@ -46,6 +46,7 @@ function mixup(evt) {
   post.textContent = sentences.join(' ')
   count = count + 1;
   count2 = count2 + 1;
+  console.log(count2)
   var hidden = document.getElementById('hidden')
   var hidden2 = document.getElementById('hidden2')
   var color_value = 255 - count/4;
