@@ -51,28 +51,32 @@ h1{
   z-index:2;
 }
 
-
 #hidden {
   position:absolute;
-  left:0;
-  top:0;
-  height:100;
-  width:100%
+  top:100;
+  left:5;
+  height:200px;
+  width:100%;
   color: rgb(255,255,255);
   font-size: 100px;
   padding-left: 25px;
   z-index:1;
 }
+
+#hidden2 {
+  position: absolute;
+  top:125;
+  left:150;
+  height:200px;
+  color: rgb(255,255,255);
+  font-size: 100px;
+}
+
 div#button{
   position: absolute;
-  left:0;
-  top:100;
+  left:5;
+  top:200;
   padding-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
-}
-#hidden2 {
-  position: absolute;
-  color: rgb(255,255,255);
-  font-size: 100px;
 }
