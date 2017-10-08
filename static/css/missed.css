@@ -48,6 +48,7 @@ h1{
   height:100px;
   width:900px;
   padding-left: 25px;
+  pointer-events: none
   z-index:2;
 }
 
