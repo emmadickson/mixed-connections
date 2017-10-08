@@ -45,7 +45,9 @@ function mixup(evt) {
   shuffle(sentences)
   post.textContent = sentences.join(' ')
   count = count + 1;
-  console.log(count)
+  var hidden = document.getElementById('hidden')
+  console.log(hidden.textContent)
+  consoel.log(hidden.style)
 }
 
 function mixConnections(){
