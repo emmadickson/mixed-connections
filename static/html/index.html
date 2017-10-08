@@ -53,9 +53,10 @@
 
          var fib = document.getElementById('locationText')
          var fib_flag = false;
-         fib.addEventListener("click", function(evt){
-           fib_flag = true
-         }, false);
+         fib.addEventListener("click", function(){
+           console.log('clicked');
+           fib_flag = true;
+         });
 
       mixConnections()
   </script>
