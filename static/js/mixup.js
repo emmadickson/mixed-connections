@@ -50,7 +50,7 @@ function mixup(evt) {
   var hidden = document.getElementById('hidden')
   var hidden2 = document.getElementById('hidden2')
   var color_value = 255 - count/4;
-  var color_value2 = 255 - count2/8;
+  var color_value2 = 255 - count2/4;
   hidden.style.color = "rgb(" + color_value + "," + color_value+ "," + color_value + ")"
   if (beneath_flag == true){
     hidden2.style.color = "rgb(" + color_value2 + "," + color_value2 + "," + color_value2 + ")"
