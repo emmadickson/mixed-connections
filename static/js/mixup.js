@@ -45,7 +45,7 @@ function mixup(evt) {
   shuffle(sentences)
   post.textContent = sentences.join(' ')
   count = count + 1;
-
+  console.log(count)
 }
 
 function mixConnections(){
