@@ -47,7 +47,7 @@ function mixup(evt) {
   count = count + 1;
   var hidden = document.getElementById('hidden')
   console.log(hidden.textContent)
-  consoel.log(hidden.style)
+  console.log(hidden.style)
 }
 
 function mixConnections(){
