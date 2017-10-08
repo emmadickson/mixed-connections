@@ -6,7 +6,6 @@ body{
 div#button{
   padding-left: 10px;
   padding-right: 10px;
-  top:150px;
 }
 
 header{
@@ -42,7 +41,7 @@ img{
     position:absolute;
     left:0;
     top:0;
-    height:150px;
+    height:100px;
     width:1000px;
     color: rgb(255,255,255);
     font-size: 100px;
@@ -54,13 +53,13 @@ img{
     padding-left: 25px;
     left:0;
     top:0;
-    height:150px;
+    height:100px;
     width:1000px;
     z-index:2;
 }
 
 #container {
     position : relative;
-    height:200px;
+    height:100px;
     width:1000px;
 }
