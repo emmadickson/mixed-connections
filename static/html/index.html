@@ -25,7 +25,10 @@
    var titleScramble = document.getElementById("title");
 
    var hiddenLink = document.getElementById('hidden');
-   hiddenLink.addEventListener("click", function(){ alert("Hello World!"); });
+   hiddenLink.addEventListener("click", function(){
+     var hidden_2 = document.getElementById('hidden2')
+     hidden_2.id = 'hidden'
+   });
 
    $("#title").hover(
      function(){
