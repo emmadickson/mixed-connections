@@ -13,20 +13,7 @@
         font-size: 250px;
         color: white;
         text-align: center;
-        width:100%;
-      }
-      .scroll-left {
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-        height: 50px;
-        position: absolute;
-        -webkit-transform: rotate(90deg);  /* to support Safari and Android browser */
-        -ms-transform: rotate(90deg);      /* to support IE 9 */
-        transform: rotate(90deg);
-        font-family: 'VT323', monospace;
-        font-size: 76px;
-        color:#00FF00;
+
       }
     </style>
   </head>
@@ -48,6 +35,9 @@
     for (var j = 0; j < gif_object.global_color_table.length; j++){
       gif_object.global_color_table[j] = makeid()
     }
+    
+    console.log(gif_object.logical_screen_descriptor.width)
+    console.log(gif_object.logical_screen_descriptor.height)
 
     var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + gif_object.graphics_control_ext.full_string + gif_object.image_descriptor.full_string + gif_object.image_data + gif_object.trailer
     iteration = hexToBase64(iteration)

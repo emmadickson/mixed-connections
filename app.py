@@ -35,7 +35,7 @@ def webscrape():
 
     links = []
 
-    totalPostNumber = 10
+    totalPostNumber = 1
     for x in range (0, totalPostNumber):
         randomUrl = random.randint(0,2)
         startURL = homeBases[randomUrl] + "/search/mis"
