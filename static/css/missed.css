@@ -31,7 +31,7 @@ h1{
   top: 25;
   left:5;
   height:75px;
-  width:100%;
+  width:45%;
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 25px;
@@ -46,7 +46,7 @@ h1{
   top:150;
   left:5;
   height:100px;
-  width:900px;
+  width:45%;
   padding-left: 25px;
   pointer-events: none;
   z-index:2;
