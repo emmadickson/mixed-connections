@@ -22,9 +22,9 @@ def render_statics():
 def render_staticd():
     return app.send_static_file('db.txt')
 
-@app.route('/water')
+@app.route('/fibs')
 def render_statice():
-    return app.send_static_file('html/water.html')
+    return app.send_static_file('html/fibs/fib.html')
 
 @app.route("/bots")
 def webscrape():
