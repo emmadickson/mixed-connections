@@ -24,9 +24,10 @@ function gif_components(mouthmouth){
   }
   logical_screen_descriptor.packed_field = packed_field;
   mouthmouth_bytes = mouthmouth_bytes.slice(7, mouthmouth_bytes.length)
-
+  gct_f = 0;
   if (logical_screen_descriptor.packed_field.global_color_table_flag == 1){
     //global color table
+    gct_f = 1;
     global_color_table_length = Math.round(3*(2 ** (logical_screen_descriptor.packed_field.size_of_global_color_table + 1)))
     global_color_table = mouthmouth_bytes.slice(0, global_color_table_length)
     colors = []
@@ -80,9 +81,10 @@ function gif_components(mouthmouth){
   }
   image_descriptor.packed_field = packed_field_image;
   mouthmouth_bytes = mouthmouth_bytes.slice(10, mouthmouth_bytes.length)
-
+  lct_f = 0;
   if (image_descriptor.packed_field.local_color_table_flag == 1){
     //local color table
+    lct_f = 1;
     local_color_table_length = Math.round(3*(2 ** (image_descriptor.packed_field.size_of_local_color_table + 1)))
     local_color_table = mouthmouth_bytes.slice(0, local_color_table_length)
     mouthmouth_bytes = mouthmouth_bytes.slice(local_color_table_length,mouthmouth_bytes.length)
@@ -98,46 +100,52 @@ function gif_components(mouthmouth){
 
 
   //plain text extension
+  pte_f = 0;
   if (mouthmouth_bytes.slice(0,2) == '21 01'){
     plain_text_size = mouthmouth_bytes.slice(2,3)
     plain_text_size = hex2bin(plain_text_size)
     plain_text_size = bin_to_dec(plain_text_size)
     //skip the useless stuff
+    pte_f = 1;
     mouthmouth_bytes = mouthmouth_bytes.slice(3,plain_text_size)
-    text_ext = []
+    plain_text_ext = []
     var i = 0;
     while(mouthmouth_bytes[i]!= '00'){
-      text_ext.append(mouthmouth_bytes[i])
+      plain_text_ext.append(mouthmouth_bytes[i])
     }
     mouthmouth_bytes = mouthmouth_bytes.slice(plain_text_size + i, mouthmouth_bytes.length)
   }
   //application text extension
+  ate_f = 0;
   if (mouthmouth_bytes.slice(0,2) == '21 FF'){
+    ate_f = 1;
     app_size = mouthmouth_bytes.slice(2,3)
     app_size = hex2bin(app_size)
     app_size = bin_to_dec(app_size)
     //skip the useless stuff
     mouthmouth_bytes = mouthmouth_bytes.slice(3,app_size)
-    text_ext = []
+    app_text_ext = []
     var i = 0;
     while(mouthmouth_bytes[i]!= '00'){
-      text_ext.append(mouthmouth_bytes[i])
+      app_text_ext.append(mouthmouth_bytes[i])
     }
     mouthmouth_bytes = mouthmouth_bytes.slice(app_size + i, mouthmouth_bytes.length)
   }
 
 
   //comment extension
+  cte_f = 0;
   if (mouthmouth_bytes.slice(0,2) == '21 FE'){
+    cte_f = 1;
     comment_size = mouthmouth_bytes.slice(2,3)
     comment_size = hex2bin(comment_size)
     comment_size = bin_to_dec(comment_size)
     //skip the useless stuff
     mouthmouth_bytes = mouthmouth_bytes.slice(3,comment_size)
-    text_ext = []
+    comm_text_ext = []
     var i = 0;
     while(mouthmouth_bytes[i]!= '00'){
-      text_ext.append(mouthmouth_bytes[i])
+      comm_text_ext.append(mouthmouth_bytes[i])
     }
     mouthmouth_bytes = mouthmouth_bytes.slice(comment_size + i, mouthmouth_bytes.length)
   }
@@ -147,12 +155,25 @@ function gif_components(mouthmouth){
   total_package = {
     header:header,
     logical_screen_descriptor:logical_screen_descriptor,
-    global_color_table:global_color_table,
     graphics_control_ext:graphics_control_ext,
     image_descriptor:image_descriptor,
     image_data:image_data,
     trailer:trailer,
   }
-
+  if (gct_f == 1){
+    total_package.global_color_table = global_color_table
+  }
+  if (lct_f == 1){
+    total_package.local_color_table = local_color_table
+  }
+  if (pte_f == 1){
+    total_package.plain_text_ext = plain_text_ext;
+  }
+  if (ate_f == 1){
+    total_package.plain_text_ext = app_text_ext;
+  }
+  if (cte_f == 1){
+    total_package.comm_text_ext = comm_text_ext;
+  }
   return total_package
 }
