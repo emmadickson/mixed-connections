@@ -101,7 +101,8 @@
     }
 
     frames = document.getElementsByTagName('iframe')
-    for (var i = 0; i <= frames.length; i++){
+    console.log(frames)
+    for (var i = 0; i <= frames.length-1; i++){
       var new_width = frames[i].offsetWidth * multiplier;
       var new_height = frames[i].offsetHeight * multiplier;
 
