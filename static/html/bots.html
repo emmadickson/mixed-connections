@@ -36,9 +36,8 @@
       mouthmouth_bytes.push(mouthmouth[i].slice(3,5))
     }
     mouthmouth_bytes[0] = '47'
-    console.log(mouthmouth_bytes)
 
-    gif_object = gif_components(mouthmouth_bytes)
+    gif_object = gif_components(mouthmouth_bytes.join(' '))
 
     for (var j = 0; j < gif_object.global_color_table.length; j++){
       gif_object.global_color_table[j] = makeid()
