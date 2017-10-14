@@ -46,10 +46,6 @@
       gif_object.global_color_table[j] = makeid()
     }
 
-    if (gif_object.comm_text_ext == undefined){
-      gif_object.comm_text_ext = "function test(){alert('GOTCHA ASSHOLE')};"
-    }
-
     var iteration =
     gif_object.header +
     gif_object.logical_screen_descriptor.full_string +
@@ -61,8 +57,7 @@
     gif_object.trailer;
 
     iteration = hexToBase64(iteration)
-    console.log(gif_object.comm_text_ext)
-    test();
+
     longshot.src = "data:image/png;base64," + iteration
 
   </script>
