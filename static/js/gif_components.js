@@ -175,5 +175,8 @@ function gif_components(mouthmouth){
   if (cte_f == 1){
     total_package.comm_text_ext = comm_text_ext;
   }
+  if (image_descriptor.packed_field.local_color_table_flag == 1){
+    total_package.local_color_table = local_color_table
+  }
   return total_package
 }
