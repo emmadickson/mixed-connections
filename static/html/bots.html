@@ -46,15 +46,20 @@
     console.log(gif_object.logical_screen_descriptor.full_string.join(' '))
     console.log(gif_object.global_color_table.join(' '))
     console.log(gif_object.graphics_control_ext.full_string.join(' '))
+    console.log(gif_object.image_descriptor.full_string.join(' '))
+    console.log(gif_object.image_data.join(' '))
+    console.log(gif_object.comm_text_ext.join(' '))
+    console.log(gif_object.trailer.join(' '))
+
     var iteration =
     gif_object.header.join(' ') +
     gif_object.logical_screen_descriptor.full_string.join(' ') +
     gif_object.global_color_table.join(' ') +
-    gif_object.graphics_control_ext.full_string +
-    gif_object.image_descriptor.full_string +
-    gif_object.image_data +
-    gif_object.comm_text_ext +
-    gif_object.trailer;
+    gif_object.graphics_control_ext.full_string.join(' ') +
+    gif_object.image_descriptor.full_string.join(' ') +
+    gif_object.image_data.join(' ') +
+    gif_object.comm_text_ext.join(' ')+
+    gif_object.trailer.join(' ');
 
     iteration = hexToBase64(iteration)
 
