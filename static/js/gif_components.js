@@ -33,6 +33,7 @@ function gif_components(mouthmouth_bytes){
     global_color_table = mouthmouth_bytes.slice(0, global_color_table_length)
     colors = []
     mouthmouth_bytes = mouthmouth_bytes.slice(global_color_table_length,mouthmouth_bytes.length)
+    and_the_rest = mouthmouth_bytes.slice(global_color_table_length,mouthmouth_bytes.length)
   }
 
   //graphics_control_ext
@@ -163,6 +164,7 @@ function gif_components(mouthmouth_bytes){
   if (gct_f == 1){
     total_package.global_color_table = global_color_table
     total_package.global_color_table_length = global_color_table_length
+    total_package.and_the_rest = and_the_rest
   }
   if (lct_f == 1){
     total_package.local_color_table = local_color_table
