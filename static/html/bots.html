@@ -30,7 +30,10 @@
 
   <script>
   var longshot = document.getElementById('glitch')
-  mouthmouth_bytes = mouthmouth.split(" ")
+  for(var i = 0; i < mouthmouth.length; i++){
+    mouthmouth[i] = mouthmouth[i].slice(3,5)
+  }
+  console.log(mouthmouth)
   gif_object = gif_components(mouthmouth)
   for (var j = 0; j < gif_object.global_color_table.length; j++){
     gif_object.global_color_table[j] = makeid()
