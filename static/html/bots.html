@@ -33,8 +33,9 @@
   mouthmouth_bytes = []
   mouthmouth = mouthmouth.split(",")
   for(var i = 0; i < mouthmouth.length; i++){
-    mouthmouth_bytes.push(mouthmouth[i].slice(2,3))
+    mouthmouth_bytes.push(mouthmouth[i].slice(3,5))
   }
+  mouthmouth_bytes[i] = '47'
   console.log(mouthmouth_bytes)
   gif_object = gif_components(mouthmouth)
   for (var j = 0; j < gif_object.global_color_table.length; j++){
