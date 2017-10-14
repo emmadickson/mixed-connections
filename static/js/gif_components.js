@@ -1,6 +1,6 @@
 function gif_components(mouthmouth_bytes){
   //header
-  header = mouthmouth_bytes.slice(0,6)
+  header = mouthmouth_bytes.slice(0,6).join(" ")
   mouthmouth_bytes = mouthmouth_bytes.slice(6,mouthmouth_bytes.length)
 
   //logical_screen_descriptor

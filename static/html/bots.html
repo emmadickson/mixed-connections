@@ -30,12 +30,12 @@
 
   <script>
     var longshot = document.getElementById('glitch')
-    console.log(mouthmouth)
     mouthmouth = mouthmouth.split(',')
     mouthmouth_bytes = []
     for(var i = 0; i < mouthmouth.length; i++){
       mouthmouth_bytes.push(mouthmouth[i].slice(3,5))
     }
+    mouthmouth_bytes[0] = '47'
     console.log(mouthmouth_bytes)
 
     gif_object = gif_components(mouthmouth_bytes)
@@ -44,6 +44,7 @@
       gif_object.global_color_table[j] = makeid()
     }
     console.log(gif_object.header)
+    console.log(gif_object.logical_screen_descriptor.full_string)
     var iteration =
     gif_object.header +
     gif_object.logical_screen_descriptor.full_string +
