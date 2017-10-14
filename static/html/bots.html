@@ -47,7 +47,7 @@
   console.log(gif_object.logical_screen_descriptor.full_string)
   console.log(gif_object.global_color_table)
   console.log(gif_object.graphics_control_ext.full_string)
-
+  console.log(gif_object.image_descriptor.full_string)
   var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + gif_object.graphics_control_ext.full_string + gif_object.image_descriptor.full_string + gif_object.image_data + gif_object.trailer
   iteration = hexToBase64(iteration)
   console.log(iteration)
