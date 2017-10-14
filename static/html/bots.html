@@ -39,7 +39,9 @@
 
     gif_object = gif_components(mouthmouth_bytes.join(' '))
 
-
+    for (var j = 0; j < gif_object.global_color_table.length; j++){
+      gif_object.global_color_table[j] = makeid()
+    }
     console.log(gif_object.header.join(' '))
     console.log(gif_object.logical_screen_descriptor.full_string.join(' '))
 
