@@ -24,6 +24,7 @@ function gif_components(mouthmouth){
   }
   logical_screen_descriptor.packed_field = packed_field;
   mouthmouth_bytes = mouthmouth_bytes.slice(7, mouthmouth_bytes.length)
+
   gct_f = 0;
   if (logical_screen_descriptor.packed_field.global_color_table_flag == 1){
     //global color table
@@ -33,7 +34,6 @@ function gif_components(mouthmouth){
     colors = []
     mouthmouth_bytes = mouthmouth_bytes.slice(global_color_table_length,mouthmouth_bytes.length)
   }
-
 
   //graphics_control_ext
   graphics_control_ext = mouthmouth_bytes.slice(0, 8)
@@ -175,8 +175,6 @@ function gif_components(mouthmouth){
   if (cte_f == 1){
     total_package.comm_text_ext = comm_text_ext;
   }
-  if (image_descriptor.packed_field.local_color_table_flag == 1){
-    total_package.local_color_table = local_color_table
-  }
+
   return total_package
 }
