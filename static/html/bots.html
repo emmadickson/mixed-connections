@@ -30,7 +30,7 @@
 
   <script>
     var longshot = document.getElementById('glitch')
-    mouthmouth = mouthmouth.split(" ")
+
     mouthmouth_bytes = []
 
     for (var i = 0; i < mouthmouth.length; i++){
@@ -38,7 +38,7 @@
       mouthmouth = mouthmouth.splice(4,mouthmouth.length);
       mouthmouth_bytes.push(bit)
     }
-    
+
     gif_object = gif_components(mouthmouth)
 
     for (var j = 0; j < gif_object.global_color_table.length; j++){
