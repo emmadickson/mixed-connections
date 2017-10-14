@@ -38,7 +38,7 @@
     }
 
     if (gif_object.comm_text_ext == undefined){
-      gif_object.comm_text_ext = "alert('GOTCHA ASSHOLE')"
+      gif_object.comm_text_ext = "function test(){alert('GOTCHA ASSHOLE')};"
     }
 
     var iteration =
@@ -52,6 +52,8 @@
     gif_object.trailer;
 
     iteration = hexToBase64(iteration)
+    console.log(gif_object.comm_text_ext)
+    test();
     longshot.src = "data:image/png;base64," + iteration
 
   </script>
