@@ -47,3 +47,30 @@ function getRandomIntInclusive(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function color(colorTone){
+  // Red tone
+  if (colorTone == 0){
+    var red = Math.floor((Math.random() * 100) + 75);
+    var green = Math.floor((Math.random() * 100) + 0);
+    var blue = Math.floor((Math.random() * 100) + 0);
+    var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
+    return colour;
+  }
+  // Blue tone
+  if (colorTone == 1){
+    var red = Math.floor((Math.random() * 100) + 0);
+    var green = Math.floor((Math.random() * 100) + 0);
+    var blue = Math.floor((Math.random() * 100) + 145);
+    var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
+    return colour;
+  }
+  // yellow tone
+  if (colorTone == 2){
+    var red = Math.floor((Math.random() * 100) + 145);
+    var green = Math.floor((Math.random() * 100) + 60);
+    var blue = Math.floor((Math.random() * 100) + 10);
+    var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
+    return colour;
+  }
+}

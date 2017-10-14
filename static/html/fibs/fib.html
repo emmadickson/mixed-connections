@@ -100,9 +100,7 @@
         element.style.backgroundColor = colour;
       }
     }
-
-    frames = document.getElementsByTagName('iframe')
-    console.log(frames)
+    setInterval(function() { frames = document.getElementsByTagName('iframe')
     for (var i = 0; i <= frames.length-1; i++){
       var new_width = frames[i].offsetWidth * multiplier;
       var new_height = frames[i].offsetHeight * multiplier;
@@ -166,7 +164,8 @@
       frame_8.style.right = +positionInfo_6.width  + positionInfo_5.width+ "px"
       var randomcolor8 = Math.floor(Math.random() * 2);
       color(frame_8, randomcolor8)
-    }
+    } }, 1000);
+
 
   </script>
 </html>
