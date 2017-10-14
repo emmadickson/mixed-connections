@@ -32,14 +32,13 @@
     var longshot = document.getElementById('glitch')
     mouthmouth = mouthmouth.split(" ")
     mouthmouth_bytes = []
+
     for (var i = 0; i < mouthmouth.length; i++){
-      bit1 = mouthmouth.splice(0,2);
-      bit2 = mouthmouth.splice(2,4);
-      bit3 = mouthmouth.splice(4,6);
-      mouthmouth_bytes.push(bit1)
-      mouthmouth_bytes.push(bit2)
-      mouthmouth_bytes.push(bit3)
+      bit = mouthmouth.splice(2,4);
+      mouthmouth = mouthmouth.splice(4,mouthmouth.length);
+      mouthmouth_bytes.push(bit)
     }
+    
     gif_object = gif_components(mouthmouth)
 
     for (var j = 0; j < gif_object.global_color_table.length; j++){
