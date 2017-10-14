@@ -162,6 +162,7 @@ function gif_components(mouthmouth_bytes){
   }
   if (gct_f == 1){
     total_package.global_color_table = global_color_table
+    total_package.global_color_table_length = global_color_table_length
   }
   if (lct_f == 1){
     total_package.local_color_table = local_color_table

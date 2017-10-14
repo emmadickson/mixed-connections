@@ -38,19 +38,20 @@
   }
   mouthmouth_bytes[0] = '47'
   console.log(mouthmouth_bytes)
+
   gif_object = gif_components(mouthmouth_bytes)
   if (gif_object.global_color_table != undefined){
     for (var j = 0; j < gif_object.global_color_table.length; j++){
       gif_object.global_color_table[j] = makeid()
     }
+    var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + mouthmouth_bytes.splice(global_color_table_length, mouthmouth_bytes.length)
   }
-  console.log(gif_object.header)
-  console.log(gif_object.logical_screen_descriptor.full_string)
-  console.log(gif_object.global_color_table)
-  console.log(gif_object.graphics_control_ext.full_string)
-  console.log(gif_object.image_descriptor.full_string)
-  var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + gif_object.graphics_control_ext.full_string + gif_object.image_descriptor.full_string + gif_object.image_data + gif_object.trailer
-  iteration = hexToBase64(mouthmouth_bytes.join(' '))
+
+  else{
+    var iteration = mouthmouth_bytes.join(' ')
+  }
+
+  iteration = hexToBase64(iteration)
   console.log(iteration)
   longshot.src = "data:image/png;base64," + iteration
 
