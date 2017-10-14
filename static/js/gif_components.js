@@ -1,4 +1,4 @@
-function gif_components(mouthmouth){
+function gif_components(mouthmouth_bytes){
   //header
   header = mouthmouth_bytes.slice(0,6)
   mouthmouth_bytes = mouthmouth_bytes.slice(6,mouthmouth_bytes.length)
