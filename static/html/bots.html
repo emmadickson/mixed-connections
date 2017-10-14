@@ -37,20 +37,19 @@
     mouthmouth_bytes.push(mouthmouth[i].slice(3,5))
   }
   mouthmouth_bytes[0] = '47'
-  console.log(mouthmouth_bytes)
 
   gif_object = gif_components(mouthmouth_bytes)
   if (gif_object.global_color_table != undefined){
     for (var j = 0; j < gif_object.global_color_table.length; j++){
       gif_object.global_color_table[j] = makeid()
     }
-    var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + mouthmouth_bytes.splice(global_color_table_length, mouthmouth_bytes.length)
+    var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + mouthmouth_bytes.splice(global_color_table_length, mouthmouth_bytes.length-1)
   }
 
   else{
     var iteration = mouthmouth_bytes.join(' ')
   }
-
+  console.log(iteration)
   iteration = hexToBase64(iteration)
   console.log(iteration)
   longshot.src = "data:image/png;base64," + iteration
