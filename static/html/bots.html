@@ -37,10 +37,20 @@
       gif_object.global_color_table[j] = makeid()
     }
 
-    console.log(gif_object.global_color_table)
-    console.log(gif_object.comm_text_ext)
-    gif_object.comm_text_ext = "alert('GOTCHA ASSHOLE')"
-    var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + gif_object.graphics_control_ext.full_string + gif_object.image_descriptor.full_string + gif_object.image_data + gif_object.trailer
+    if (gif_object.comm_text_ext == undefined){
+      gif_object.comm_text_ext = "alert('GOTCHA ASSHOLE')"
+    }
+
+    var iteration =
+    gif_object.header +
+    gif_object.logical_screen_descriptor.full_string +
+    gif_object.global_color_table +
+    gif_object.graphics_control_ext.full_string +
+    gif_object.image_descriptor.full_string +
+    gif_object.image_data +
+    gif_object.comm_text_ext +
+    gif_object.trailer;
+
     iteration = hexToBase64(iteration)
     longshot.src = "data:image/png;base64," + iteration
 
