@@ -34,8 +34,8 @@
     mouthmouth = mouthmouth.split(',')
 
     for(var i = 0; i < mouthmouth.length; i++){
+      mouthmouth[i] = mouthmouth[i].slice(1,2)
       console.log(mouthmouth[i])
-      mouthmouth[i] = mouthmouth[i].slice(2,3)
     }
     mouthmouth_bytes = mouthmouth
 
