@@ -33,7 +33,7 @@ function gif_components(mouthmouth_bytes){
     global_color_table = mouthmouth_bytes.slice(0, global_color_table_length)
     colors = []
     mouthmouth_bytes = mouthmouth_bytes.slice(global_color_table_length,mouthmouth_bytes.length)
-    and_the_rest = mouthmouth_bytes.slice(global_color_table_length,mouthmouth_bytes.length)
+    and_the_rest = mouthmouth_bytes)
   }
 
   total_package = {
