@@ -29,39 +29,15 @@
   <script type="text/javascript" src="js/gif_components.js"></script>
 
   <script>
-    var longshot = document.getElementById('glitch')
-    mouthmouth = mouthmouth.split(',')
-    mouthmouth_bytes = []
-    for(var i = 0; i < mouthmouth.length; i++){
-      mouthmouth_bytes.push(mouthmouth[i].slice(3,5))
-    }
-    mouthmouth_bytes[0] = '47'
-
-    gif_object = gif_components(mouthmouth_bytes.join(' '))
-
-    for (var j = 0; j < gif_object.global_color_table.length; j++){
-      gif_object.global_color_table[j] = makeid()
-    }
-    console.log(gif_object.header.join(' '))
-    console.log(gif_object.logical_screen_descriptor.full_string.join(' '))
-
-    console.log(gif_object.graphics_control_ext.full_string.join(' '))
-    console.log(gif_object.image_descriptor.full_string.join(' '))
-    console.log(gif_object.image_data.join(' '))
-    console.log(gif_object.trailer.join(' '))
-
-    var iteration =
-    gif_object.header.join(' ') +
-    gif_object.logical_screen_descriptor.full_string.join(' ') +
-    gif_object.global_color_table.join(' ') +
-    gif_object.graphics_control_ext.full_string.join(' ') +
-    gif_object.image_descriptor.full_string.join(' ') +
-    gif_object.image_data.join(' ') +
-    gif_object.trailer.join(' ');
-
-    iteration = hexToBase64(iteration)
-
-    longshot.src = "data:image/png;base64," + iteration
+  var longshot = document.getElementById('glitch')
+  mouthmouth_bytes = mouthmouth.split(" ")
+  gif_object = gif_components(mouthmouth)
+  for (var j = 0; j < gif_object.global_color_table.length; j++){
+    gif_object.global_color_table[j] = makeid()
+  }
+  var iteration = gif_object.header + gif_object.logical_screen_descriptor.full_string + gif_object.global_color_table + gif_object.graphics_control_ext.full_string + gif_object.image_descriptor.full_string + gif_object.image_data + gif_object.trailer
+  iteration = hexToBase64(iteration)
+  longshot.src = "data:image/png;base64," + iteration
 
   </script>
 </html>
