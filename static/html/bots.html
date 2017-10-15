@@ -50,7 +50,6 @@
     for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
       color = gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j]
       var shuffle_type = Math.floor(Math.random() * 3);
-      console.log(shuffle_type)
       if (shuffle_type == 0){
         gif_object.global_color_table[j] = color.slice(0,2);
         gif_object.global_color_table[j-1] = color.slice(2,4);
@@ -70,6 +69,14 @@
     iteration = iteration + " " + gif_object.graphics_control_ext.full_string.join(' ')
     iteration = iteration + " " + gif_object.image_descriptor.full_string.join(' ')
     iteration = iteration + " " + gif_object.image_data.join(' ')
+
+    var image_data_selector =  Math.floor(Math.random() * gif_object.image_data.length)
+    image_data_selector = gif_object.image_data[image_data_selector]
+
+    gif_object.image_data = gif_object.image_data.filter(function(item) {
+    return item !== image_data_selector
+    })
+
     console.log(gif_object.image_data)
     iteration = iteration + " " + gif_object.trailer.join(' ')
     console.log(gif_object.trailer)
