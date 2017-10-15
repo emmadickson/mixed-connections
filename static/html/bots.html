@@ -39,6 +39,9 @@
 
   mouthmouth_bytes[0] = '47'
 
+  gif_object.logical_screen_descriptor.background_color_index = 'FF'
+  gif_object.logical_screen_descriptor.pixel_aspect_ratio = '01'
+  
   gif_object = gif_components(mouthmouth_bytes)
   if (gif_object.global_color_table != undefined){
     for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
@@ -61,7 +64,6 @@
         console.log('middle')
         console.log(gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j])
       }
-
     }
     var iteration = []
     iteration = gif_object.header.join(' ')
