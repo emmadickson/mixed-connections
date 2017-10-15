@@ -56,10 +56,12 @@
   if (gif_object.global_color_table != undefined){
     for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
       color = gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j]
+      console.log(color)
       shuffle(color)
-      gif_object.global_color_table[j] = color.slice(0,2);
+      console.log(color)
+      gif_object.global_color_table[j-2] = color.slice(0,2);
       gif_object.global_color_table[j-1] = color.slice(2,4);
-      gif_object.global_color_table[j-2] = color.slice(4,6)
+      gif_object.global_color_table[j] = color.slice(4,6)
     }
     var iteration = []
     iteration = gif_object.header.join(' ')
