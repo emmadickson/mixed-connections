@@ -43,8 +43,12 @@
     for (var j = 0; j < gif_object.global_color_table.length; j++){
       gif_object.global_color_table[j] = makeid()
     }
-    console.log(gif_object.and_the_rest)
-    var iteration = gif_object.header.join(" ") + gif_object.logical_screen_descriptor.full_string.join(" ") + gif_object.global_color_table.join(" ") + gif_object.and_the_rest.join(" ")
+    var iteration = []
+    iteration.push(gif_object.header)
+    iteration.push(gif_object.logical_screen_descriptor.full_string)
+    iteration.push(gif_object.global_color_table)
+    iteration.push(gif_object.and_the_rest)
+    iteration.join("")
   }
   else{
     var iteration = mouthmouth_bytes.join(' ')
