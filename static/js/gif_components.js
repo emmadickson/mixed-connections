@@ -153,7 +153,7 @@ function gif_components(mouthmouth_bytes){
     mouthmouth_bytes = mouthmouth_bytes.slice(comment_size + i, mouthmouth_bytes.length)
   }
 
-  trailer = mouthmouth_bytes.slice(0,1)
+  trailer = mouthmouth_bytes.slice(0,mouthmouth_bytes.length)
   console.log("HI")
   console.log(mouthmouth_bytes)
   total_package = {
