@@ -41,7 +41,7 @@
   gif_object = gif_components(mouthmouth_bytes)
   if (gif_object.global_color_table != undefined){
     for (var j = 0; j < gif_object.global_color_table.length; j++){
-      gif_object.global_color_table[j] = makeid()
+      gif_object.global_color_table[j] = 'FF'
     }
     var iteration = gif_object.header.join(" ") + gif_object.logical_screen_descriptor.full_string.join(" ") + gif_object.global_color_table.join(" ") + gif_object.and_the_rest.join(" ")
   }
