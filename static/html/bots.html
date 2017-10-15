@@ -46,8 +46,8 @@
     var iteration = []
     iteration = gif_object.header.join(' ')
     iteration = iteration + gif_object.logical_screen_descriptor.full_string.join(' ')
-    console.log(gif_object.and_the_rest[and_the_rest.length])
-    console.log(gif_object.and_the_rest.toString().slice(gif_object.and_the_rest.length-2, gif_object.and_the_rest.length))
+    console.log(gif_object.and_the_rest[and_the_rest.length-1])
+    console.log(gif_object.and_the_rest.join(' '))
     iteration = iteration + " " + gif_object.global_color_table.join(' ')
     iteartion = iteration + " " + gif_object.and_the_rest.join(' ')
     console.log(iteration)
