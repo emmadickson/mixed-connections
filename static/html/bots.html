@@ -36,13 +36,28 @@
   for(var i = 0; i < mouthmouth.length; i++){
     mouthmouth_bytes.push(mouthmouth[i].slice(3,5))
   }
+
+  String.prototype.shuffle = function () {
+    var a = this.split(""),
+        n = a.length;
+
+    for(var i = n - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    return a.join("");
+  }
+
   mouthmouth_bytes[0] = '47'
 
   gif_object = gif_components(mouthmouth_bytes)
   if (gif_object.global_color_table != undefined){
     for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
       color = gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j]
-      console.log(color)
+      shuffle(color)
+      gif_object.global_color_table.slice(j-2, j) = color;
     }
     var iteration = []
     iteration = gif_object.header.join(' ')
