@@ -57,7 +57,7 @@
     for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
       color = gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j]
       console.log(color)
-      shuffle(color)
+      color.shuffle()
       console.log(color)
       gif_object.global_color_table[j-2] = color.slice(0,2);
       gif_object.global_color_table[j-1] = color.slice(2,4);
