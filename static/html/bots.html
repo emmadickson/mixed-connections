@@ -44,7 +44,7 @@
     for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
       color = gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j]
       console.log(color)
-      var shuffle_type = Math.floor(Math.random() * 1);
+      var shuffle_type = Math.floor(Math.random() * 2);
       console.log(shuffle_type)
       if (shuffle_type == 0){
         gif_object.global_color_table[j] = color.slice(0,2);
