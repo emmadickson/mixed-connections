@@ -44,11 +44,11 @@
       gif_object.global_color_table[j] = makeid()
     }
     var iteration = []
-    iteration = gif_object.header.join(' ')
-    iteration = iteration + gif_object.logical_screen_descriptor.full_string.join(' ')
-    console.log(gif_object.and_the_rest)
-    iteration = iteration + " " + gif_object.global_color_table.join(' ')
-    iteartion = iteration + " " + gif_object.and_the_rest.join(' ')
+    iteration = gif_object.header.toString()
+    iteration = iteration + gif_object.logical_screen_descriptor.full_string.toString()
+    console.log(gif_object.and_the_rest.toString())
+    iteration = iteration + " " + gif_object.global_color_table.toString()
+    iteartion = iteration + " " + gif_object.and_the_rest.toString()
     console.log(iteration)
   }
   else{
