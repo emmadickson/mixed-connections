@@ -45,13 +45,26 @@
     }
     var iteration = []
     iteration = gif_object.header.join(' ')
+    console.log(iteration)
     iteration = iteration + " " + gif_object.logical_screen_descriptor.full_string.join(' ')
+    console.log(iteration)
+
     iteration = iteration + " " + gif_object.global_color_table.join(' ')
+    console.log(iteration)
+
     iteration = iteration + " " + gif_object.graphics_control_ext.full_string.join(' ')
+    console.log(iteration)
+
     iteration = iteration + " " + gif_object.image_descriptor.full_string.join(' ')
+    console.log(iteration)
+
     iteration = iteration + " " + gif_object.image_data.join(' ')
+    console.log(iteration)
+
     iteration = iteration + " " + gif_object.trailer.join(' ')
     console.log(iteration)
+    console.log(gif_object.trailer.join(' '))
+
   }
   else{
     var iteration = mouthmouth_bytes.join(' ')
