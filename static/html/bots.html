@@ -45,11 +45,12 @@
     }
     var iteration = []
     iteration = gif_object.header.join(' ')
-    iteration = iteration + gif_object.logical_screen_descriptor.full_string.join(' ')
-    console.log(gif_object.and_the_rest[and_the_rest.length-1])
-    console.log(gif_object.and_the_rest.join(' '))
+    iteration = iteration + " " + gif_object.logical_screen_descriptor.full_string.join(' ')
     iteration = iteration + " " + gif_object.global_color_table.join(' ')
-    iteartion = iteration + " " + gif_object.and_the_rest.join(' ')
+    iteration = iteration + " " + gif_object.graphics_control_ext.join(' ')
+    iteration = iteration + " " + gif_object.image_descriptor.join(' ')
+    iteration = iteartion + " " + gif_object.image_data.join(' ')
+    iteration = iteration + " " + gif_object.trailer.join(' ')
     console.log(iteration)
   }
   else{
