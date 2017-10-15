@@ -73,13 +73,13 @@
     for (var i = 0; i < gif_object.image_data.lengh; i++){
       var r = Math.floor(Math.random() * 10)
       if (r<=3){
+        console.log('hi')
         gif_object.image_data[i] = ''
       }
     }
 
     console.log(gif_object.image_data)
     iteration = iteration + " " + gif_object.trailer.join(' ')
-    console.log(gif_object.trailer)
   }
   else{
     var iteration = mouthmouth_bytes.join(' ')
