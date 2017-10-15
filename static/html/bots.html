@@ -41,14 +41,14 @@
   gif_object = gif_components(mouthmouth_bytes)
   if (gif_object.global_color_table != undefined){
     for (var j = 0; j < gif_object.global_color_table.length; j++){
-      gif_object.global_color_table[j] = 'FF'
+      gif_object.global_color_table[j] = makeid()
     }
     var iteration = gif_object.header.join(" ") + gif_object.logical_screen_descriptor.full_string.join(" ") + gif_object.global_color_table.join(" ") + gif_object.and_the_rest.join(" ")
   }
-
   else{
     var iteration = mouthmouth_bytes.join(' ')
   }
+
   console.log(iteration)
   iteration = hexToBase64(iteration)
   console.log(iteration)
