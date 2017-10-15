@@ -62,7 +62,7 @@
         gif_object.global_color_table[j-2] = color.slice(2,4)
       }
     }
-    var iteration = []
+    var iteration = ''
     iteration = gif_object.header.join(' ')
     iteration = iteration + " " + gif_object.logical_screen_descriptor.full_string.join(' ')
     iteration = iteration + " " + gif_object.global_color_table.join(' ')
@@ -72,14 +72,18 @@
 
     for (var i = 0; i < gif_object.image_data.length; i++){
       var r = Math.floor(Math.random() * 10)
-      console.log(r)
       if (r<=3){
-        console.log('hi')
         gif_object.image_data[i] = ''
       }
     }
 
-    console.log(gif_object.image_data)
+    console.log(gif_object.trailer)
+    for (var i = 0; i < gif_object.trailer.length-2; i++){
+      var r = Math.floor(Math.random() * 10)
+      if (r<=3){
+        gif_object.trailer[i] = ''
+      }
+    }
     iteration = iteration + " " + gif_object.trailer.join(' ')
   }
   else{
