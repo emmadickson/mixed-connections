@@ -45,27 +45,22 @@
   gif_object.logical_screen_descriptor.background_color_index = 'FF'
   gif_object.logical_screen_descriptor.pixel_aspect_ratio = '01'
 
-  
+
   if (gif_object.global_color_table != undefined){
     for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
       color = gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j]
-      console.log(color)
       var shuffle_type = Math.floor(Math.random() * 3);
       console.log(shuffle_type)
       if (shuffle_type == 0){
         gif_object.global_color_table[j] = color.slice(0,2);
         gif_object.global_color_table[j-1] = color.slice(2,4);
         gif_object.global_color_table[j-2] = color.slice(4,6)
-        console.log('inverse')
-        console.log(gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j])
 
       }
       if (shuffle_type == 1){
         gif_object.global_color_table[j] = color.slice(0,2);
         gif_object.global_color_table[j-1] = color.slice(4,6);
         gif_object.global_color_table[j-2] = color.slice(2,4)
-        console.log('middle')
-        console.log(gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j])
       }
     }
     var iteration = []
@@ -75,7 +70,9 @@
     iteration = iteration + " " + gif_object.graphics_control_ext.full_string.join(' ')
     iteration = iteration + " " + gif_object.image_descriptor.full_string.join(' ')
     iteration = iteration + " " + gif_object.image_data.join(' ')
+    console.log(gif_object.image_data)
     iteration = iteration + " " + gif_object.trailer.join(' ')
+    console.log(gif_object.trailer)
   }
   else{
     var iteration = mouthmouth_bytes.join(' ')
