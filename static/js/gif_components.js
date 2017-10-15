@@ -154,7 +154,8 @@ function gif_components(mouthmouth_bytes){
   }
 
   trailer = mouthmouth_bytes.slice(0,1)
-
+  console.log("HI")
+  console.log(mouthmouth_bytes)
   total_package = {
     header:header,
     logical_screen_descriptor:logical_screen_descriptor,
