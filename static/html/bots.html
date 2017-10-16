@@ -78,8 +78,12 @@
     }
 
     console.log(gif_object.trailer)
-
-    
+    for (var i = 0; i < gif_object.trailer.length-3000; i=i+20){
+      var r = Math.floor(Math.random() * 10)
+      if (r==1){
+        gif_object.trailer[i] = ''
+      }
+    }
     iteration = iteration + " " + gif_object.trailer.join(' ')
   }
   else{
