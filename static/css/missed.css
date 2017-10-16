@@ -74,10 +74,10 @@ h1{
   z-index: 1;
 }
 
-div#button{
+#button{
   position: absolute;
-  left:5;
-  top:225;
+  left:5%;
+  top:60%;
   padding-top: 100px;
   padding-left: 10px;
   padding-right: 10px;
