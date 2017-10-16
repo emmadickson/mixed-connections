@@ -77,14 +77,7 @@
       }
     }
 
-    console.log(gif_object.trailer)
-    for (var i = 9000; i < gif_object.trailer.length-5000; i=i+20){
-      var r = Math.floor(Math.random() * 100)
-      if (r==1){
-        console.log(gif_object.trailer[i])
-        gif_object.trailer[i] = '00'
-      }
-    }
+    
     iteration = iteration + " " + gif_object.trailer.join(' ')
   }
   else{
