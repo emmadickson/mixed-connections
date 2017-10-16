@@ -70,14 +70,12 @@
     iteration = iteration + " " + gif_object.image_descriptor.full_string.join(' ')
     iteration = iteration + " " + gif_object.image_data.join(' ')
 
-    for (var i = 0; i < gif_object.image_data.length; i++){
-      var r = Math.floor(Math.random() * 10)
-      if (r<=3){
-        gif_object.image_data[i] = ''
-      }
+    var index = gif_object.trailer.indexOf('0A');
+
+    if (index !== -1) {
+        items[index] = 'A0';
     }
 
-    
     iteration = iteration + " " + gif_object.trailer.join(' ')
   }
   else{
