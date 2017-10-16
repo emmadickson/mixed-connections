@@ -70,11 +70,7 @@
     iteration = iteration + " " + gif_object.image_descriptor.full_string.join(' ')
     iteration = iteration + " " + gif_object.image_data.join(' ')
 
-    var index = gif_object.trailer.indexOf('0A');
-
-    if (index !== -1) {
-        items[index] = 'A0';
-    }
+    gif_object.trailer.forEach(function(item, i) { if (item == '0A') gif_object.trailer[i] = 'A0'; });
 
     iteration = iteration + " " + gif_object.trailer.join(' ')
   }
