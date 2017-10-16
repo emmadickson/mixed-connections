@@ -75,9 +75,7 @@ h1{
 }
 
 div#button{
-  position: absolute;
-  left:5;
-  top:225;
+  position: relative
   padding-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
