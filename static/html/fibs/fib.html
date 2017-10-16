@@ -166,12 +166,12 @@
       var randomcolor8 = Math.floor(Math.random() * 2);
       color(frame_8, randomcolor8)
     }
-
-    setTimeout(function() {
+    function myFunction() {
       var frame_1 = document.getElementById('one')
       var randomcolor1 = Math.floor(Math.random() * 2);
-      color(frame_1, randomcolor1)}
-      , 1000)
-    
+      color(frame_1, randomcolor1)
+    }
+    setTimeout(myFunction(), 1000)
+
   </script>
 </html>
