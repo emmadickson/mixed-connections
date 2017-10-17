@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <style>
     body{
       background: black;
@@ -8,24 +9,40 @@
       position: relative;
       color:white;
     }
-    div{
+    #hide{
+      font-family: 'Press Start 2P', cursive;
       margin-left: auto;
       margin-top: auto;
       width:100%;
       height:100;
-      font-size: 18px;
+      font-size: 28px;
       visibility: hidden;
+      color:white;
     }
     </style>
   </head>
 
   <body>
-    <div id="hide">I</div>
+    <a href='/' id="hide">I</a>
   </body>
   <script>
      window.setTimeout(function(){
        var element = document.getElementById('hide')
        element.style.visibility = 'visible'
+       var blink = 0;
+       setInterval(function(){
+        if(blink % 2 == 0){
+          var element = document.getElementById('hide')
+          element.style.textDecoration = 'underline';
+        }
+        else{
+          var element = document.getElementById('hide')
+          element.style.textDecoration = 'none';
+        }
+        blink = blink + 1;
+      }, 500);
+
      }, 1000);
+
   </script>
 </html>

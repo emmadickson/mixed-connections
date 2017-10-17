@@ -11,19 +11,19 @@ import random
 app = Flask(__name__, static_url_path='')
 
 @app.route('/')
-def render_static():
+def render_index():
     return app.send_static_file('html/index.html')
 
 @app.route('/db')
-def render_statics():
+def render_db():
     return app.send_static_file('html/db.html')
 
 @app.route('/raw')
-def render_staticd():
+def render_raw_db():
     return app.send_static_file('db.txt')
 
 @app.route('/fibs')
-def render_statice():
+def render_fib():
     return app.send_static_file('html/fibs/fib.html')
 
 @app.route("/bots")
@@ -118,6 +118,11 @@ def webscrape():
 
     return app.send_static_file('html/bots.html')
 
+@app.route("/I")
+def I():
+    with open('static/db.txt', 'r') as f:
+        lines = f.read()
+    print lines
 
 if __name__ == '__main__':
     app.run()
