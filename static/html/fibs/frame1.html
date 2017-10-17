@@ -12,13 +12,19 @@
       margin-left: auto;
       margin-top: auto;
       width:100%;
-      height:100
+      height:100;
+      visibility: hidden;
     }
     </style>
   </head>
 
   <body>
-    <div>I</div>
+    <div id="hide">I</div>
   </body>
-
+  <script>
+     window.setTimeout(function(){
+       var element = document.getElementById('hide')
+       element.style.visibility = 'visible'
+     }, 1000);
+  </script>
 </html>
