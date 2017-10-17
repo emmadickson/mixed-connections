@@ -126,15 +126,15 @@
 
       var frame_1 = document.getElementById('one')
       var positionInfo = frame_1.getBoundingClientRect();
-      frame_1.style.bottom = -height + positionInfo_5.height + 5 + "px"
-      frame_1.style.right = positionInfo_6.width  + "px"
+      frame_1.style.bottom = -height + positionInfo_5.height - 1 + "px"
+      frame_1.style.right = positionInfo_6.width - 1 + "px"
       var randomcolor3 = Math.floor(Math.random() * 2);
       color(frame_1, randomcolor3)
 
       var frame_2 = document.getElementById('two')
       var positionInfo_2 = frame_2.getBoundingClientRect();
-      frame_2.style.bottom = -height + positionInfo_5.height + "px"
-      frame_2.style.right = positionInfo_6.width + positionInfo.width + "px"
+      frame_2.style.bottom = -height + positionInfo_5.height + 1 + "px"
+      frame_2.style.right = positionInfo_6.width + positionInfo.width + 1 + "px"
       var randomcolor4 = Math.floor(Math.random() * 2);
       color(frame_2, randomcolor4)
 
