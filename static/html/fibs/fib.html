@@ -119,7 +119,7 @@
 
       var frame_5 = document.getElementById('five')
       var positionInfo_5 = frame_5.getBoundingClientRect();
-      frame_5.style.bottom = -height + "px"
+      frame_5.style.bottom = -height + 1 + "px"
       frame_5.style.right =  0+positionInfo_6.width + "px"
       var randomcolor2 = Math.floor(Math.random() * 2);
       color(frame_5, randomcolor2)
@@ -133,8 +133,8 @@
 
       var frame_2 = document.getElementById('two')
       var positionInfo_2 = frame_2.getBoundingClientRect();
-      frame_2.style.bottom = -height + positionInfo_5.height + 1 + "px"
-      frame_2.style.right = positionInfo_6.width + positionInfo.width + 1 + "px"
+      frame_2.style.bottom = -height + positionInfo_5.height + "px"
+      frame_2.style.right = positionInfo_6.width + positionInfo.width + "px"
       var randomcolor4 = Math.floor(Math.random() * 2);
       color(frame_2, randomcolor4)
 
@@ -162,7 +162,7 @@
       var frame_8 = document.getElementById('eight')
       var positionInfo_8 = frame_8.getBoundingClientRect();
       frame_8.style.bottom = -height + "px"
-      frame_8.style.right = +positionInfo_6.width  + positionInfo_5.width+ "px"
+      frame_8.style.right = +positionInfo_6.width  + positionInfo_5.width + 1 + "px"
       var randomcolor8 = Math.floor(Math.random() * 2);
       color(frame_8, randomcolor8)
     }
