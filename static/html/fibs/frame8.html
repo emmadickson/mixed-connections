@@ -15,7 +15,7 @@
       font-family: 'Press Start 2P', cursive;
       position: absolute;
       right: 0px;
-      top:0px;
+      top: 0px;
       height:100;
       font-size: 28px;
       visibility: hidden;
@@ -31,58 +31,10 @@
   </head>
 
   <body>
-    <a onclick="choose()" href='#' id="hide">I</a>
+    
   </body>
 
   <script>
-     window.setTimeout(function(){
-       var element = document.getElementById('hide')
-       element.style.visibility = 'visible'
-       var blink = 0;
-       setInterval(function(){
-        if(blink % 2 == 0){
-          var element = document.getElementById('hide')
-          element.style.textDecoration = 'underline';
-        }
-        else{
-          var element = document.getElementById('hide')
-          element.style.textDecoration = 'none';
-        }
-        blink = blink + 1;
-      }, 500);
 
-     }, 1000);
-
-     function choose(){
-       jQuery.get('/raw', function(data) {
-
-        var entries = JSON.stringify(data)
-        entries = entries.split("\\")
-        entries = entries.slice(1,entries.length)
-         // 3. Set up Arrays to recieve titles and posts from the txt file.
-         posts = []
-         // 4. posts the document up into lines and from individiaul lines into titles and posts
-         var spans = []
-         for (var i = 0; i < entries.length; i++){
-            if (entries[i].length > 10){
-             var limbs = entries[i].split("***");
-             post = limbs[1]
-             beginning = post.slice(0,3)
-             if (beginning.indexOf("I ") !== -1){
-               var result = post.match( /[^\.!\?]+[\.!\?]+/g );
-               if (result != null){
-                 var span = document.createElement('span')
-                 span.textContent = result[0]
-                 spans.push(span)
-               }
-             }
-           }
-         }
-         for (var j = 0; j < spans.length; j++){
-           var body = document.getElementsByTagName('body')[0]
-           body.appendChild(spans[j])
-         }
-     })
-     }
   </script>
 </html>

@@ -78,7 +78,7 @@
      <iframe id="three" src="html/fibs/frame3.html" frameBorder="0"></iframe>
      <iframe id="four" src="html/fibs/frame4.html" frameBorder="0"></iframe>
      <iframe id="seven" src="html/fibs/frame7.html" frameBorder="0"></iframe>
-     <iframe id="eight" src="html/fibs/frame8.html" frameBorder="0"></iframe>
+     <iframe id="eight" name="eight" src="html/fibs/frame8.html" frameBorder="0"></iframe>
   </body>
 
   <script>
@@ -97,8 +97,8 @@
 
     frames = document.getElementsByTagName('iframe')
     for (var i = 0; i <= frames.length-1; i++){
-      var new_width = Math.ceil(frames[i].offsetWidth * multiplier*2);
-      var new_height = Math.ceil(frames[i].offsetHeight * multiplier*2);
+      var new_width = Math.ceil(frames[i].offsetWidth * multiplier*1.5);
+      var new_height = Math.ceil(frames[i].offsetHeight * multiplier*1.5);
 
       frames[i].style.width = new_width + 'px';
       frames[i].style.height = new_height + 'px';
@@ -144,6 +144,7 @@
       frame_8.style.right = positionInfo_6.width + positionInfo_5.width + "px"
 
     }
+
 
   </script>
 </html>

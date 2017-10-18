@@ -26,6 +26,10 @@ def render_raw_db():
 def render_fib():
     return app.send_static_file('html/fibs/fib.html')
 
+@app.route('/8')
+def render_8():
+    return app.send_static_file('html/fibs/frame8.1.html')
+
 @app.route("/bots")
 def webscrape():
     # 1. Specify the local url
