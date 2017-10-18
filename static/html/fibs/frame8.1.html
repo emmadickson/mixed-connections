@@ -37,9 +37,11 @@
 
   <script>
 
-    function wait(spans, j){
+    function wait(spans){
       var body = document.getElementsByTagName('body')[0]
-      body.appendChild(spans[j])
+        for (var j = 0; j < spans.length; j++){
+          body.appendChild(spans[j])
+        }
     }
 
     function test(){
@@ -67,10 +69,10 @@
             }
           }
         }
-        for (var j = 0; j < spans.length; j++){
-          setTimeout(wait(spans, j), 3000)
 
-        }
+          setTimeout(wait(spans), 3000)
+
+
     })
     }
     test()
