@@ -118,11 +118,6 @@ def webscrape():
 
     return app.send_static_file('html/bots.html')
 
-@app.route("/I")
-def I():
-    with open('static/db.txt', 'r') as f:
-        lines = f.read()
-    print lines
 
 if __name__ == '__main__':
     app.run()

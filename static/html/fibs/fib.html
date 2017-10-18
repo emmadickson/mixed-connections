@@ -14,43 +14,58 @@
       }
       #one{
         position: absolute;
-        width:20px;
-        height:20px;
+        width:1px;
+        height:1px;
+        border: 0;
       }
       #two{
         position: absolute;
-        width:20px;
-        height:20px;
+        width:1px;
+        height:1px;
+        border: 0;
+
       }
       #three{
         position: absolute;
-        width:40px;
-        height:40px;
+        width:2px;
+        height:2px;
+        border: 0;
+
       }
       #four{
         position: absolute;
-        width:60px;
-        height:60px;
+        width:3px;
+        height:3px;
+        border: 0;
+
       }
       #five{
         position: absolute;
-        width:100px;
-        height:100px;
+        width:5px;
+        height:5px;
+        border: 0;
+
       }
       #six{
         position: absolute;
-        width:160px;
-        height:160px;
+        width:8px;
+        height:8px;
+        border: 0;
+
       }
       #seven{
         position: absolute;
-        width:260px;
-        height:260px;
+        width:13px;
+        height:13px;
+        border: 0;
+
       }
       #eight{
         position: absolute;
-        width:420px;
-        height:420px;
+        width:21px;
+        height:21px;
+        border: 0;
+
       }
     </style>
   </head>
@@ -69,88 +84,66 @@
   <script>
     var height = $(window).height();
     var width = $(window).width();
-    var determiner = 10+10+20+30+50+80+130+210
-    var width_determiner = (width/determiner)
-    var height_determiner = (height/determiner)
-    var multiplier = (width_determiner)
-
-    function color(element, colorTone){
-      // Red tone
-      if (colorTone == 0){
-        var red = Math.floor((Math.random() * 100) + 75);
-        var green = Math.floor((Math.random() * 100) + 0);
-        var blue = Math.floor((Math.random() * 100) + 0);
-        var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
-        element.style.backgroundColor = colour;
-      }
-      // Blue tone
-      if (colorTone == 1){
-        var red = Math.floor((Math.random() * 100) + 0);
-        var green = Math.floor((Math.random() * 100) + 0);
-        var blue = Math.floor((Math.random() * 100) + 145);
-        var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
-        element.style.backgroundColor = colour;
-      }
-      // yellow tone
-      if (colorTone == 2){
-        var red = Math.floor((Math.random() * 100) + 145);
-        var green = Math.floor((Math.random() * 100) + 60);
-        var blue = Math.floor((Math.random() * 100) + 10);
-        var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
-        element.style.backgroundColor = colour;
-      }
+    var combined_width = 0
+    frames = document.getElementsByTagName('iframe')
+    for (var i = 0; i <= frames.length-1; i++){
+      combined_width = combined_width + frames[i].offsetWidth
     }
+
+    var width_determiner = Math.ceil(width/combined_width)
+    var height_determiner = Math.ceil(height/combined_width)
+
+    var multiplier = Math.ceil(width_determiner)
 
     frames = document.getElementsByTagName('iframe')
     for (var i = 0; i <= frames.length-1; i++){
-      var new_width = frames[i].offsetWidth * multiplier;
-      var new_height = frames[i].offsetHeight * multiplier;
+      var new_width = Math.ceil(frames[i].offsetWidth * multiplier*2);
+      var new_height = Math.ceil(frames[i].offsetHeight * multiplier*2);
 
       frames[i].style.width = new_width + 'px';
       frames[i].style.height = new_height + 'px';
 
       var frame_6 = document.getElementById('six')
       var positionInfo_6 = frame_6.getBoundingClientRect();
-      frame_6.style.bottom = -height +  "px"
+      frame_6.style.bottom = -height + "px"
       frame_6.style.right =  0 + "px"
 
       var frame_5 = document.getElementById('five')
       var positionInfo_5 = frame_5.getBoundingClientRect();
       frame_5.style.bottom = -height + "px"
-      frame_5.style.right =  0+positionInfo_6.width + "px"
+      frame_5.style.right =  0 + positionInfo_6.width + "px"
 
       var frame_1 = document.getElementById('one')
       var positionInfo = frame_1.getBoundingClientRect();
-      frame_1.style.bottom = -height + positionInfo_5.height - 1 + "px"
-      frame_1.style.right = positionInfo_6.width   + "px"
+      frame_1.style.bottom = -height + positionInfo_5.height + "px"
+      frame_1.style.right = positionInfo_6.width + "px"
 
       var frame_2 = document.getElementById('two')
       var positionInfo_2 = frame_2.getBoundingClientRect();
-      frame_2.style.bottom = -height + positionInfo_5.height - 1 + "px"
+      frame_2.style.bottom = -height + positionInfo_5.height + "px"
       frame_2.style.right = positionInfo_6.width + positionInfo.width + "px"
 
       var frame_3 = document.getElementById('three')
       var positionInfo_3 = frame_3.getBoundingClientRect();
-      frame_3.style.bottom = -height + positionInfo_6.height - positionInfo_3.height - 1 + "px"
-      frame_3.style.right =  positionInfo_6.width - positionInfo_3.width + 2*positionInfo.width + "px"
+      frame_3.style.bottom = -height + positionInfo_6.height - positionInfo_3.height + "px"
+      frame_3.style.right =  positionInfo_6.width - positionInfo_3.width + positionInfo.width + positionInfo_2.width + "px"
 
       var frame_4 = document.getElementById('four')
       var positionInfo_4 = frame_4.getBoundingClientRect();
-      frame_4.style.bottom = -height + positionInfo_6.height - positionInfo_3.height - positionInfo.height - 1 + "px"
-      frame_4.style.right =  positionInfo_6.width - positionInfo_3.width + positionInfo_5.width - positionInfo.width - 1 + "px"
+      frame_4.style.bottom = -height + positionInfo_6.height - positionInfo_3.height - positionInfo.height + "px"
+      frame_4.style.right =  positionInfo_6.width - positionInfo_3.width + positionInfo_5.width - positionInfo.width  + "px"
 
       var frame_7 = document.getElementById('seven')
       var positionInfo_7 = frame_7.getBoundingClientRect();
-      frame_7.style.bottom = -height + positionInfo_6.height - 1 + "px"
+      frame_7.style.bottom = -height + positionInfo_6.height + "px"
       frame_7.style.right = 0 + "px"
 
       var frame_8 = document.getElementById('eight')
       var positionInfo_8 = frame_8.getBoundingClientRect();
       frame_8.style.bottom = -height + "px"
-      frame_8.style.right = +positionInfo_6.width  + positionInfo_5.width - 2 + "px"
+      frame_8.style.right = positionInfo_6.width + positionInfo_5.width + "px"
 
     }
-
 
   </script>
 </html>
