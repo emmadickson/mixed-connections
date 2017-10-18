@@ -97,8 +97,8 @@
 
     frames = document.getElementsByTagName('iframe')
     for (var i = 0; i <= frames.length-1; i++){
-      var new_width = Math.ceil(frames[i].offsetWidth * multiplier*1.5);
-      var new_height = Math.ceil(frames[i].offsetHeight * multiplier*1.5);
+      var new_width = Math.ceil(frames[i].offsetWidth * multiplier);
+      var new_height = Math.ceil(frames[i].offsetHeight * multiplier);
 
       frames[i].style.width = new_width + 'px';
       frames[i].style.height = new_height + 'px';
