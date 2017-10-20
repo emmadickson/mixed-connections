@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <style>
       body{
@@ -21,65 +21,78 @@
   </head>
 
   <body>
-
      <img id="glitch" >
-
   </body>
+
   <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/original_gif.js"></script>
   <script type="text/javascript" src="js/gif_components.js"></script>
 
   <script>
-  var longshot = document.getElementById('glitch')
-  mouthmouth_bytes = []
-  mouthmouth = mouthmouth.split(",")
-  for(var i = 0; i < mouthmouth.length; i++){
-    mouthmouth_bytes.push(mouthmouth[i].slice(3,5))
-  }
-
-  mouthmouth_bytes[0] = '47'
-
-
-  gif_object = gif_components(mouthmouth_bytes)
-
-  gif_object.logical_screen_descriptor.background_color_index = 'FF'
-  gif_object.logical_screen_descriptor.pixel_aspect_ratio = '01'
-
-
-  if (gif_object.global_color_table != undefined){
-    for (var j = 3; j < gif_object.global_color_table.length; j=j+3){
-      color = gif_object.global_color_table[j-2]+gif_object.global_color_table[j-1]+gif_object.global_color_table[j]
-      var shuffle_type = Math.floor(Math.random() * 3);
-      if (shuffle_type == 0){
-        gif_object.global_color_table[j] = color.slice(0,2);
-        gif_object.global_color_table[j-1] = color.slice(2,4);
-        gif_object.global_color_table[j-2] = color.slice(4,6)
-
-      }
-      if (shuffle_type == 1){
-        gif_object.global_color_table[j] = color.slice(0,2);
-        gif_object.global_color_table[j-1] = color.slice(4,6);
-        gif_object.global_color_table[j-2] = color.slice(2,4)
-      }
+    function ReverseShuffle(color, gifObject, j){
+      gifObject.globalColorTable[j] = color.slice(0,2);
+      gifObject.globalColorTable[j-1] = color.slice(2,4);
+      gifObject.globalColorTable[j-2] = color.slice(4,6)
+      return gifObject
     }
-    var iteration = ''
-    iteration = gif_object.header.join(' ')
-    iteration = iteration + " " + gif_object.logical_screen_descriptor.full_string.join(' ')
-    iteration = iteration + " " + gif_object.global_color_table.join(' ')
-    iteration = iteration + " " + gif_object.graphics_control_ext.full_string.join(' ')
-    iteration = iteration + " " + gif_object.image_descriptor.full_string.join(' ')
-    iteration = iteration + " " + gif_object.image_data.join(' ')
 
+    function MiddleShuffle(color, gifObject, j){
+      gifObject.globalColorTable[j] = color.slice(0,2);
+      gifObject.globalColorTable[j-1] = color.slice(4,6);
+      gifObject.globalColorTable[j-2] = color.slice(2,4)
+    }
 
-    iteration = iteration + " " + gif_object.trailer.join(' ')
-  }
-  else{
-    var iteration = mouthmouth_bytes.join(' ')
-  }
+    function CleanGifText(){
+      originalGifTextBytes = []
+      originalGifText = originalGifText.split(",")
+      for(var i = 0; i < originalGifText.length; i++){
+        originalGifTextBytes.push(originalGifText[i].slice(3,5))
+      }
+      originalGifTextBytes[0] = '47'
+      return originalGifTextBytes;
+    }
 
-  iteration = hexToBase64(iteration)
-  console.log(iteration)
-  longshot.src = "data:image/png;base64," + iteration
+    function CreateGlitchedGif(gifObject){
+      var glitchedGif = ''
+      glitchedGif = gifObject.header.join(' ')
+      glitchedGif = glitchedGif + " " + gifObject.logicalScreenDescriptor.fullString.join(' ')
+      glitchedGif = glitchedGif + " " + gifObject.globalColorTable.join(' ')
+      glitchedGif = glitchedGif + " " + gifObject.graphicsControlExt.fullString.join(' ')
+      glitchedGif = glitchedGif + " " + gifObject.imageDescriptor.fullString.join(' ')
+      glitchedGif = glitchedGif + " " + gifObject.imageData.join(' ')
+      glitchedGif = glitchedGif + " " + gifObject.trailer.join(' ')
+      return glitchedGif
+    }
+
+    function ShuffleGlobalColorTable(gifObject){
+      for (var j = 3; j < gifObject.globalColorTable.length; j=j+3){
+        color = gifObject.globalColorTable[j-2]+
+        gifObject.globalColorTable[j-1]+
+        gifObject.globalColorTable[j]
+        var shuffle_type = Math.floor(Math.random() * 3);
+
+        if (shuffle_type == 0){
+          gifObject = ReverseShuffle(color, gifObject, j)
+        }
+        if (shuffle_type == 1){
+          gifObject = ReverseShuffle(color, gifObject, j)
+        }
+      }
+      glitchedGif = CreateGlitchedGif(gifObject)
+      return glitchedGif
+    }
+
+    var gifDomElement = document.getElementById('glitch')
+    originalGifTextBytes = CleanGifText()
+    gifObject = GifComponents(originalGifTextBytes)
+    if (gifObject.globalColorTable != undefined){
+      var glitchedGif = ShuffleGlobalColorTable(gifObject)
+    }
+    else{
+      var glitchedGif = originalGifTextBytes.join(' ')
+    }
+    glitchedGif = hexToBase64(glitchedGif)
+    gifDomElement.src = "data:image/png;base64," + glitchedGif
 
   </script>
 </html>

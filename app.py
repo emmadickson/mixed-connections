@@ -10,6 +10,126 @@ from random import shuffle
 import random
 app = Flask(__name__, static_url_path='')
 
+# Constants
+CRAIGSLIST_URLS = [
+"https://newyork.craigslist.org",
+"https://raleigh.craigslist.org",
+"https://pittsburgh.craigslist.org"
+]
+NUMBER_OF_POSTS = 2
+DB_FILE = "static/db.txt"
+
+randomUrl = random.randint(0,2)
+
+def CollectEntriesHashes(storedEntries):
+    hashes = []
+    for entry in storedEntries:
+        entryFields = entry.split("***")
+        if len(entryFields) > 3:
+            hash = entryFields[2]
+            hash = hash[1:]
+            hashes.append(hash)
+    return hashes
+
+def CollectMissedConnectionsLink():
+    craigslistMissedConnectionsUrls = []
+    randomCraigslistUrl = CRAIGSLIST_URLS[randomUrl] + "/search/mis"
+    response = requests.get(randomCraigslistUrl).text
+    soup = bs4.BeautifulSoup(response, "html.parser")
+    for link in soup.findAll('a', href=True, text=''):
+            if ('html' in link['href']):
+                craigslistMissedConnectionsUrls.append( link['href'] )
+    shuffle(craigslistMissedConnectionsUrls)
+    return craigslistMissedConnectionsUrls
+
+def GetTitle(pageContent):
+    title = pageContent.select('title')[0].get_text()
+    title = CleanTitle(title)
+    return title
+
+def GetLocation():
+    location = CRAIGSLIST_URLS[randomUrl]
+    if ".org" in location:
+        location = CRAIGSLIST_URLS[randomUrl][8:-15]
+    else:
+        location = CRAIGSLIST_URLS[randomUrl][8:-14]
+    return location
+
+def GetHash(postBody):
+    hashObject = hashlib.md5(postBody)
+    hashedPostBody = hashObject.hexdigest()
+    return hashedPostBody;
+
+def GetPageContent(craigslistMissedConnectionsUrls):
+    linkToVisit = craigslistMissedConnectionsUrls[0]
+    response = requests.get(linkToVisit)
+    pageContent = bs4.BeautifulSoup(response.text, "html.parser")
+    return pageContent;
+
+def GetBody():
+    craigslistMissedConnectionsUrls = CollectMissedConnectionsLink()
+    pageContent = GetPageContent(craigslistMissedConnectionsUrls)
+    body = pageContent.select('section#postingbody')[0].get_text()
+    body = body.split("QR Code Link to This Post")[1]
+    body = CleanPostBody(body)
+    return body
+
+def CleanPostBody(body):
+    body = re.sub('\n', '', body)
+    body = (body).replace('"', "'")
+    body = body.rstrip()
+    body = body.encode('utf-8')
+    return body
+
+def CleanTitle(title):
+    title = re.sub('\n', '', title)
+    title = (title).replace('"', "'")
+    title = title.encode('utf-8')
+    return title
+
+def CleanStoredEntries(storedEntries):
+    storedEntries = storedEntries[16:]
+    storedEntries = storedEntries[:-5]
+    storedEntries = storedEntries.split("\",\"")
+    return storedEntries
+
+def CheckIfHashExists(hashedPostBody, hashes):
+    if (hashedPostBody not in hashes):
+        return True
+    else:
+        return False
+
+def CreateEntry(pageContent):
+    title = GetTitle(pageContent)
+    today = datetime.date.today()
+    location = GetLocation()
+    body = GetBody()
+    hashedPostBody = GetHash(body)
+    dbEntry = title + " *** " + body + " *** " + hashedPostBody + "*** Location: " + location + " *** Time: " + str(today)
+    return dbEntry
+
+def AddEntryToStore(storedEntries, pageContent):
+    dbEntry = CreateEntry(pageContent)
+    print(dbEntry)
+    storedEntries.append(dbEntry)
+    return storedEntries
+
+def WriteStoreToFile(storedEntries):
+    textEntries = open('static/db.txt', 'w')
+    textEntries.write("var entries = [")
+    for line in storedEntries:
+        if (line != None and len(line) > 2):
+            textEntries.write("\"" + line + "\",")
+            textEntries.write(" ")
+    textEntries.write("];")
+    textEntries.close()
+
+def ReadFile(DB_FILE):
+    with open(DB_FILE, 'r') as entriesFile:
+        storedEntries = entriesFile.read()
+    entriesFile.close()
+    return storedEntries
+
 @app.route('/')
 def render_index():
     return app.send_static_file('html/index.html')
@@ -18,107 +138,40 @@ def render_index():
 def render_db():
     return app.send_static_file('html/db.html')
 
-@app.route('/raw')
+@app.route('/raw_db')
 def render_raw_db():
     return app.send_static_file('db.txt')
 
 @app.route('/fibs')
-def render_fib():
+def render_fibs():
     return app.send_static_file('html/fibs/fib.html')
 
-@app.route('/8')
-def render_8():
+@app.route('/frame_8.1')
+def render_8_1():
     return app.send_static_file('html/fibs/frame8.1.html')
 
 @app.route("/bots")
 def webscrape():
-    # 1. Specify the local url
-    homeBases = ["https://newyork.craigslist.org",
-    "https://raleigh.craigslist.org",
-    "https://pittsburgh.craigslist.org"]
+    craigslistMissedConnectionsUrls = CollectMissedConnectionsLink()
 
-    links = []
+    storedEntries = ReadFile(DB_FILE)
 
-    totalPostNumber = 1
-    for x in range (0, totalPostNumber):
-        randomUrl = random.randint(0,2)
-        startURL = homeBases[randomUrl] + "/search/mis"
+    storedEntries = CleanStoredEntries(storedEntries)
 
-        #socks.setdefaultproxy(proxy_type=socks.PROXY_TYPE_SOCKS5, addr="127.0.0.1", port=9050)
-        #socket.socket = socks.socksocket
+    hashes = CollectEntriesHashes(storedEntries)
 
-        # 2. Get the links on the missed connections page provided
-        response = requests.get(startURL).text
+    for x in range(0, NUMBER_OF_POSTS):
+        postBody = GetBody()
 
-        soup = bs4.BeautifulSoup(response, "html.parser")
-        for link in soup.findAll('a', href=True, text=''):
-                if ('html' in link['href']):
-                    links.append( link['href'] )
+        hashedPostBody = GetHash(postBody)
 
-        shuffle(links)
+        hashExists = CheckIfHashExists(hashedPostBody, hashes)
 
-        # 4. Read in the db info and store hashes of titles also remove last line
-        # of js wrapping
-        hashes = []
-        with open('static/db.txt', 'r') as f:
-            lines = f.read()
-        f.close()
+        if (hashExists == 1):
+            pageContent = GetPageContent(craigslistMissedConnectionsUrls)
+            storedEntries = AddEntryToStore(storedEntries, pageContent)
 
-        lines = lines[16:]
-        lines = lines[:-5]
-        lines = lines.split("\",\"")
-
-        for l in lines:
-            hash = l.split("***")
-            if len(hash) > 3:
-                h = hash[2]
-                h = h[1:]
-                hashes.append(h)
-
-        # 5. Scrape the titles and postbody and add to db file
-        open('static/db.txt', 'w').close()
-
-        text_file = open('static/db.txt', 'w')
-        finalLink = links[0]
-
-        response = requests.get(finalLink)
-        pageContent = bs4.BeautifulSoup(response.text, "html.parser")
-        body = pageContent.select('section#postingbody')[0].get_text()
-        body = body.split("QR Code Link to This Post")[1]
-        body = re.sub('\n', '', body)
-        body = (body).replace('"', "'")
-        body = body.rstrip()
-        body = body.encode('utf-8')
-
-        # 6. Hash title and check to see if we've already stored it.
-        # If not construct db entry and add it to file
-        hash_object = hashlib.md5(body)
-        bodyHash = hash_object.hexdigest()
-
-        if (bodyHash not in hashes):
-            print("Add!")
-            title = pageContent.select('title')[0].get_text()
-            title = re.sub('\n', '', title)
-            title = (title).replace('"', "'")
-            title = title.encode('utf-8')
-            today = datetime.date.today()
-            location = homeBases[randomUrl]
-            if ".org" in location:
-                location = homeBases[randomUrl][8:-15]
-            else:
-                location = homeBases[randomUrl][8:-14]
-            print location
-            dbEntry = title + " *** " + body + " *** " + bodyHash + "*** Location: " + location + " *** Time: " + str(today)
-            lines.append(dbEntry)
-
-        text_file.write("var entries = [")
-        for line in lines:
-            if len(line) > 2:
-                text_file.write("\"" + line + "\",")
-                text_file.write(" ")
-
-        text_file.write("];")
-        text_file.close()
+    WriteStoreToFile(storedEntries)
 
     return app.send_static_file('html/bots.html')
 

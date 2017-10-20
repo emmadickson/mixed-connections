@@ -1,1 +1,1 @@
-homeBases = ["newyork","raleigh","pittsburgh"]
+craigslist_locations = ["newyork","raleigh","pittsburgh"]

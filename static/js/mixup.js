@@ -1,38 +1,17 @@
-function shuffle(a) {
-    for (let i = a.length; i; i--) {
-        let j = Math.floor(Math.random() * i);
-        [a[i - 1], a[j]] = [a[j], a[i - 1]];
-    }
-}
+ALPHABET = [
+"\u2020", "\u2021", "\u2022", "\u2023", "\u2024", "\u2025", "\u2026",
+"\u2027", "\u2028", "\u2029", "\u2031", "\u2039", "\u203A", "\u203B"
+, "\u203C", "\u203D", "\u203F", "\u2040", "\u2041", "\u2042", "\u2045"
+, "\u2046", "\u2047", "\u2048", "\u204A", "\u204B", "\u2058", "\u2059"];
 
-function scramble(originalText, domElement){
-  var master = originalText;
-  alphabet = [
-  "\u2020", "\u2021", "\u2022", "\u2023", "\u2024", "\u2025", "\u2026",
-  "\u2027", "\u2028", "\u2029", "\u2031", "\u2039", "\u203A", "\u203B"
-  , "\u203C", "\u203D", "\u203F", "\u2040", "\u2041", "\u2042", "\u2045"
-  , "\u2046", "\u2047", "\u2048", "\u204A", "\u204B", "\u2058", "\u2059"];
-  for (var j = 0; j < 3; j++){
-    var letterSelection = Math.floor((Math.random() * master.length) + 0);
-    var letter = master.indexOf(j);
-    var randomAlphabet = Math.floor((Math.random() * 25) + 0);
-    var replacementLetter = alphabet[randomAlphabet]
-
-    firstChunk = master.slice(0,letterSelection-1);
-    secondChunk = master.slice(letterSelection, master.length)
-    lengthCheck = firstChunk + replacementLetter + secondChunk
-    if (lengthCheck.length == master.length){
-        master = lengthCheck;
-    }
+function shuffle(array) {
+  for (let i = array.length; i; i--) {
+      let j = Math.floor(Math.random() * i);
+      [array[i - 1], array[j]] = [array[j], array[i - 1]];
   }
-
-  domElement.textContent = master
 }
 
-
-// 2. Set up event listeners to change css and scramble title
-function mixup(evt) {
-  var post = document.getElementById("missed-connection");
+function CleanPost(post){
   sentences = [];
   var phrase = post.textContent.match( /[^\.!\?]+[\.!\?]+/g );
   // 8. For now I'm breaking it up based on punctuation so if someone uses
@@ -42,9 +21,26 @@ function mixup(evt) {
       sentences.push(phrase[j]);
     }
   }
-  shuffle(sentences)
-  post.textContent = sentences.join(' ')
-  count = count + 1;
+  return sentences
+}
+function scramble(originalText, domElement){
+  var alteredText = originalText;
+  for (var j = 0; j < 3; j++){
+    var letterSelection = Math.floor((Math.random() * alteredText.length) + 0);
+    var letter = alteredText.indexOf(j);
+    var randomAlphabet = Math.floor((Math.random() * 25) + 0);
+    var replacementLetter = ALPHABET[randomAlphabet]
+    firstChunk = alteredText.slice(0,letterSelection-1);
+    secondChunk = alteredText.slice(letterSelection, alteredText.length)
+    lengthCheck = firstChunk + replacementLetter + secondChunk
+    if (lengthCheck.length == alteredText.length){
+        alteredText = lengthCheck;
+    }
+  }
+  domElement.textContent = alteredText
+}
+
+function AdjustColor(count){
   var hidden = document.getElementById('hidden')
   var hidden2 = document.getElementById('hidden2')
   var color_value = 255 - count/4;
@@ -56,37 +52,58 @@ function mixup(evt) {
   }
 }
 
-function mixConnections(){
-  jQuery.get('/raw', function(data) {
 
-   var entries = JSON.stringify(data)
-   entries = entries.split("\\")
+function MixupPost(evt) {
+  var post = document.getElementById("missed-connection");
+  sentences = CleanPost(post)
+  shuffle(sentences)
+  post.textContent = sentences.join(' ')
+  count = count + 1;
+  AdjustColor(count)
+}
 
-    // 3. Set up Arrays to recieve titles and posts from the txt file.
-    titles = []
-    posts = []
-    // 4. posts the document up into lines and from individiaul lines into titles and posts
+function SplitEntries(data){
+  var entries = JSON.stringify(data)
+  entries = entries.split("\\")
+  return entries
+}
 
-    var linesOfText = entries
-    for (var i = 0; i < entries.length; i++){
-       if (entries[i].length > 10){
-        var limbs = entries[i].split("***");
+function GetTitlesAndPosts(entries){
+  // 3. Set up Arrays to recieve titles and posts from the txt file.
+  titles = []
+  posts = []
 
-
-        title = limbs[0]
-        title = title.substring(1, title.length-1)
-        titles.push(title)
-        posts.push(limbs[1]);
-      }
+  // 4. posts the document up into lines and from individiaul lines into titles and posts
+  for (var i = 0; i < entries.length; i++){
+     if (entries[i].length > 10){
+      var limbs = entries[i].split("***");
+      title = limbs[0]
+      title = title.substring(1, title.length-1)
+      titles.push(title)
+      posts.push(limbs[1]);
     }
+  }
+  return [titles, posts]
+}
 
+function CleanEntries(entries){
+  var cleanedEntries = []
+  for (var i = 0; i < entries.length; i++){
+     if (entries[i] != undefined){
+      cleanedEntries.push(entries[i])
+    }
+  }
+  return cleanedEntries
+}
+
+function GetRandomTitle(titles){
   // 5. Randomly select a title and display it in h1 id="title"
   var randomTitle = titles[Math.floor(Math.random()*titles.length)];
   var domTitle = document.getElementById('title');
   domTitle.textContent = randomTitle;
+}
 
-  // 6. Shuffle posts
-  shuffle(posts)
+function SplitPosts(posts){
   // 7. Break the posts up into sentences
   phrases = [];
   for (var k = 0; k < posts.length; k++){
@@ -101,15 +118,13 @@ function mixConnections(){
       }
     }
   }
+  return phrases
+}
 
-  // 9. Shuffle sentences
-  shuffle(phrases)
-
-  // 10. Go through phrases and select a random number
+function CreatePostBody(phrases){
   threads = [];
-
-  var postBody = " ";
   var postLength = Math.floor((Math.random() * 5) + 2);
+  var postBody = " ";
   while (threads.length < postLength){
     random = getRandomIntInclusive(0,phrases.length-1);
     selection = phrases[random];
@@ -118,6 +133,35 @@ function mixConnections(){
     }
   }
   postBody = threads.join(" ");
+  return postBody
+}
+
+function CreateMixedConnection(){
+
+  jQuery.get('/raw_db', function(data) {
+
+   var entries = SplitEntries(data)
+
+   var postElements = GetTitlesAndPosts(entries)
+
+   var titles = postElements[0]
+   titles = CleanEntries(titles)
+
+   var posts = postElements[1]
+   posts = CleanEntries(posts)
+
+  GetRandomTitle(titles)
+
+  // 6. Shuffle posts
+  shuffle(posts)
+
+  // 7. Break the posts up into sentences
+  phrases = SplitPosts(posts)
+
+  // 9. Shuffle sentences
+  shuffle(phrases)
+
+  postBody = CreatePostBody(phrases)
 
   // 11. Take the post body and display it in the p id="missed-connection"
   var domMissedConnection = document.getElementById('missed-connection');

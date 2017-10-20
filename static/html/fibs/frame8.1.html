@@ -3,20 +3,19 @@
   <head>
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <meta charset="UTF-8">
     <style>
     body{
       background: black;
-      overflow: hidden;
       position: relative;
       color:white;
     }
-    span{
+    div{
       bottom: 0px;
       right:0px;
-      font-size: 10px;
+      font-size: 8px;
       font-family: 'Press Start 2P', cursive;
-      color: white;
+      color: #00FF00;
     }
     </style>
   </head>
@@ -24,18 +23,10 @@
   <body>
 
   </body>
-
+  <script type="text/javascript" src="js/util.js"></script>
   <script>
 
-    function wait(spans){
-      var body = document.getElementsByTagName('body')[0]
-        for (var j = 0; j < spans.length; j++){
-          body.appendChild(spans[j])
-        }
-    }
-
-    function test(){
-      jQuery.get('/raw', function(data) {
+      jQuery.get('/raw_db', function(data) {
 
        var entries = JSON.stringify(data)
        entries = entries.split("\\")
@@ -52,20 +43,63 @@
             if (beginning.indexOf("I ") !== -1){
               var result = post.match( /[^\.!\?]+[\.!\?]+/g );
               if (result != null){
-                var span = document.createElement('span')
-                span.textContent = result[0]
-                spans.push(span)
+                spans.push(result[0])
               }
             }
           }
         }
 
-          setTimeout(wait(spans), 3000)
+        var body = document.getElementsByTagName('body')[0]
+        var i = 0;
+        var random_words = []
+        var k = 0
 
+        fillers = ["an", "this.", "this", "but", "I", "of", "to", "and", "in", "at", "the", "", "that", "on", "a", "if"]
 
+        while(random_words.length < spans.length){
+          sentence = spans[k].split(' ');
+          var possibilities = []
+
+          for (var t = 0; t < sentence.length; t++){
+            word = sentence[t]
+            if (fillers.indexOf(word) == -1){
+              possibilities.push(word)
+            }
+          }
+          shuffle(possibilities);
+          var r = Math.floor(Math.random() * possibilities.length);
+          var word = possibilities[r]
+          var index = sentence.indexOf(word);
+          word = possibilities[r] + "*?*"
+          sentence[index] = word
+          random_words.push(sentence)
+          k++
+        }
+
+        spans = spans.join(' ')
+        spans = spans.slice(1,spans.length-1)
+
+        setInterval(function(){
+          var body = document.getElementsByTagName('body')[0]
+          if (i >= spans.length){
+            i = 0;
+          }
+          else{
+            if (spans[i] == "I"){
+              var br = document.createElement('br')
+              body.appendChild(br)
+              var div = document.createElement('div')
+              body.appendChild(div)
+            }
+            var div = document.getElementsByTagName('div')
+            div = div[div.length-1]
+
+            div.textContent = div.textContent.slice(0, div.textContent.length-1)
+            div.textContent = div.textContent + spans[i]
+            div.textContent = div.textContent + "_"
+          }
+          i++;
+        }, 100);
     })
-    }
-    test()
-
   </script>
 </html>
