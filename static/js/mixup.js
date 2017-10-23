@@ -14,8 +14,6 @@ function shuffle(array) {
 function CleanPost(post){
   sentences = [];
   var phrase = post.textContent.match( /[^\.!\?]+[\.!\?]+/g );
-  // 8. For now I'm breaking it up based on punctuation so if someone uses
-  // no puntuation I ignore the whole post.
   if (phrase != null){
     for (var j = 0; j < phrase.length; j++){
       sentences.push(phrase[j]);
@@ -23,7 +21,8 @@ function CleanPost(post){
   }
   return sentences
 }
-function scramble(originalText, domElement){
+
+function Scramble(originalText, domElement){
   var alteredText = originalText;
   for (var j = 0; j < 3; j++){
     var letterSelection = Math.floor((Math.random() * alteredText.length) + 0);
@@ -40,40 +39,16 @@ function scramble(originalText, domElement){
   domElement.textContent = alteredText
 }
 
-function AdjustColor(count){
-  var hidden = document.getElementById('hidden')
-  var hidden2 = document.getElementById('hidden2')
-  var color_value = 255 - count/4;
-  var color_value2 = 255 - count2/8;
-  hidden.style.color = "rgb(" + color_value + "," + color_value+ "," + color_value + ")"
-  if (beneath_flag == true){
-    count2 = count2 + 1;
-    hidden2.style.color = "rgb(" + color_value2 + "," + color_value2 + "," + color_value2 + ")"
-  }
-}
-
-
-function MixupPost(evt) {
-  var post = document.getElementById("missed-connection");
-  sentences = CleanPost(post)
-  shuffle(sentences)
-  post.textContent = sentences.join(' ')
-  count = count + 1;
-  AdjustColor(count)
-}
-
 function SplitEntries(data){
   var entries = JSON.stringify(data)
   entries = entries.split("\\")
+  entries = entries.slice(1,entries.length)
   return entries
 }
 
 function GetTitlesAndPosts(entries){
-  // 3. Set up Arrays to recieve titles and posts from the txt file.
   titles = []
   posts = []
-
-  // 4. posts the document up into lines and from individiaul lines into titles and posts
   for (var i = 0; i < entries.length; i++){
      if (entries[i].length > 10){
       var limbs = entries[i].split("***");
@@ -97,20 +72,16 @@ function CleanEntries(entries){
 }
 
 function GetRandomTitle(titles){
-  // 5. Randomly select a title and display it in h1 id="title"
   var randomTitle = titles[Math.floor(Math.random()*titles.length)];
   var domTitle = document.getElementById('title');
   domTitle.textContent = randomTitle;
 }
 
 function SplitPosts(posts){
-  // 7. Break the posts up into sentences
   phrases = [];
   for (var k = 0; k < posts.length; k++){
     if (posts[k] != undefined){
       var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
-      // 8. For now I'm breaking it up based on punctuation so if someone uses
-      // no puntuation I ignore the whole post.
       if (sentences != null){
         for (var j = 0; j < sentences.length; j++){
           phrases.push(sentences[j]);
@@ -126,7 +97,7 @@ function CreatePostBody(phrases){
   var postLength = Math.floor((Math.random() * 5) + 2);
   var postBody = " ";
   while (threads.length < postLength){
-    random = getRandomIntInclusive(0,phrases.length-1);
+    random = Math.floor(Math.random() * phrases.length-1);
     selection = phrases[random];
     if (threads.indexOf(selection) === -1){
       threads.push(selection);
@@ -137,34 +108,46 @@ function CreatePostBody(phrases){
 }
 
 function CreateMixedConnection(){
-
   jQuery.get('/raw_db', function(data) {
+    var entries = SplitEntries(data)
+    var postElements = GetTitlesAndPosts(entries)
+    var titles = postElements[0]
+    titles = CleanEntries(titles)
+    var posts = postElements[1]
+    posts = CleanEntries(posts)
+    GetRandomTitle(titles)
+    shuffle(posts)
+    phrases = SplitPosts(posts)
+    shuffle(phrases)
+    postBody = CreatePostBody(phrases)
+    var domMissedConnection = document.getElementById('missed-connection');
+    domMissedConnection.textContent = postBody;
+  })
+}
 
-   var entries = SplitEntries(data)
-
-   var postElements = GetTitlesAndPosts(entries)
-
-   var titles = postElements[0]
-   titles = CleanEntries(titles)
-
-   var posts = postElements[1]
-   posts = CleanEntries(posts)
-
-  GetRandomTitle(titles)
-
-  // 6. Shuffle posts
-  shuffle(posts)
-
-  // 7. Break the posts up into sentences
-  phrases = SplitPosts(posts)
-
-  // 9. Shuffle sentences
-  shuffle(phrases)
-
-  postBody = CreatePostBody(phrases)
-
-  // 11. Take the post body and display it in the p id="missed-connection"
-  var domMissedConnection = document.getElementById('missed-connection');
-  domMissedConnection.textContent = postBody;
-})
+function color(colorTone){
+  // Red tone
+  if (colorTone == 0){
+    var red = Math.floor((Math.random() * 100) + 75);
+    var green = Math.floor((Math.random() * 100) + 0);
+    var blue = Math.floor((Math.random() * 100) + 0);
+    var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
+    return colour;
+  }
+  // Blue tone
+  if (colorTone == 1){
+    var red = Math.floor((Math.random() * 100) + 0);
+    var green = Math.floor((Math.random() * 100) + 0);
+    var blue = Math.floor((Math.random() * 100) + 145);
+    var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
+    return colour;
+  }
+  // yellow tone
+  if (colorTone == 2){
+    var red = Math.floor((Math.random() * 100) + 145);
+    var green = Math.floor((Math.random() * 100) + 60);
+    var blue = Math.floor((Math.random() * 100) + 10);
+    var colour = 'rgb(' + red + ',' + green + ',' + blue + ')';
+    return colour;
+  }
 }

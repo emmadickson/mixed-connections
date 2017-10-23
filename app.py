@@ -16,10 +16,9 @@ CRAIGSLIST_URLS = [
 "https://raleigh.craigslist.org",
 "https://pittsburgh.craigslist.org"
 ]
-NUMBER_OF_POSTS = 2
+NUMBER_OF_POSTS = 1
 DB_FILE = "static/db.txt"
 
-randomUrl = random.randint(0,2)
 
 def CollectEntriesHashes(storedEntries):
     hashes = []
@@ -31,15 +30,14 @@ def CollectEntriesHashes(storedEntries):
             hashes.append(hash)
     return hashes
 
-def CollectMissedConnectionsLink():
+def CollectMissedConnectionsLink(randomLocationUrl):
     craigslistMissedConnectionsUrls = []
-    randomCraigslistUrl = CRAIGSLIST_URLS[randomUrl] + "/search/mis"
+    randomCraigslistUrl = CRAIGSLIST_URLS[randomLocationUrl] + "/search/mis"
     response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
             if ('html' in link['href']):
                 craigslistMissedConnectionsUrls.append( link['href'] )
-    shuffle(craigslistMissedConnectionsUrls)
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
@@ -47,12 +45,12 @@ def GetTitle(pageContent):
     title = CleanTitle(title)
     return title
 
-def GetLocation():
-    location = CRAIGSLIST_URLS[randomUrl]
+def GetLocation(randomLocationUrl):
+    location = CRAIGSLIST_URLS[randomLocationUrl]
     if ".org" in location:
-        location = CRAIGSLIST_URLS[randomUrl][8:-15]
+        location = CRAIGSLIST_URLS[randomLocationUrl][8:-15]
     else:
-        location = CRAIGSLIST_URLS[randomUrl][8:-14]
+        location = CRAIGSLIST_URLS[randomLocationUrl][8:-14]
     return location
 
 def GetHash(postBody):
@@ -60,15 +58,14 @@ def GetHash(postBody):
     hashedPostBody = hashObject.hexdigest()
     return hashedPostBody;
 
-def GetPageContent(craigslistMissedConnectionsUrls):
-    linkToVisit = craigslistMissedConnectionsUrls[0]
+def GetPageContent(linkToVisit):
     response = requests.get(linkToVisit)
     pageContent = bs4.BeautifulSoup(response.text, "html.parser")
     return pageContent;
 
-def GetBody():
-    craigslistMissedConnectionsUrls = CollectMissedConnectionsLink()
-    pageContent = GetPageContent(craigslistMissedConnectionsUrls)
+def GetBody(randomPostUrl, randomLocationUrl):
+    craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
+    pageContent = GetPageContent(craigslistMissedConnectionsUrls[randomPostUrl])
     body = pageContent.select('section#postingbody')[0].get_text()
     body = body.split("QR Code Link to This Post")[1]
     body = CleanPostBody(body)
@@ -93,26 +90,21 @@ def CleanStoredEntries(storedEntries):
     storedEntries = storedEntries.split("\",\"")
     return storedEntries
 
-def CheckIfHashExists(hashedPostBody, hashes):
+def HashExists(hashedPostBody, hashes):
     if (hashedPostBody not in hashes):
         return True
     else:
         return False
 
-def CreateEntry(pageContent):
+def CreateEntry(pageContent, randomPostUrl, randomLocationUrl):
     title = GetTitle(pageContent)
     today = datetime.date.today()
-    location = GetLocation()
-    body = GetBody()
+    location = GetLocation(randomLocationUrl)
+    body = GetBody(randomPostUrl, randomLocationUrl)
     hashedPostBody = GetHash(body)
+    print("Post from " + location + " added")
     dbEntry = title + " *** " + body + " *** " + hashedPostBody + "*** Location: " + location + " *** Time: " + str(today)
     return dbEntry
-
-def AddEntryToStore(storedEntries, pageContent):
-    dbEntry = CreateEntry(pageContent)
-    print(dbEntry)
-    storedEntries.append(dbEntry)
-    return storedEntries
 
 def WriteStoreToFile(storedEntries):
     textEntries = open('static/db.txt', 'w')
@@ -142,6 +134,10 @@ def render_db():
 def render_raw_db():
     return app.send_static_file('db.txt')
 
+@app.route('/raw_thesaurus')
+def render_raw_thesaurus():
+    return app.send_static_file('ea-thesaurus.json')
+
 @app.route('/fibs')
 def render_fibs():
     return app.send_static_file('html/fibs/fib.html')
@@ -152,25 +148,35 @@ def render_8_1():
 
 @app.route("/bots")
 def webscrape():
-    craigslistMissedConnectionsUrls = CollectMissedConnectionsLink()
-
+    # 1. Read in stored Missed Connections
     storedEntries = ReadFile(DB_FILE)
-
+    # 2. Clean stored Missed Connections
     storedEntries = CleanStoredEntries(storedEntries)
-
+    # 3. Collect hashes of stored Missed Connections
     hashes = CollectEntriesHashes(storedEntries)
 
     for x in range(0, NUMBER_OF_POSTS):
-        postBody = GetBody()
-
+        # 4. Pick a location randomly
+        randomLocationUrl = random.randint(0,2)
+        # 4. Collect Missed Connections Post Link
+        craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
+        # 5. Shuffle the collected links to randomize selection
+        shuffle(craigslistMissedConnectionsUrls)
+        # 6. Get a random number
+        randomPostUrl = random.randint(0,len(craigslistMissedConnectionsUrls)-1)
+        # 7. Get Missed Connections post body from the new links
+        postBody = GetBody(randomPostUrl, randomLocationUrl)
+        # 7. Hash the post body just gathered
         hashedPostBody = GetHash(postBody)
-
-        hashExists = CheckIfHashExists(hashedPostBody, hashes)
-
+        # 8. Check if it's already in the store, if not add it
+        hashExists = HashExists(hashedPostBody, hashes)
         if (hashExists == 1):
-            pageContent = GetPageContent(craigslistMissedConnectionsUrls)
-            storedEntries = AddEntryToStore(storedEntries, pageContent)
+            linkToVisit = craigslistMissedConnectionsUrls[randomPostUrl]
+            pageContent = GetPageContent(linkToVisit)
+            dbEntry = CreateEntry(pageContent, randomPostUrl, randomLocationUrl)
+            storedEntries.append(dbEntry)
 
+    # 9. Write all entries in the store to the db file
     WriteStoreToFile(storedEntries)
 
     return app.send_static_file('html/bots.html')

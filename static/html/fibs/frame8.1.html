@@ -2,7 +2,7 @@
 <html>
   <head>
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery-3.2.1.min.js"></script>
     <meta charset="UTF-8">
     <style>
     body{
@@ -10,13 +10,15 @@
       position: relative;
       color:white;
     }
-    div{
+    div,hidden{
       bottom: 0px;
       right:0px;
       font-size: 8px;
       font-family: 'Press Start 2P', cursive;
       color: #00FF00;
+      display: inline;
     }
+
     </style>
   </head>
 
@@ -24,82 +26,200 @@
 
   </body>
   <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/mixup.js"></script>
+    <script type="text/javascript" src="dict.txt"></script>
+
   <script>
+      // Constants
+      fillers = ["an", "this.", "this", "but", "I", "of", "to", "and",
+      "in", "at", "the", "", "that", "on", "a", "if", "you"]
 
-      jQuery.get('/raw_db', function(data) {
 
-       var entries = JSON.stringify(data)
-       entries = entries.split("\\")
-       entries = entries.slice(1,entries.length)
-        // 3. Set up Arrays to recieve titles and posts from the txt file.
-        posts = []
-        // 4. posts the document up into lines and from individiaul lines into titles and posts
+      function FindIPosts(post, spans){
+        beginning = post.slice(0,3)
+        if (beginning.indexOf("I ") !== -1){
+          var result = post.match( /[^\.!\?]+[\.!\?]+/g );
+          if (result != null){
+            spans.push(result[0])
+          }
+        }
+      }
+
+      function ScrapePosts(entries){
         var spans = []
         for (var i = 0; i < entries.length; i++){
            if (entries[i].length > 10){
             var limbs = entries[i].split("***");
             post = limbs[1]
-            beginning = post.slice(0,3)
-            if (beginning.indexOf("I ") !== -1){
-              var result = post.match( /[^\.!\?]+[\.!\?]+/g );
-              if (result != null){
-                spans.push(result[0])
-              }
-            }
+            FindIPosts(post, spans)
           }
         }
+        return spans
+      }
 
+      function CreateBreakDomElement(){
+        var body = document.getElementsByTagName('body')[0]
+        var br = document.createElement('br')
+        body.appendChild(br)
+      }
+
+      function CreateDivDomElement(){
+        var body = document.getElementsByTagName('body')[0]
+        var div = document.createElement('div')
+        body.appendChild(div)
+        return div
+      }
+      function CreateHiddenDomElement(){
+        var body = document.getElementsByTagName('body')[0]
+        var div = document.createElement('hidden')
+        div.id="hidden"
+
+        var q = div.textContent
+        url = 'http://google.com/search?q='+div.textContent+'&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiD2PvWgYfXAhXHWCYKHb2wCWcQ_AUICygC'
+        div.onclick = function() { window.open(url, "seven") };
+
+
+        body.appendChild(div)
+        return div
+      }
+
+      function TypeSet(spans, i){
+        var div = document.getElementsByTagName('div')
+        div = div[div.length-1]
+        div.textContent = div.textContent.slice(0, div.textContent.length-1)
+        div.textContent = div.textContent + spans[i]
+        div.textContent = div.textContent + "_"
+      }
+      function TypeSetHidden(spans, i){
+        var div = document.getElementsByTagName('hidden')
+        div = div[div.length-1]
+        div.textContent = div.textContent.slice(0, div.textContent.length-1)
+        div.textContent = div.textContent + spans[i]
+        div.textContent = div.textContent + "_"
+      }
+
+      function TypeSetReset(spans, i, hidden){
+          var div = document.getElementsByTagName('div')
+          div = div[div.length-1]
+          div.textContent = div.textContent.slice(0, div.textContent.length-1)
+      }
+
+      function EliminateFiller(sentence){
+        var possibilities = []
+        for (var t = 0; t < sentence.length; t++){
+          word = sentence[t]
+          if (fillers.indexOf(word) == -1){
+            possibilities.push(word)
+          }
+        }
+        return possibilities
+      }
+
+      function RandomWordIndex(possibilities, sentence){
+        var r = Math.floor(Math.random() * (possibilities.length-1)+1);
+        var word = possibilities[r]
+        var index = sentence.indexOf(word);
+        return index;
+      }
+
+      function PushRandomWord(possibilities, sentence, index){
+        word = sentence[index]
+        sentence[index] = "~"+sentence[index]+"%"
+        random_words.push(sentence.join(' '))
+      }
+
+      jQuery.get('/raw_db', function(data) {
         var body = document.getElementsByTagName('body')[0]
         var i = 0;
-        var random_words = []
+        random_words = []
         var k = 0
 
-        fillers = ["an", "this.", "this", "but", "I", "of", "to", "and", "in", "at", "the", "", "that", "on", "a", "if"]
+        var entries = SplitEntries(data)
+        var spans = ScrapePosts(entries);
+
 
         while(random_words.length < spans.length){
           sentence = spans[k].split(' ');
-          var possibilities = []
+          possibilities = EliminateFiller(sentence)
 
-          for (var t = 0; t < sentence.length; t++){
-            word = sentence[t]
-            if (fillers.indexOf(word) == -1){
-              possibilities.push(word)
-            }
-          }
           shuffle(possibilities);
-          var r = Math.floor(Math.random() * possibilities.length);
-          var word = possibilities[r]
-          var index = sentence.indexOf(word);
-          word = possibilities[r] + "*?*"
-          sentence[index] = word
-          random_words.push(sentence)
+          var index = RandomWordIndex(possibilities, sentence)
+          PushRandomWord(possibilities, sentence, index)
           k++
         }
-
-        spans = spans.join(' ')
+        spans = random_words.join(' ')
         spans = spans.slice(1,spans.length-1)
+
+        jQuery.get('/raw_thesaurus', function(data) {
+          entries = (data)
+         });
 
         setInterval(function(){
           var body = document.getElementsByTagName('body')[0]
+
           if (i >= spans.length){
+            console.log('reset')
+            var myNode = document.getElementsByTagName("body")[0];
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
             i = 0;
           }
           else{
             if (spans[i] == "I"){
-              var br = document.createElement('br')
-              body.appendChild(br)
-              var div = document.createElement('div')
-              body.appendChild(div)
+              CreateBreakDomElement()
+              CreateDivDomElement()
             }
-            var div = document.getElementsByTagName('div')
-            div = div[div.length-1]
+            if(spans[i].indexOf("~") > -1){
+              span = CreateHiddenDomElement()
+              i++
+              while(spans[i].indexOf("%") <= -1){
+                TypeSetHidden(spans, i)
+                i++
+              }
+              TypeSetReset()
 
-            div.textContent = div.textContent.slice(0, div.textContent.length-1)
-            div.textContent = div.textContent + spans[i]
-            div.textContent = div.textContent + "_"
+              CreateDivDomElement()
+            }
+            else{
+              TypeSet(spans, i)
+            }
           }
           i++;
+
+          var collections = document.getElementsByTagName('hidden')
+          for(var j = 0; j < collections.length-1; j++){
+            var text = collections[j].childNodes[0].textContent
+            if (text.slice(1,2) == text.slice(1,2).toLowerCase()){
+              // The character is lowercase
+              text = text.slice(0, text.length-1)
+            }
+            var punctuationless = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            var finalString = punctuationless.replace(/\s{2,}/g," ");
+            text = finalString;
+            dict = (entries[text.toUpperCase()])
+            if (dict != undefined){
+              var r = Math.floor(Math.random() * (dict.length-1)+1);
+
+              var test = dict[r]
+              for (var key in test) {
+                    collections[j].childNodes[0].textContent = key
+              }
+
+
+            }
+          }
+
+
+
         }, 100);
     })
+
+
+
+
+
+
+
   </script>
 </html>

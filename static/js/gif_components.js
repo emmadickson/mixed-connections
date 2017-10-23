@@ -2,16 +2,18 @@ function CreateHeader(originalGifText){
   header = originalGifText.slice(0,6)
   return originalGifText
 }
-
+function HexToBin(hex){
+  return ("00000000" + (parseInt(hex, 16)).toString(2)).substr(-8);
+}
 function CreateLogicalScreenDescriptorPackedByte(logicalScreenDescriptor){
   packedByte = logicalScreenDescriptor.packedByte.toString()
-  packedByteBinary = hex2bin(packedByte);
+  packedByteBinary = HexToBin(packedByte);
   packedField = {
     fullString: packedByte,
     globalColorTableFlag: packedByteBinary.slice(0,1),
     colorResolution: packedByteBinary.slice(1,4),
     sortFlag: packedByteBinary.slice(1,4),
-    sizeOfGlobalGolorTable: bin_to_dec(packedByteBinary.slice(5,8))
+    sizeOfGlobalGolorTable: BinToDec(packedByteBinary.slice(5,8))
   }
   return packedField
 }
@@ -69,7 +71,7 @@ function GifComponents(originalGifText){
     blockTerminator: graphicsControlExtBytes.slice(7,8)
   }
   packed_byte_graphics = graphicsControlExt.packedField.toString()
-  packed_byte_graphics_binary = hex2bin(packed_byte_graphics);
+  packed_byte_graphics_binary = HexToBin(packed_byte_graphics);
   packed_field_graphics = {
     fullString: packed_byte_graphics,
     reserved_for_future_use: packed_byte_graphics_binary.slice(0,3),
@@ -91,7 +93,7 @@ function GifComponents(originalGifText){
     packed_field: imageDescriptor.slice(8,9)
   }
   packed_byte_image = imageDescriptor.packed_field.toString()
-  packed_byte_image_binary = hex2bin(packed_byte_graphics);
+  packed_byte_image_binary = HexToBin(packed_byte_graphics);
   packed_field_image = {
     fullString: packed_byte_image,
     local_color_table_flag: packed_byte_image_binary.slice(0,1),
@@ -114,8 +116,8 @@ function GifComponents(originalGifText){
 
   imageData = originalGifText.slice(0, 2)
   number_of_bytes = originalGifText.slice(1,2)
-  number_of_bytes = hex2bin(number_of_bytes);
-  number_of_bytes = bin_to_dec(number_of_bytes)
+  number_of_bytes = HexToBin(number_of_bytes);
+  number_of_bytes = BinToDec(number_of_bytes)
   imageData = originalGifText.slice(0,number_of_bytes+3)
   originalGifText = originalGifText.slice(number_of_bytes+3, originalGifText.length)
 
@@ -124,8 +126,8 @@ function GifComponents(originalGifText){
   pte_f = 0;
   if (originalGifText.slice(0,2) == '21 01'){
     plain_text_size = originalGifText.slice(2,3)
-    plain_text_size = hex2bin(plain_text_size)
-    plain_text_size = bin_to_dec(plain_text_size)
+    plain_text_size = HexToBin(plain_text_size)
+    plain_text_size = BinToDec(plain_text_size)
     //skip the useless stuff
     pte_f = 1;
     originalGifText = originalGifText.slice(3,plain_text_size)
@@ -141,8 +143,8 @@ function GifComponents(originalGifText){
   if (originalGifText.slice(0,2) == '21 FF'){
     ate_f = 1;
     app_size = originalGifText.slice(2,3)
-    app_size = hex2bin(app_size)
-    app_size = bin_to_dec(app_size)
+    app_size = HexToBin(app_size)
+    app_size = BinToDec(app_size)
     //skip the useless stuff
     originalGifText = originalGifText.slice(3,app_size)
     app_text_ext = []
@@ -159,8 +161,8 @@ function GifComponents(originalGifText){
   if (originalGifText.slice(0,2) == '21 FE'){
     cte_f = 1;
     comment_size = originalGifText.slice(2,3)
-    comment_size = hex2bin(comment_size)
-    comment_size = bin_to_dec(comment_size)
+    comment_size = HexToBin(comment_size)
+    comment_size = BinToDec(comment_size)
     //skip the useless stuff
     originalGifText = originalGifText.slice(3,comment_size)
     comm_text_ext = []

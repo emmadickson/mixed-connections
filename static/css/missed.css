@@ -52,7 +52,7 @@ h1{
   z-index:2;
 }
 
-#hidden {
+#hidden_text1 {
   position:absolute;
   top:120;
   left:5;
@@ -64,7 +64,7 @@ h1{
   z-index:1;
 }
 
-#hidden2 {
+#hidden_text2 {
   position: absolute;
   top:225;
   left:450;
