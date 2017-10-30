@@ -4,20 +4,32 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="js/jquery-3.2.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link id = "css" rel="stylesheet" href="../css/missed.css">
   </head>
 
   <body>
-    <header> <img src="../images/phi.png"></img> < <span id="locationText"> pittsburgh </span> <a href="/bots">< missed connections</a></header>
+    <header> <span id="locationText"> pittsburgh </span> <a href="/bots">< missed connections</a></header>
     <h1 id="title"> </h1>
     <div id="missed-connection"></div>
-    <div id="hidden_text1" > Have you begun to see</div>
+    <blink><a id="hidden_text" href="/fibs">YOU MISSED SOMETHING</a></blink>
     <div id="button"><button type="button" onclick="CreateMixedConnection()">Next</button></div>
-    <a id="hidden_text2" href="/fibs">beneath?</a>
   </body>
 
   <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/mixup.js"></script>
+  <script type="text/javascript">
+  (function() {
+    var blinks = document.getElementsByTagName('blink');
+    var visibility = 'hidden';
+    window.setInterval(function() {
+      for (var i = blinks.length - 1; i >= 0; i--) {
+        blinks[i].style.visibility = visibility;
+      }
+      visibility = (visibility === 'visible') ? 'hidden' : 'visible';
+    }, 1000);
+  })();
+  </script>
   <script>
     // Constants
     CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
@@ -33,22 +45,11 @@
       shuffle(sentences)
       post.textContent = sentences.join(' ')
       count = count + 1
-      var hidden = document.getElementById('hidden_text1')
-      var hidden2 = document.getElementById('hidden_text2')
+      var hidden = document.getElementById('hidden_text')
       var color_value = 255 - count/4;
-      var color_value2 = 255 - count2/8;
-      hidden.style.color = "rgb(" + color_value + "," + color_value+ "," + color_value + ")"
-      if (beneathFlag == true){
-        count2 = count2 + 1;
-        hidden2.style.color = "rgb(" + color_value2 + "," + color_value2 + "," + color_value2 + ")"
-      }
+      hidden.style.color = "rgb( 255," + color_value  + "," + color_value  + ")"
     }, false);
 
-    // 2. Select the first hidden link and add event listener
-    var hidden1Link = document.getElementById('hidden_text1');
-    hidden1Link.addEventListener("click", function(){
-     beneathFlag = true;
-    });
 
     // 2. Use set interval to Scramble the title text on hover
     $("#title").hover(
