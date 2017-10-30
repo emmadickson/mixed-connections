@@ -3,75 +3,192 @@
   <head>
     <script type="text/javascript" src="../../js/jquery-3.2.1.min.js"></script>
 
+    <link href="https://fonts.googleapis.com/css?family=Raleway+Dots" rel="stylesheet">
     <style>
-      body{
+ @import url('https://fonts.googleapis.com/css?family=Raleway+Dots');
+ body{
         overflow: hidden;
         background: black;
       }
-      canvas {
-        background: #f0f0f0;
-        bottom: 0;
-        left: 0;
-        margin: auto;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width:100%;
-        height:100%
+      #canvas1{
+        width: 100vw;
+        height: 100vh;
+        font-family: 'Raleway Dots', cursive;
+        z-index:2;
+      }
+
+    @font-face {
+        font-family: 'Raleway', sans-serif;
+        font-weight: 600;
+
     }
-
-
+  form{
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%,-50%);
+    z-index:1;
+  }
     </style>
   </head>
 
   <body>
-    <canvas class="dots"></canvas>
+    <canvas id="canvas1"></canvas>
+    <form action="/action_page.php">
+     <input type="text" name="firstname" value="You">
+     <input type="submit" value="Submit">
+    </form>
   </body>
+
   <script>
-  // Setup the parameters for our grid. These are the values you can change.
-  var dotMargin = 25;
-  var numRows = 5;
-  var numCols = 10;
-  // Set the colors you want to support in this array
-  var colors = ['#F03C69', '#FFCD32', '#2BAD5D', '#2ABABF', '#CDDC28', '#B91E8C'];
+  var circles = [],
+  canvas = document.getElementById("canvas1"),
+  context = canvas.getContext("2d"),
 
-  var canvas = $('canvas.dots');
-  var context = canvas[0].getContext('2d');
-  var canvasWidth = canvas.width();
-  var canvasHeight = canvas.height(); // this one is new
-  canvas.attr({height: canvasHeight, width: canvasWidth});
+  // SETTINGS
+  opacity = 0.6,                                      // the opacity of the circles 0 to 1
+  colors = ['rgba(34, 49, 63,' + opacity + ')',       // an array of rgb colors for the circles
+            'rgba(189, 195, 199,' + opacity + ')',
+            'rgba(241, 196, 15,' + opacity + ')',
+            'rgba(231, 76, 60,' + opacity + ')',
+            'rgba(231, 76, 60,' + opacity + ')'
+           ],
+  minSize = 1,                                        // the minimum size of the circles in px
+  maxSize = 25,                                       // the maximum size of the circles in px
+  numCircles = 1000,
+  minSpeed = -2,                                     // the minimum speed, recommended: -maxspeed
+  maxSpeed = 4,                                      // the maximum speed of the circles
+  expandState = true;                                // the direction of expansion
+  console.log(numCircles)                                 // the number of circles
 
-  var dotWidth = ((canvasWidth - (2 * dotMargin)) / numCols) - dotMargin;
-  var dotHeight = ((canvasHeight - (2 * dotMargin)) / numRows) - dotMargin;
+function buildArray() {
+  'use strict';
 
-  if( dotWidth > dotHeight ) {
-    var dotDiameter = dotHeight;
-    var xMargin = (canvasWidth - ((2 * dotMargin) + (numCols * dotDiameter))) / numCols;
-    var yMargin = dotMargin;
-  } else {
-    var dotDiameter = dotWidth;
-    var xMargin = dotMargin;
-    var yMargin = (canvasHeight - ((2 * dotMargin) + (numRows * dotDiameter))) / numRows;
+  for (var i =0; i < numCircles ; i++){
+      var color = Math.floor(Math.random() * (colors.length - 1 + 1)) + 1,
+          left = Math.floor(Math.random() * (canvas.width - 0 + 1)) + 0,
+          top = Math.floor(Math.random() * (canvas.height - 0 + 1)) + 0,
+          size = Math.floor(Math.random() * (maxSize - minSize + 1)) + minSize,
+          leftSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10,
+          topSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10,
+          expandState = expandState;
+
+          while(leftSpeed == 0 || topSpeed == 0){
+              leftSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10,
+              topSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10;
+          }
+      var circle = {color:color, left:left, top:top, size:size, leftSpeed:leftSpeed, topSpeed:topSpeed, expandState:expandState };
+      circles.push(circle);
   }
+}
 
-  var dotRadius = dotDiameter * 0.5;
+function build(){
+  'use strict';
 
-  for(var i = 0; i < numRows; i++) {
-    for(var j = 0; j < numCols; j++) {
-    var x = (j * (dotDiameter + xMargin)) + dotMargin + (xMargin / 2) + dotRadius;
-    var y = (i * (dotDiameter + yMargin)) + dotMargin + (yMargin / 2) + dotRadius;
-    // Grab a random color from the array.
-    var color = colors[Math.floor(Math.random() * colors.length)];
-    drawDot(x, y, dotRadius, color);
-    }
+  for(var h = 0; h < circles.length; h++){
+      var curCircle = circles[h];
+      context.fillStyle = colors[curCircle.color-1];
+      context.beginPath();
+      if(curCircle.left > canvas.width+curCircle.size){
+          curCircle.left = 0-curCircle.size;
+          context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+      }else if(curCircle.left < 0-curCircle.size){
+          curCircle.left = canvas.width+curCircle.size;
+          context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+      }else{
+          curCircle.left = curCircle.left+curCircle.leftSpeed;
+          context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+      }
+
+      if(curCircle.top > canvas.height+curCircle.size){
+          curCircle.top = 0-curCircle.size;
+          context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+
+      }else if(curCircle.top < 0-curCircle.size){
+          curCircle.top = canvas.height+curCircle.size;
+          context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+      }else{
+          curCircle.top = curCircle.top+curCircle.topSpeed;
+          if(curCircle.size != maxSize && curCircle.size != minSize && curCircle.expandState == false){
+            curCircle.size = curCircle.size-0.1;
+          }
+          else if(curCircle.size != maxSize && curCircle.size != minSize && curCircle.expandState == true){
+            curCircle.size = curCircle.size+0.1;
+          }
+          else if(curCircle.size == maxSize && curCircle.expandState == true){
+            curCircle.expandState = false;
+            curCircle.size = curCircle.size-0.1;
+          }
+          else if(curCircle.size == minSize && curCircle.expandState == false){
+            curCircle.expandState = true;
+            curCircle.size = curCircle.size+0.1;
+          }
+          context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+      }
+
+      context.closePath();
+      context.fill();
+      context.ellipse;
   }
+}
 
-  function drawDot(x, y, radius, color) {
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI, false);
-    context.fillStyle = color;
-    context.fill();
-  }
 
-</script>
+var xVal = 0;
+
+window.requestAnimFrame = (function (callback) {
+  'use strict';
+  return window.requestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.oRequestAnimationFrame ||
+  window.msRequestAnimationFrame ||
+  function (callback) {
+      window.setTimeout(callback, 1000/60);
+  };
+})();
+
+function animate() {
+  'use strict';
+  var canvas = document.getElementById("canvas1"),
+      context = canvas.getContext("2d");
+
+  // clear the canvas
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+  // draw the next frame
+  xVal++;
+  build();
+  context.font = "80px Raleway Dots";
+  var text = Math.random() * (2 - 0) + 0
+  text = Math.round(text)
+  var textArray = ["What did you miss", "Who do you miss", "What will you miss"]
+  console.log(text)
+  console.log(textArray[text])
+  context.fillText(textArray[text], canvas.width/2, canvas.height/2);
+  context.textAlign = 'center';
+  //console.log("Prep: animate ==> requestAnimFrame");
+  // request a new frame
+  requestAnimFrame(function () {
+      animate();
+  });
+}
+window.onload = function () {
+  'use strict';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  buildArray();
+  animate();
+};
+
+
+window.onresize = function () {
+  'use strict';
+  console.log("resize");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  //buildArray();
+  animate();
+};
+  </script>
 </html>
