@@ -138,6 +138,10 @@ def render_raw_db():
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
+@app.route('/raw_dict')
+def render_raw_dict():
+    return app.send_static_file('dictionary.json')
+
 @app.route('/fibs')
 def render_fibs():
     return app.send_static_file('html/fibs/fib.html')
@@ -145,6 +149,15 @@ def render_fibs():
 @app.route('/frame_8.1')
 def render_8_1():
     return app.send_static_file('html/fibs/frame8.1.html')
+
+@app.route('/frame_7')
+def render_7():
+    return app.send_static_file('html/fibs/frame7.html')
+
+@app.route('/frame_2.1')
+def render_2():
+    return app.send_static_file('html/fibs/frame2.1.html')
+
 
 @app.route("/bots")
 def webscrape():
