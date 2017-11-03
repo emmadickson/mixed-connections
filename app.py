@@ -136,8 +136,8 @@ def render_raw_thesaurus():
 
 @app.route('/add/<string:post>')
 def user(post):
-    print('hi')
-    print('post')
+    print('WELL HALLO IN THAR')
+    print(post)
     return app.send_static_file('html/feed.html')
 
 @app.route('/raw_dict')

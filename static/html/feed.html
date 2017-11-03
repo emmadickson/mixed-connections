@@ -65,7 +65,7 @@
         var txt = $("textarea").val();
         console.log(txt)
         document.getElementById('input').textContent = "Why thank you"
-
+        console.log(document.getElementById('input').textContent)
         $.post(
           "/add",
           { post: txt },
