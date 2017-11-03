@@ -64,13 +64,19 @@
       if (e.which == 13) {
         var text = document.getElementById('input').value
         document.getElementById('input').value = "Why thank you"
-        $.post(
-          "/add",
-          { post: text },
-          function(data) {
-             console.log(data);
-          });
-        }
+        $.ajax({
+          type: 'POST',
+          url: '/add',
+          crossDomain: true,
+          data: '{"post":text}',
+          dataType: 'json',
+          success: function(responseData, textStatus, jqXHR) {
+              var value = responseData.someKey;
+          },
+          error: function (responseData, textStatus, errorThrown) {
+              alert('POST failed.');
+          }
+      });
   });
   var circles = [],
   canvas = document.getElementById("canvas1"),
