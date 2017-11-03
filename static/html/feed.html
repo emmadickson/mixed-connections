@@ -62,13 +62,11 @@
   <script>
   $('textarea').on('keydown', function(e) {
       if (e.which == 13) {
-        var txt = $("textarea").val();
-        console.log(txt)
-        document.getElementById('input').textContent = "Why thank you"
-        console.log(document.getElementById('input').textContent)
+        var text = document.getElementById('input').value
+        document.getElementById('input').value = "Why thank you"
         $.post(
           "/add",
-          { post: txt },
+          { post: text },
           function(data) {
              console.log(data);
           });
