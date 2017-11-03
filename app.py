@@ -143,7 +143,7 @@ def render_post_data():
     file.close()
     json_object = {"post": body}
     content.append(json_object)
-    file = open(“static/user_entries.json”,”w”)
+    file = open('static/user_entries.json','w')
     file.write(json.dumps(content))
     return app.send_static_file('html/feed.html')
 
