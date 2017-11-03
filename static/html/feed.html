@@ -58,11 +58,21 @@
     <canvas id="canvas1"></canvas>
     <form action="{{ url_for('feed') }}" method="post">
     <input type="text" name="text" id="input"></input>
-    <input type="button" value="Submits">
+    <input id="submit" type="submit" value="Submit">
   </form>
   </body>
 
   <script>
+  $('submit').on('click', function(e) {
+        var text = document.getElementById('input').value
+        document.getElementById('input').value = "Why thank you"
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/feed', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            post: text
+        }));
+  });
   $('textarea').on('keydown', function(e) {
       if (e.which == 13) {
         var text = document.getElementById('input').value
