@@ -137,7 +137,7 @@ def render_raw_thesaurus():
 @app.route('/add', methods=['POST'])
 def render_post_data():
     body = (request.form['text'])
-    file = open(“static/user_entries.json”,”r”)
+    file = open('static/user_entries.json','r')
     content = file.read()
     content = list(content)
     file.close()
