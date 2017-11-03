@@ -134,11 +134,13 @@ def render_raw_db():
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
-@app.route('/add', methods=['GET', 'POST'])
-def user(post):
-    print('WELL HALLO IN THAR')
-    print(post)
-    return app.send_static_file('html/feed.html')
+@app.route('/add/<post>', methods=['GET', 'POST'])
+def post_data(post):
+    if request.method == 'POST':
+        print("POSTING")
+        return ''   # I'm just making this up
+    else:
+        return app.send_static_file('html/feed.html')
 
 @app.route('/raw_dict')
 def render_raw_dict():
