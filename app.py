@@ -138,7 +138,7 @@ def render_raw_thesaurus():
 def post_data(post):
     if request.method == 'POST':
         print("POSTING")
-        return ''   # I'm just making this up
+        return app.send_static_file('html/feed.html')
     else:
         return app.send_static_file('html/feed.html')
 
