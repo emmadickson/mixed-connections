@@ -135,7 +135,7 @@ def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
 @app.route('/add', methods=['GET', 'POST'])
-def render_post_data(post):
+def render_post_data():
     print("MEMEMEME")
     return app.send_static_file('html/feed.html')
 
