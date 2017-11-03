@@ -5,6 +5,7 @@ import socket
 import bs4
 import hashlib
 import re
+import json
 import datetime
 from random import shuffle
 import random
@@ -16,18 +17,15 @@ CRAIGSLIST_URLS = [
 "https://raleigh.craigslist.org",
 "https://pittsburgh.craigslist.org"
 ]
-NUMBER_OF_POSTS = 1
-DB_FILE = "static/db.txt"
+NUMBER_OF_POSTS = 5
+DB_FILE = "static/db.json"
 
 
 def CollectEntriesHashes(storedEntries):
     hashes = []
     for entry in storedEntries:
-        entryFields = entry.split("***")
-        if len(entryFields) > 3:
-            hash = entryFields[2]
-            hash = hash[1:]
-            hashes.append(hash)
+        hash = entry['hash']
+        hashes.append(hash)
     return hashes
 
 def CollectMissedConnectionsLink(randomLocationUrl):
@@ -84,12 +82,6 @@ def CleanTitle(title):
     title = title.encode('utf-8')
     return title
 
-def CleanStoredEntries(storedEntries):
-    storedEntries = storedEntries[16:]
-    storedEntries = storedEntries[:-5]
-    storedEntries = storedEntries.split("\",\"")
-    return storedEntries
-
 def HashExists(hashedPostBody, hashes):
     if (hashedPostBody not in hashes):
         return True
@@ -103,17 +95,21 @@ def CreateEntry(pageContent, randomPostUrl, randomLocationUrl):
     body = GetBody(randomPostUrl, randomLocationUrl)
     hashedPostBody = GetHash(body)
     print("Post from " + location + " added")
-    dbEntry = title + " *** " + body + " *** " + hashedPostBody + "*** Location: " + location + " *** Time: " + str(today)
+    dbEntry = "{ \"title\": " + "\"" + title + "\"" +  ", \"body\": " \
+    + "\"" + body + "\"" + ", \"location\": " + "\"" + location + "\"" + \
+    ", \"time\": " + "\"" + str(today) + "\"" + ", \"hash\": " + "\"" + \
+    str(hashedPostBody) + "\"" "}"
     return dbEntry
 
 def WriteStoreToFile(storedEntries):
-    textEntries = open('static/db.txt', 'w')
-    textEntries.write("var entries = [")
-    for line in storedEntries:
-        if (line != None and len(line) > 2):
-            textEntries.write("\"" + line + "\",")
-            textEntries.write(" ")
-    textEntries.write("];")
+    textEntries = open('static/db.json', 'w')
+    textEntries.write("{\"posts\":[")
+    for x in range(0, len(storedEntries)-2):
+        if (storedEntries[x] != None and len(storedEntries[x]) > 2):
+            textEntries.write(str(storedEntries[x]))
+            textEntries.write(",")
+    textEntries.write(storedEntries[len(storedEntries)-1])
+    textEntries.writelines("]}")
     textEntries.close()
 
 def ReadFile(DB_FILE):
@@ -132,41 +128,45 @@ def render_db():
 
 @app.route('/raw_db')
 def render_raw_db():
-    return app.send_static_file('db.txt')
+    return app.send_static_file('db.json')
 
 @app.route('/raw_thesaurus')
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
+@app.route('/add/<string:post>')
+def user(post):
+    print('hi')
+    print('post')
+    return app.send_static_file('html/feed.html')
+
 @app.route('/raw_dict')
 def render_raw_dict():
     return app.send_static_file('dictionary.json')
 
-@app.route('/fibs')
+@app.route('/feed')
 def render_fibs():
-    return app.send_static_file('html/fibs/fib.html')
-
-@app.route('/frame_8.1')
-def render_8_1():
-    return app.send_static_file('html/fibs/frame8.1.html')
-
-@app.route('/frame_7')
-def render_7():
-    return app.send_static_file('html/fibs/frame7.html')
-
-@app.route('/frame_2.1')
-def render_2():
-    return app.send_static_file('html/fibs/frame2.1.html')
-
+    return app.send_static_file('html/feed.html')
 
 @app.route("/bots")
 def webscrape():
     # 1. Read in stored Missed Connections
     storedEntries = ReadFile(DB_FILE)
+
     # 2. Clean stored Missed Connections
-    storedEntries = CleanStoredEntries(storedEntries)
+    if (len(storedEntries) > 2):
+        Entries = json.loads(storedEntries)
+        Entries = Entries['posts']
+        storedEntries = json.loads(storedEntries)
+        storedEntries = storedEntries['posts']
+    else:
+        storedEntries = []
+        Entries = []
+
+    newEntries = []
     # 3. Collect hashes of stored Missed Connections
-    hashes = CollectEntriesHashes(storedEntries)
+    hashes = CollectEntriesHashes(Entries)
+    print(hashes)
 
     for x in range(0, NUMBER_OF_POSTS):
         # 4. Pick a location randomly
@@ -187,10 +187,17 @@ def webscrape():
             linkToVisit = craigslistMissedConnectionsUrls[randomPostUrl]
             pageContent = GetPageContent(linkToVisit)
             dbEntry = CreateEntry(pageContent, randomPostUrl, randomLocationUrl)
-            storedEntries.append(dbEntry)
+            newEntries.append(str(dbEntry))
 
     # 9. Write all entries in the store to the db file
-    WriteStoreToFile(storedEntries)
+    uberEntries = []
+    storedEntries
+    for entry in storedEntries:
+        entry = json.dumps(entry)
+        uberEntries.append(entry)
+
+    uberEntries = uberEntries + newEntries
+    WriteStoreToFile(uberEntries)
 
     return app.send_static_file('html/bots.html')
 

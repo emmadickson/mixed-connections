@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="../../js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Raleway+Dots" rel="stylesheet">
     <style>
- @import url('https://fonts.googleapis.com/css?family=Raleway+Dots');
- body{
+     @import url('https://fonts.googleapis.com/css?family=Raleway+Dots');
+     body{
         overflow: hidden;
         background: black;
+        border:0;
+        margin:0;
       }
       #canvas1{
         width: 100vw;
@@ -17,49 +19,136 @@
         z-index:2;
       }
 
-    @font-face {
-        font-family: 'Raleway', sans-serif;
-        font-weight: 600;
+      @font-face {
+          font-family: 'Raleway', sans-serif;
+          font-weight: 600;
 
-    }
-  form{
-    position: absolute;
-    left: 50%;
-    top: 60%;
-    transform: translate(-50%,-50%);
-    z-index:1;
-  }
+      }
+      form{
+
+        resize:both;
+      }
+      #input{
+      resize:both;
+      z-index:1;
+      position: absolute;
+      left: 60%;
+      top: 70%;
+      transform: translate(-50%,-50%);
+      }
+      div{
+      z-index:1;
+      color:white;
+      font-family: 'Raleway Dots', cursive;;
+      font-weight: 600;
+      font-size: 250px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      }
+      button{
+        z-index:1;
+      }
     </style>
   </head>
 
-  <body>
+  <body id="body">
+    <div>What did You miss?</div>
     <canvas id="canvas1"></canvas>
-    <form action="/action_page.php">
-     <input type="text" name="firstname" value="You">
-     <input type="submit" value="Submit">
-    </form>
+    <textarea id="input"></textarea>
   </body>
 
   <script>
+  $('textarea').on('keydown', function(e) {
+      if (e.which == 13) {
+        var txt = $("textarea").val();
+        console.log(txt)
+        document.getElementById('input').textContent = "Why thank you"
+
+        $.post(
+          "/add",
+          { post: txt },
+          function(data) {
+             console.log(data);
+          });
+        }
+  });
   var circles = [],
   canvas = document.getElementById("canvas1"),
   context = canvas.getContext("2d"),
 
   // SETTINGS
-  opacity = 0.6,                                      // the opacity of the circles 0 to 1
-  colors = ['rgba(34, 49, 63,' + opacity + ')',       // an array of rgb colors for the circles
-            'rgba(189, 195, 199,' + opacity + ')',
-            'rgba(241, 196, 15,' + opacity + ')',
-            'rgba(231, 76, 60,' + opacity + ')',
-            'rgba(231, 76, 60,' + opacity + ')'
-           ],
+  opacity = 0.6,
+  startColorR = 0
+  startColorG = 0
+  startColorB = 0
+  colors = []
+  while(startColorR+startColorG+startColorB < 60){
+    startColorR = Math.floor((Math.random() * 125) + 1);
+    startColorG = Math.floor((Math.random() * 125) + 1);
+    startColorB = Math.floor((Math.random() * 125) + 1);
+  }
+  color1 = "rgba("+startColorR+", "+startColorG+", "+startColorB+")"
+  colors.push(color1)
+
+  color2m = (Math.random() * 1.5) + 0.2
+
+  startColorR = startColorR * color2m
+  startColorG = startColorG * color2m
+  startColorB = startColorB * color2m
+  while(startColorR+startColorG+startColorB < 60){
+    startColorR = Math.floor((Math.random() * 125) + 1);
+    startColorG = Math.floor((Math.random() * 125) + 1);
+    startColorB = Math.floor((Math.random() * 125) + 1);
+  }
+  color2 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+  colors.push(color2)
+
+  color3m = (Math.random() * 1.5) + 0.2
+
+  startColorR = startColorR * color3m
+  startColorG = startColorG * color3m
+  startColorB = startColorB * color3m
+  while(startColorR+startColorG+startColorB < 60){
+    startColorR = Math.floor((Math.random() * 125) + 1);
+    startColorG = Math.floor((Math.random() * 125) + 1);
+    startColorB = Math.floor((Math.random() * 125) + 1);
+  }
+  color3 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+  colors.push(color3)
+
+
+  startColorR = startColorR * (Math.random() * 1.5) + 0.2
+  startColorG = startColorG * (Math.random() * 1.5) + 0.2
+  startColorB = startColorB * (Math.random() * 1.5) + 0.2
+  while(startColorR+startColorG+startColorB < 60){
+    startColorR = Math.floor((Math.random() * 125) + 1);
+    startColorG = Math.floor((Math.random() * 125) + 1);
+    startColorB = Math.floor((Math.random() * 125) + 1);
+  }
+  color4 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+  colors.push(color4)
+
+  startColorR = startColorR * (Math.random() * 1.5) + 0.2
+  startColorG = startColorG * (Math.random() * 1.5) + 0.2
+  startColorB = startColorB * (Math.random() * 1.5) + 0.2
+  while(startColorR+startColorG+startColorB < 60){
+    startColorR = Math.floor((Math.random() * 125) + 1);
+    startColorG = Math.floor((Math.random() * 125) + 1);
+    startColorB = Math.floor((Math.random() * 125) + 1);
+  }
+  color5 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+  colors.push(color5)
+
+  var body = document.getElementById('body')
+  body.style.backgroundColor=colors[Math.floor((Math.random() * 4) + 0)]
   minSize = 1,                                        // the minimum size of the circles in px
-  maxSize = 25,                                       // the maximum size of the circles in px
-  numCircles = 1000,
+  maxSize = 70,                                       // the maximum size of the circles in px
+  numCircles = 500,
   minSpeed = -2,                                     // the minimum speed, recommended: -maxspeed
-  maxSpeed = 4,                                      // the maximum speed of the circles
+  maxSpeed = 2,                                      // the maximum speed of the circles
   expandState = true;                                // the direction of expansion
-  console.log(numCircles)                                 // the number of circles
 
 function buildArray() {
   'use strict';
@@ -143,7 +232,7 @@ window.requestAnimFrame = (function (callback) {
   window.oRequestAnimationFrame ||
   window.msRequestAnimationFrame ||
   function (callback) {
-      window.setTimeout(callback, 1000/60);
+      window.setTimeout(callback, 1000);
   };
 })();
 
@@ -159,14 +248,8 @@ function animate() {
   // draw the next frame
   xVal++;
   build();
-  context.font = "80px Raleway Dots";
-  var text = Math.random() * (2 - 0) + 0
-  text = Math.round(text)
-  var textArray = ["What did you miss", "Who do you miss", "What will you miss"]
-  console.log(text)
-  console.log(textArray[text])
-  context.fillText(textArray[text], canvas.width/2, canvas.height/2);
-  context.textAlign = 'center';
+
+
   //console.log("Prep: animate ==> requestAnimFrame");
   // request a new frame
   requestAnimFrame(function () {
@@ -184,7 +267,6 @@ window.onload = function () {
 
 window.onresize = function () {
   'use strict';
-  console.log("resize");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   //buildArray();

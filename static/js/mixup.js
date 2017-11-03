@@ -40,24 +40,21 @@ function Scramble(originalText, domElement){
 }
 
 function SplitEntries(data){
-  var entries = JSON.stringify(data)
-  entries = entries.split("\\")
-  entries = entries.slice(1,entries.length)
+  var entries = (data)
+  entries = entries['posts']
   return entries
 }
 
 function GetTitlesAndPosts(entries){
   titles = []
   posts = []
+
   for (var i = 0; i < entries.length; i++){
-     if (entries[i].length > 10){
-      var limbs = entries[i].split("***");
-      title = limbs[0]
-      title = title.substring(1, title.length-1)
-      titles.push(title)
-      posts.push(limbs[1]);
-    }
+    title = entries[i].title
+    titles.push(title)
+    posts.push(entries[i].body);
   }
+
   return [titles, posts]
 }
 
@@ -96,6 +93,7 @@ function CreatePostBody(phrases){
   threads = [];
   var postLength = Math.floor((Math.random() * 5) + 2);
   var postBody = " ";
+
   while (threads.length < postLength){
     random = Math.floor(Math.random() * phrases.length-1);
     selection = phrases[random];
