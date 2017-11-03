@@ -136,11 +136,8 @@ def render_raw_thesaurus():
 
 @app.route('/add', methods=['GET', 'POST'])
 def post_data(post):
-    if request.method == 'POST':
-        print("POSTING")
-        return app.send_static_file('html/feed.html')
-    else:
-        return app.send_static_file('html/feed.html')
+    print("MEMEMEME"
+    return app.send_static_file('html/feed.html')
 
 @app.route('/raw_dict')
 def render_raw_dict():
