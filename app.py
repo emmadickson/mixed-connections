@@ -134,9 +134,17 @@ def render_raw_db():
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/add', methods=['POST'])
 def render_post_data():
-    print("MEMEMEME")
+    body = (request.form['text'])
+    file = open(“static/user_entries.json”,”r”)
+    content = file.read()
+    content = list(content)
+    file.close()
+    json_object = {"post": body}
+    content.append(json_object)
+    file = open(“static/user_entries.json”,”w”)
+    file.write(json.dumps(content))
     return app.send_static_file('html/feed.html')
 
 @app.route('/raw_dict')
