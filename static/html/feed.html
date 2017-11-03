@@ -28,7 +28,7 @@
 
         resize:both;
       }
-      #input{
+      form{
       resize:both;
       z-index:1;
       position: absolute;
@@ -56,7 +56,10 @@
   <body id="body">
     <div>What did You miss?</div>
     <canvas id="canvas1"></canvas>
-    <textarea id="input"></textarea>
+    <form action="{{ url_for('feed') }}" method="post">
+    <input type="text" name="text" id="input"></input>
+    <input type="button" value="Submits">
+  </form>
   </body>
 
   <script>

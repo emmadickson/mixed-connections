@@ -134,7 +134,7 @@ def render_raw_db():
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
-@app.route('/add/<post>', methods=['GET', 'POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def post_data(post):
     if request.method == 'POST':
         print("POSTING")
