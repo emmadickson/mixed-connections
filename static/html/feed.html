@@ -67,11 +67,12 @@
         var text = document.getElementById('input').value
         document.getElementById('input').value = "Why thank you"
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", '/feed', true);
+        xhr.open("POST", '/add', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
             post: text
         }));
+    }
   });
   $('textarea').on('keydown', function(e) {
       if (e.which == 13) {
