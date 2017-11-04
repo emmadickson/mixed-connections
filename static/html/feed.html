@@ -58,34 +58,12 @@
     <canvas id="canvas1"></canvas>
     <form action="/add" method="post">
     <input type="text" name="text" id="input"></input>
-    <input id="submit" type="submit" value="Submit">
+    <input type="button" value="Submit">
   </form>
   </body>
 
   <script>
-  $('submit').on('click', function(e) {
-        var text = document.getElementById('input').value
-        document.getElementById('input').value = "Why thank you"
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", '/add', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({
-            post: text
-        }));
-    }
-  });
-  $('textarea').on('keydown', function(e) {
-      if (e.which == 13) {
-        var text = document.getElementById('input').value
-        document.getElementById('input').value = "Why thank you"
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", '/feed', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({
-            post: text
-        }));
-    }
-  });
+
   var circles = [],
   canvas = document.getElementById("canvas1"),
   context = canvas.getContext("2d"),
