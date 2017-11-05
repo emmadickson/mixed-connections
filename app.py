@@ -144,7 +144,9 @@ def render_post_data():
 
 @app.route('/hello', methods=['GET', 'POST'])
 def hello():
-    return render_template('greeting.html', say=request.form['say'], to=request.form['to'])
+    print 'hidd'
+    return app.send_static_file('html/feed.html')
+
 
 @app.route('/raw_dict')
 def render_raw_dict():
