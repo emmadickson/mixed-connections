@@ -56,7 +56,7 @@
   <body id="body">
     <div>What did You miss?</div>
     <canvas id="canvas1"></canvas>
-    <form action="/add" method="post">
+    <form action="/{{ url_for('hello') }}" method="post">
     <input type="text" name="text" id="input"></input>
     <input type="button" value="Submit">
   </form>

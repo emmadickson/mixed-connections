@@ -140,6 +140,12 @@ def render_post_data():
         print(request.form['text'])
     return app.send_static_file('html/feed.html')
 
+    return render_template('form.html')
+
+@app.route('/hello', methods=['GET', 'POST'])
+def hello():
+    return render_template('greeting.html', say=request.form['say'], to=request.form['to'])
+
 @app.route('/raw_dict')
 def render_raw_dict():
     return app.send_static_file('dictionary.json')
