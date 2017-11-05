@@ -134,10 +134,10 @@ def render_raw_db():
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/add')
 def render_post_data():
-    if methods == 'POST':
-        print(request.form['text'])
+
+    print('in the add?')
     return app.send_static_file('html/feed.html')
 
     return render_template('form.html')

@@ -36,7 +36,7 @@
       top: 70%;
       transform: translate(-50%,-50%);
       }
-      div{
+      #input{
       z-index:1;
       color:white;
       font-family: 'Raleway Dots', cursive;;
@@ -47,22 +47,26 @@
       top: 50%;
       transform: translate(-50%,-50%);
       }
-      button{
-        z-index:1;
-      }
     </style>
   </head>
 
   <body id="body">
     <div>What did You miss?</div>
     <canvas id="canvas1"></canvas>
-    <form action="/{{ url_for('hello') }}" method="post">
-    <input type="text" name="text" id="input"></input>
-    <input type="button" value="Submit">
+    <textarea  id="input"></textarea>
   </form>
   </body>
 
   <script>
+
+  $(document).keypress(function(e) {
+    if(e.which == 13) {
+        alert('You pressed enter!');
+        var x = $.get( "/add", function() {
+          alert( "success" );
+        });
+    }
+  });
 
   var circles = [],
   canvas = document.getElementById("canvas1"),
