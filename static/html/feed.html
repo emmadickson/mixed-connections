@@ -28,16 +28,10 @@
 
         resize:both;
       }
-      form{
-      resize:both;
+
+      div{
       z-index:1;
-      position: absolute;
-      left: 60%;
-      top: 70%;
-      transform: translate(-50%,-50%);
-      }
-      #input{
-      z-index:1;
+      text-decoration: none;
       color:white;
       font-family: 'Raleway Dots', cursive;;
       font-weight: 600;
@@ -47,24 +41,38 @@
       top: 50%;
       transform: translate(-50%,-50%);
       }
+      #input{
+      z-index:1;
+      resize:both;
+      position: absolute;
+      left: 60%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      }
+      button{
+        z-index:1;
+      }
+      a{
+        text-decoration: none;
+        color:white
+      }
     </style>
   </head>
 
   <body id="body">
-    <div>What did You miss?</div>
+    <div><a href="/">What did You miss?</a></div>
+    <textarea name="post" id="input"></textarea>
     <canvas id="canvas1"></canvas>
-    <textarea  id="input"></textarea>
   </form>
   </body>
 
   <script>
-
   $(document).keypress(function(e) {
     if(e.which == 13) {
-        alert('You pressed enter!');
-        var x = $.get( "/add", function() {
-          alert( "success" );
+        var x = $.post( "/add", {
+          'post': document.getElementById('input').value
         });
+        document.getElementById('input').value = 'THANK YOU'
     }
   });
 

@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import request
 import requests
 import socks
 import socket
@@ -19,6 +20,7 @@ CRAIGSLIST_URLS = [
 ]
 NUMBER_OF_POSTS = 5
 DB_FILE = "static/db.json"
+ENTRIES_FILE = "static/user_entries.json"
 
 
 def CollectEntriesHashes(storedEntries):
@@ -101,8 +103,8 @@ def CreateEntry(pageContent, randomPostUrl, randomLocationUrl):
     str(hashedPostBody) + "\"" "}"
     return dbEntry
 
-def WriteStoreToFile(storedEntries):
-    textEntries = open('static/db.json', 'w')
+def WriteStoreToFile(file, storedEntries):
+    textEntries = open(file, 'w')
     textEntries.write("{\"posts\":[")
     for x in range(0, len(storedEntries)-2):
         if (storedEntries[x] != None and len(storedEntries[x]) > 2):
@@ -130,23 +132,30 @@ def render_db():
 def render_raw_db():
     return app.send_static_file('db.json')
 
+@app.route('/raw_entries')
+def render_raw_entries():
+    return app.send_static_file('user_entries.jsonl')
+
 @app.route('/raw_thesaurus')
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
-@app.route('/add')
+@app.route('/fib')
+def render_me():
+    return app.send_static_file('html/frame8.1.html')
+
+@app.route('/add', methods=['POST'])
 def render_post_data():
 
-    print('in the add?')
+    if request.method == 'POST':
+        content = request.form
+        post = content['post']
+
+        f = open('static/user_entries.jsonl', 'a')
+        f.write(post)
+        f.write("\n")
+
     return app.send_static_file('html/feed.html')
-
-    return render_template('form.html')
-
-@app.route('/hello', methods=['GET', 'POST'])
-def hello():
-    print 'hidd'
-    return app.send_static_file('html/feed.html')
-
 
 @app.route('/raw_dict')
 def render_raw_dict():
@@ -174,7 +183,6 @@ def webscrape():
     newEntries = []
     # 3. Collect hashes of stored Missed Connections
     hashes = CollectEntriesHashes(Entries)
-    print(hashes)
 
     for x in range(0, NUMBER_OF_POSTS):
         # 4. Pick a location randomly
@@ -205,7 +213,7 @@ def webscrape():
         uberEntries.append(entry)
 
     uberEntries = uberEntries + newEntries
-    WriteStoreToFile(uberEntries)
+    WriteStoreToFile('static/db.json', uberEntries)
 
     return app.send_static_file('html/bots.html')
 

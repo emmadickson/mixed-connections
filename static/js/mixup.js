@@ -101,27 +101,10 @@ function CreatePostBody(phrases){
       threads.push(selection);
     }
   }
-  postBody = threads.join(" ");
-  return postBody
+
+  return threads
 }
 
-function CreateMixedConnection(){
-  jQuery.get('/raw_db', function(data) {
-    var entries = SplitEntries(data)
-    var postElements = GetTitlesAndPosts(entries)
-    var titles = postElements[0]
-    titles = CleanEntries(titles)
-    var posts = postElements[1]
-    posts = CleanEntries(posts)
-    GetRandomTitle(titles)
-    shuffle(posts)
-    phrases = SplitPosts(posts)
-    shuffle(phrases)
-    postBody = CreatePostBody(phrases)
-    var domMissedConnection = document.getElementById('missed-connection');
-    domMissedConnection.textContent = postBody;
-  })
-}
 
 function color(colorTone){
   // Red tone

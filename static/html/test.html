@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <meta charset="UTF-8">
+    <style>
+    body{
+      background: black;
+      position: relative;
+      color:white;
+    }
+    div,hidden{
+      bottom: 0px;
+      right:0px;
+      font-size: 8px;
+      font-family: 'Press Start 2P', cursive;
+      color: #00FF00;
+      display: inline;
+    }
+    hidden{
+      color:red;
+    }
+
+    </style>
+  </head>
+
+  <body>
+
+  </body>
+  <script type="text/javascript" src="js/util.js"></script>
+  <script type="text/javascript" src="js/mixup.js"></script>
+
+  <script>
+      // Constants
+      fillers = ["an", "this.", "this", "but", "I", "of", "to", "and",
+      "in", "at", "the", "", "that", "on", "a", "if", "you"]
+
+
+      function FindIPosts(post, spans){
+
+        if (post.indexOf("I ") !== -1){
+          var result = post.match( /[^\.!\?]+[\.!\?]+/g );
+          if (result != null){
+            spans.push(result[0])
+          }
+        }
+      }
+
+      function FindMePosts(post, spans){
+        beginning = post.slice(0,3)
+        if (beginning.indexOf("Me ") !== -1){
+          var result = post.match( /[^\.!\?]+[\.!\?]+/g );
+          if (result != null){
+            spans.push(result[0])
+          }
+        }
+      }
+
+
+      function CleanEntries(entries){
+        var cleanedEntries = []
+        for (var i = 0; i < entries.length; i++){
+           if (entries[i] != undefined){
+            cleanedEntries.push(entries[i])
+          }
+        }
+        return cleanedEntries
+      }
+
+
+      function ScrapePosts(entries){
+        var spans = []
+        for (var i = 0; i < entries.length; i++){
+            body = (entries[i]['body'])
+            if (body != undefined){
+              var results = body.split(" ");
+              for (var j = 0; j < results.length; j++){
+                if (results[j] != null && results[j].length > 2){
+                  spans.push(results[j])
+                }
+              }
+            }
+          }
+        return spans
+      }
+
+      function CreateBreakDomElement(){
+        var body = document.getElementsByTagName('body')[0]
+        var br = document.createElement('br')
+        body.appendChild(br)
+      }
+
+      function CreateDivDomElement(){
+        var body = document.getElementsByTagName('body')[0]
+        var div = document.createElement('div')
+        body.appendChild(div)
+        return div
+      }
+      function CreateHiddenDomElement(typing, dictionaryDataGrabbed){
+        var body = document.getElementsByTagName('body')[0]
+        var div = document.createElement('hidden')
+        div.id="hidden"
+
+        div.onclick = function() {
+          var bodyChildren = document.getElementsByTagName("body")[0].childNodes;
+          var body = document.getElementsByTagName("body")[0];
+          var indexNode = -1;
+          var beforeNode = -1;
+          var afterNode = -1;
+          for(var j = 0; j < bodyChildren.length; j++){
+            if(bodyChildren[j] == div){
+              beforeNode = bodyChildren[j-1]
+              indexNode = bodyChildren[j]
+              afterNode = bodyChildren[j+1]
+            }
+          }
+          var elems = [];
+          elems = Array.prototype.concat.apply(elems, document.getElementsByTagName("div"));
+          elems = Array.prototype.concat.apply(elems, document.getElementsByTagName("hidden"));
+          to_remove = []
+          for(var i = 0; i < elems.length; i++){
+            if (elems[i] != beforeNode && elems[i] != indexNode && elems[i] != afterNode){
+              to_remove.push(elems[i])
+            }
+          }
+          for(var i = 0; i < to_remove.length; i++){
+            body.removeChild(to_remove[i])
+          }
+
+          clearInterval(typing)
+
+          window.open('frame_7', "seven")
+          window.open('frame_2.1', "two")
+
+        };
+          body.appendChild(div)
+          return div
+      }
+
+
+      function TypeSet(spans, i){
+        var div = document.getElementsByTagName('div')
+        if (div == undefined){
+          CreateDivDomElement()
+          console.log('CREATE')
+          var div = document.getElementsByTagName('div')
+        }
+        console.log(div)
+        div = div[div.length-1]
+        div.textContent = div.textContent.slice(0, div.textContent.length-1)
+        div.textContent = div.textContent + spans[i]
+        div.textContent = div.textContent + "_"
+      }
+
+      function TypeSetHidden(spans, i){
+        var div = document.getElementsByTagName('hidden')
+        div = div[div.length-1]
+        div.textContent = div.textContent.slice(0, div.textContent.length-1)
+        div.textContent = div.textContent + spans[i]
+        div.textContent = div.textContent + "_"
+      }
+
+      function TypeSetReset(spans, i, hidden){
+          var div = document.getElementsByTagName('div')
+          div = div[div.length-1]
+          div.textContent = div.textContent.slice(0, div.textContent.length-1)
+      }
+
+      function EliminateFiller(sentence){
+        var possibilities = []
+        for (var t = 0; t < sentence.length; t++){
+          word = sentence[t]
+          if (fillers.indexOf(word) == -1){
+            possibilities.push(word)
+          }
+        }
+        return possibilities
+      }
+
+
+
+      function resetSpans(spans){
+        spans = spans.split(".")
+        shuffle(spans)
+        spans = spans.join(' ')
+        var myNode = document.getElementsByTagName("body")[0];
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+        return spans;
+      }
+
+      function resolveDictionaryGrab(x) {
+        return new Promise(resolve => {
+          var dictionaryGrab = $.getJSON('/raw_dict')
+          dictionaryGrab.done(function(data) {
+            dictionaryData = data
+            resolve(data)
+            console.log("successful dictionary grab")
+          })
+        });
+      }
+
+      function resolveThesaurusGrab(x) {
+        return new Promise(resolve => {
+          var thesaurusGrab = $.getJSON('/raw_thesaurus')
+          thesaurusGrab.done(function(data) {
+            thesaurusData = data
+            resolve(data)
+            console.log("successful thesaurus grab")
+          })
+        });
+      }
+
+      function resolveDatabaseGrab(x) {
+        return new Promise(resolve => {
+          var databaseGrab = $.get('/raw_db')
+          databaseGrab.done(function(data) {
+            databaseData = data
+            resolve(data)
+            console.log("successful database grab")
+          })
+        });
+      }
+
+      async function GrabData() {
+        thesaurusData = ""
+        dictionaryData = ""
+        databaseData = ""
+        var thesaurusDataGrabbed = await resolveThesaurusGrab(thesaurusData);
+        var dictionaryDataGrabbed = await resolveDictionaryGrab(dictionaryData);
+        var databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
+        var body = document.getElementsByTagName('body')[0]
+        var i = 0;
+        var specialCharacter = "I"
+
+        var entries = SplitEntries(databaseDataGrabbed)
+        var spans = ScrapePosts(entries);
+
+
+        var typing = setInterval(function(){
+
+            if (i >= spans.length){
+              spans = resetSpans(spans)
+              i = 0;
+              CreateDivDomElement()
+            }
+
+            else{
+                TypeSet(spans, i)
+            }
+
+          i++;
+
+        }, 100);
+
+
+        setInterval(function(){
+          var collections = document.getElementsByTagName('hidden')
+          for(var j = 0; j < collections.length-1; j++){
+            var text = collections[j].childNodes[0].textContent
+            if (text.slice(text.length-1, text.length) == "_"){
+                text = text.slice(0, text.length-1)
+            }
+            var punctuationless = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            var finalString = punctuationless.replace(/\s{2,}/g," ");
+            text = finalString.toUpperCase();
+            dict = (thesaurusDataGrabbed[text])
+            if (dict != undefined){
+              var r = Math.floor(Math.random() * (dict.length-1)+1);
+              var test = dict[r]
+              for (var key in test) {
+                  collections[j].childNodes[0].textContent = key
+              }
+            }
+          }
+        }, 300);
+      }
+
+      GrabData();
+
+  </script>
+</html>
