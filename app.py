@@ -10,6 +10,12 @@ import json
 import datetime
 from random import shuffle
 import random
+import os
+from PIL import Image
+from BeautifulSoup import BeautifulSoup
+import urllib2
+import cStringIO
+
 app = Flask(__name__, static_url_path='')
 
 # Constants
@@ -20,6 +26,7 @@ CRAIGSLIST_URLS = [
 ]
 NUMBER_OF_POSTS = 5
 DB_FILE = "static/db.json"
+imageHashes =  []
 ENTRIES_FILE = "static/user_entries.json"
 
 
@@ -63,9 +70,8 @@ def GetPageContent(linkToVisit):
     pageContent = bs4.BeautifulSoup(response.text, "html.parser")
     return pageContent;
 
-def GetBody(randomPostUrl, randomLocationUrl):
-    craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
-    pageContent = GetPageContent(craigslistMissedConnectionsUrls[randomPostUrl])
+def GetBody(finalUrl):
+    pageContent = GetPageContent(finalUrl)
     body = pageContent.select('section#postingbody')[0].get_text()
     body = body.split("QR Code Link to This Post")[1]
     body = CleanPostBody(body)
@@ -90,11 +96,11 @@ def HashExists(hashedPostBody, hashes):
     else:
         return False
 
-def CreateEntry(pageContent, randomPostUrl, randomLocationUrl):
+def CreateEntry(pageContent, finalUrl, randomLocationUrl):
     title = GetTitle(pageContent)
     today = datetime.date.today()
     location = GetLocation(randomLocationUrl)
-    body = GetBody(randomPostUrl, randomLocationUrl)
+    body = GetBody(finalUrl)
     hashedPostBody = GetHash(body)
     print("Post from " + location + " added")
     dbEntry = "{ \"title\": " + "\"" + title + "\"" +  ", \"body\": " \
@@ -120,9 +126,9 @@ def ReadFile(DB_FILE):
     entriesFile.close()
     return storedEntries
 
-@app.route('/')
+@app.route('/missed')
 def render_index():
-    return app.send_static_file('html/index.html')
+    return app.send_static_file('html/missed.html')
 
 @app.route('/db')
 def render_db():
@@ -140,9 +146,9 @@ def render_raw_entries():
 def render_raw_thesaurus():
     return app.send_static_file('ea-thesaurus.json')
 
-@app.route('/fib')
+@app.route('/')
 def render_me():
-    return app.send_static_file('html/frame8.1.html')
+    return app.send_static_file('html/index.html')
 
 @app.route('/add', methods=['POST'])
 def render_post_data():
@@ -164,6 +170,10 @@ def render_raw_dict():
 @app.route('/feed')
 def render_fibs():
     return app.send_static_file('html/feed.html')
+
+@app.route('/scraped_images')
+def render_scraped_images():
+    return app.send_static_file('images/scraped_images/')
 
 @app.route("/bots")
 def webscrape():
@@ -194,15 +204,42 @@ def webscrape():
         # 6. Get a random number
         randomPostUrl = random.randint(0,len(craigslistMissedConnectionsUrls)-1)
         # 7. Get Missed Connections post body from the new links
-        postBody = GetBody(randomPostUrl, randomLocationUrl)
+        craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
+        finalUrl = craigslistMissedConnectionsUrls[randomPostUrl]
+
+        postBody = GetBody(finalUrl)
         # 7. Hash the post body just gathered
         hashedPostBody = GetHash(postBody)
         # 8. Check if it's already in the store, if not add it
         hashExists = HashExists(hashedPostBody, hashes)
         if (hashExists == 1):
-            linkToVisit = craigslistMissedConnectionsUrls[randomPostUrl]
-            pageContent = GetPageContent(linkToVisit)
-            dbEntry = CreateEntry(pageContent, randomPostUrl, randomLocationUrl)
+
+            pageContent = GetPageContent(finalUrl)
+            body = pageContent.select('section#postingbody')[0].get_text()
+            dbEntry = CreateEntry(pageContent, finalUrl, randomLocationUrl)
+            print finalUrl
+            print dbEntry
+            images = []
+            response = requests.get(finalUrl).text
+            soup = bs4.BeautifulSoup(response, "html.parser")
+            for link in soup.findAll('a', href=True, text=''):
+                    if ('images' in link['href']):
+                        images.append( link['href'] )
+            for img in soup.findAll('img'):
+                images.append(img['src'])
+            scraped_images = os.listdir("static/images/scraped_images")
+            image_number = len(scraped_images)
+
+            for img in images:
+                if ("50x50" not in img) and img not in imageHashes:
+                    imageHashes.append(img)
+                    file = cStringIO.StringIO(urllib2.urlopen(img).read())
+                    img = Image.open(file)
+                    image_number = image_number + 1
+                    img.save("static/images/scraped_images/" + str(image_number) + ".jpg", "JPEG")
+
+                    print "image saved!"
+
             newEntries.append(str(dbEntry))
 
     # 9. Write all entries in the store to the db file
@@ -214,7 +251,6 @@ def webscrape():
 
     uberEntries = uberEntries + newEntries
     WriteStoreToFile('static/db.json', uberEntries)
-
     return app.send_static_file('html/bots.html')
 
 

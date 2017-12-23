@@ -1,460 +1,188 @@
-<!DOCTYPE>
 <html>
+ <head>
+   <script src="js/jquery-3.2.1.min.js"></script>
 
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-    <link id = "css" rel="stylesheet" href="../css/missed.css">
-
-    <style>
-    mix,hidden{
-      bottom: 0px;
-      right:0px;
-      font-size: 16px;
-      color: black;
-      display: inline;
+   <style>
+     header{
+       position: fixed;
+       top:0;
+       left:0;
+       min-height: 20px;
+       width: 100%;
+       padding-top: 10px;
+       display: block;
+       border-bottom: 1px #ccc solid;
+       background: #eee;
+       font-size: 16px;
+       vertical-align: top;
+       padding-bottom: 10px;
+     }
+     ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 7px;
     }
-    hidden{
-      color:red;
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, .5);
+      -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
     }
-
-    missed-connection-container {
-      position:absolute;
-      top:150;
-      left:5;
-      height:100px;
-      width:75%;
-      padding-left: 25px;
+     html,body{
+       padding: 10px;
+       overflow-y: scroll;
+     }
+     #title_list{
+       padding-top: 50px;
+     }
+    #pseudoBullet{
+      padding-right: 8px;
     }
-    other{
+    #timeSpan{
+      color:gray;
+      font-size:9px;
+      padding-right: 10px;
+    }
+    #titleSpan{
+      text-decoration: none;
+      color:blue;
+      padding-right: 10px;
+    }
+    #locationSpan{
+      color:black;
+      font-size: 11px;
+    }
+    #missed-symbol{
+      position: fixed;
+      left:8;
+      top:-3;
+      font-size: 2em;
+    }
+    #carrot{
+      position:fixed;
+      left: 30
+    }
+    #locationText{
+      position: fixed;
+      left:45;
+    }
+    #carrot2{
+      position:fixed;
+      left: 130
+    }
+    #missed-connection-reset{
+      position:fixed;
+      left: 145
+    }
+    #post_link{
+      position: fixed;
+      right: 8;
       color:blue
     }
+   </style>
 
-    </style>
-  </head>
+ </head>
 
-  <body>
-    <header> <span id="locationText"> pittsburgh </span> <a href="/bots">< missed connections</a></header>
-    <h1 id="title"> </h1>
-    <missed-connection-container></missed-connection-container>
-    <div id="button"><button type="button" onclick="Data()">Next</button></div>
-  </body>
+ <body>
+   <header> <span id="missed-symbol">&#9993;</span> <span id="carrot"> < </span> <span id="locationText"> pittsburgh </span> <span id="carrot2"> < </span> <a id=missed-connection-reset href="/">missed connections</a> <a id="post_link" href="/feed">post</a></header>
 
-  <script type="text/javascript" src="js/util.js"></script>
-  <script type="text/javascript" src="js/mixup.js"></script>
-  <script type="text/javascript">
-  (function() {
-    var blinks = document.getElementsByTagName('blink');
-    var visibility = 'hidden';
-    window.setInterval(function() {
-      for (var i = blinks.length - 1; i >= 0; i--) {
-        blinks[i].style.visibility = visibility;
-      }
-      visibility = (visibility === 'visible') ? 'hidden' : 'visible';
-    }, 1000);
-  })();
-  </script>
-  <script>
-    // Constants
-    CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
-    var count = 0;
-    var count2 = 0;
-    var beneathFlag = false;
+   <div id="title_list"></div>
+ </body>
 
-    // 2. Use set interval to Scramble the title text on hover
-    $("#title").hover(
-     function(){
-       var titleDomElement = document.getElementById("title")
-       var originalText = titleDomElement.textContent;
-       interval = setInterval(function(){
-         Scramble(originalText, titleDomElement)
-       }, 150);
-       Scramble(originalText, titleDomElement)
-     },
+ <script type="text/javascript" src="js/mixup.js"></script>
+ <script type="text/javascript" src="js/typing.js"></script>
+ <script>
+   // Constants
+   CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
 
-     function(){
-       clearInterval(interval)
+   // 3. Use a set interval to constantly Scramble location text
+  var ScrambledLocation = document.getElementById("locationText");
+  var locationText = document.getElementById("locationText");
+  var originalLocation = locationText.textContent;
+  interval = setInterval(function(){
+   Scramble(originalLocation, ScrambledLocation)
+  }, 150);
+  interval = setInterval(function(){
+   var new_location = Math.floor((Math.random() * 2) + 0);
+   locationText.textContent = CRAIGSLIST_LOCATIONS[new_location]
+  }, 250);
+
+    var topnum = 50;
+     jQuery.get('/raw_db', function(data) {
+
+       entries = data["posts"]
+        // 1. posts the document up into lines and from individiaul lines into titles and posts
+        for (var i = 0; i < 20; i++){
+            var list = document.getElementById("title_list");
+            var par = document.createElement('p')
+            par.style.position = 'absolute'
+            par.style.left = 100;
+            par.style.top = topnum
+
+            topnum = topnum + 50;
+            var pseudoBullet = document.createElement('span')
+            pseudoBullet.id = "pseudoBullet"
+            pseudoBullet.textContent = "*"
+            par.appendChild(pseudoBullet)
+
+            var timeSpan = document.createElement('span')
+            timeSpan.id = "timeSpan"
+            time = entries[i]['time'];
+            timeSpan.textContent = time
+            par.appendChild(timeSpan)
+
+            var titleSpan = document.createElement('a')
+            titleSpan.id = "titleSpan"
+            titleSpan.href = "/missed"
+            title = entries[i]['title'];
+            titleSpan.textContent = title
+            par.appendChild(titleSpan)
+
+            var locationSpan = document.createElement('span')
+            loc = "("+(entries[i]['location'])+")"
+            locationSpan.textContent = loc
+            par.appendChild(locationSpan)
+
+            list.appendChild(par)
+          }
      });
+    var count = 50;
+     $(window).scroll(function(){
 
-     // 3. Use a set interval to constantly Scramble location text
-    var ScrambledLocation = document.getElementById("locationText");
-    var locationText = document.getElementById("locationText");
-    var originalLocation = locationText.textContent;
-    interval = setInterval(function(){
-     Scramble(originalLocation, ScrambledLocation)
-    }, 150);
-    interval = setInterval(function(){
-     var new_location = Math.floor((Math.random() * 2) + 0);
-     locationText.textContent = CRAIGSLIST_LOCATIONS[new_location]
-    }, 250);
+       if ($(window).scrollTop() >= $(document).height()-$(window).height()){
 
-    // 4. Create the mixed connection
-
-    function resetSentences(post){
-      sentences = []
-      var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
-      if (phrase != null){
-        for (var j = 0; j < phrase.length; j++){
-          sentences.push(phrase[j]);
-        }
-
-      var myNode = document.getElementById('missed-connection')
-      while (myNode.firstChild) {
-          myNode.removeChild(myNode.firstChild);
-      }
-      shuffle(sentences)
-      sentences = sentences.join(' ')
-      return sentences;
-      }
-    }
-
-    // Constants
-    fillers = ["an", "this.", "this", "but", "I", "of", "to", "and",
-    "in", "at", "the", "", "that", "on", "a", "if", "you"]
-
-
-    function ScrapePosts(entries){
-      shuffle(entries)
-      return entries
-    }
-
-    function CreateDivDomElement(){
-      var body = document.getElementsByTagName('missed-connection-container')[0]
-      var div = document.createElement('missed-connection')
-      body.appendChild(div)
-      return div
-    }
-
-    function CreateHiddenDomElement(typing, dictionaryDataGrabbed){
-      var body = document.getElementsByTagName('missed-connection-container')[0]
-      var div = document.createElement('hidden')
-
-      div.id="hidden"
-      body.appendChild(div)
-      return div
-    }
-
-    function CreateOtherDomElement(){
-      var body = document.getElementsByTagName('missed-connection-container')[0]
-      var div = document.createElement('other')
-
-      div.id="other"
-      body.appendChild(div)
-      return div
-    }
-
-    function TypeSet(spans, i){
-      var div = document.getElementsByTagName('missed-connection')
-      div = div[div.length-1]
-      div.textContent = div.textContent.slice(0, div.textContent.length-1)
-      div.textContent = div.textContent + spans[i]
-      div.textContent = div.textContent + "_"
-    }
-
-    function TypeSetHidden(spans, i){
-      var div = document.getElementsByTagName('hidden')
-      div = div[div.length-1]
-      div.textContent = div.textContent.slice(0, div.textContent.length-1)
-      div.textContent = div.textContent + spans[i]
-      div.textContent = div.textContent + "_"
-      //div.textContent = div.textContent.slice(0, div.textContent.length-1)
-    }
-    function TypeSetOther(spans, i){
-      var div = document.getElementsByTagName('other')
-      div = div[div.length-1]
-      div.textContent = div.textContent.slice(0, div.textContent.length-1)
-      div.textContent = div.textContent + spans[i]
-      div.textContent = div.textContent + "_"
-      //div.textContent = div.textContent.slice(0, div.textContent.length-1)
-    }
-
-
-    function TypeSetReset(spans, i, hidden){
-        var div = document.getElementsByTagName('div')
-        div = div[div.length-1]
-        div.textContent = div.textContent.slice(0, div.textContent.length-1)
-    }
-
-    function EliminateFiller(sentence){
-      var possibilities = []
-      for (var t = 0; t < sentence.length; t++){
-        word = sentence[t]
-        if (fillers.indexOf(word) == -1){
-          possibilities.push(word)
-        }
-      }
-      return possibilities
-    }
-
-    function resetSpans(spans){
-      spans =  spans.match( /[^\.!\?]+[\.!\?]+/g );
-      shuffle(spans)
-      spans = spans.join(' ')
-      var myNode = document.getElementsByTagName('missed-connection-container')[0]
-      while (myNode.firstChild) {
-          myNode.removeChild(myNode.firstChild);
-      }
-      return spans;
-    }
-
-    function RandomWordIndex(possibilities, sentence){
-      var r = Math.floor(Math.random() * (possibilities.length-1)+1);
-      var word = possibilities[r]
-      var index = sentence.indexOf(word);
-      return index;
-    }
-
-    function GetRandomWords(spans){
-      random_words = []
-      var k = 0
-      while(random_words.length < spans.length){
-        var sentence = spans[k].split(' ');
-        var possibilities = EliminateFiller(sentence)
-        shuffle(possibilities);
-        var index = RandomWordIndex(possibilities, sentence)
-        PushRandomWord(possibilities, sentence, index)
-        k++
-      }
-      return random_words
-    }
-
-    function PushRandomWord(possibilities, sentence, index){
-      word = sentence[index]
-      sentence[index] = "~"+sentence[index]+"%"
-      random_words.push(sentence.join(' '))
-    }
-
-    function resolveThesaurusGrab(x) {
-      return new Promise(resolve => {
-        var thesaurusGrab = $.getJSON('/raw_thesaurus')
-        thesaurusGrab.done(function(data) {
-          thesaurusData = data
-          resolve(data)
-          console.log("successful thesaurus grab")
-        })
-      });
-    }
-
-    function resolveDatabaseGrab(x) {
-      return new Promise(resolve => {
-        var databaseGrab = $.get('/raw_db')
-        databaseGrab.done(function(data) {
-          databaseData = data
-          resolve(data)
-          console.log("successful database grab")
-        })
-      });
-    }
-
-    function resolveEntriesGrab(x) {
-      return new Promise(resolve => {
-        var entriesGrab = $.getJSON('/raw_entries')
-        entriesGrab.done(function(data) {
-          entriesData = data
-          resolve(data)
-          console.log("successful entries grab")
-        })
-      });
-    }
-
-    the_other = ["you", "You", "YOU", "your", "Your", "she", "She", "he", "He", "her", "her", "his", "His", "other",
-  "Other", "them", "they", "Them", "They", "their", "Their", "theirs", "Theris"]
-
-    the_familiar = ["I", "me", "Me", "myself", "Myself", "my", "My"]
-
-
-
-    async function GrabData() {
-      thesaurusData = ""
-      dictionaryData = ""
-      databaseData = ""
-      thesaurusDataGrabbed = await resolveThesaurusGrab(thesaurusData);
-      databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
-
-      var body = document.getElementById('missed-connection')
-      var i = 0;
-      var entries = SplitEntries(databaseDataGrabbed)
-      var spans = ScrapePosts(entries);
-      var postElements = GetTitlesAndPosts(entries)
-      var titles = postElements[0]
-      titles = CleanEntries(titles)
-      var posts = postElements[1]
-      posts = CleanEntries(posts);
-
-      GetRandomTitle(titles)
-      shuffle(posts)
-      phrases = SplitPosts(posts)
-      shuffle(phrases)
-      postBody = CreatePostBody(phrases)
-      var random_words = GetRandomWords(postBody)
-
-      for (var k = 0; k < random_words.length; k++){
-        words = random_words[k].split(' ')
-        for( var h =0; h < words.length; h++){
-         if (the_other.indexOf(words[h]) > -1 ){
-            words[h] = "*" + words[h] + "%"
+          if (count != entries.length-1){
+            count = count + 1
           }
-        }
-        random_words[k] = words.join(' ')
-      }
-
-      spans = random_words.join(' ')
-      CreateDivDomElement()
-      hidden = false
-      other = false
-      typing = setInterval(function(){
-
-        if (i >= spans.length){
-          spans = resetSpans(spans)
-          i = 0;
-          CreateDivDomElement()
-        }
-
-        if(spans[i].indexOf("~") > -1){
-          CreateHiddenDomElement(typing)
-          hidden = true
-
-        }
-
-        if(spans[i].indexOf("*") > -1){
-          CreateOtherDomElement()
-          other=true
-        }
-
-        if (hidden == true && spans[i].indexOf("~") == -1 && spans[i].indexOf("%") == -1){
-          TypeSetHidden(spans,i)
-        }
-        if (other == true && spans[i].indexOf("%") == -1 && spans[i].indexOf("*") == -1){
-          TypeSetOther(spans,i)
-        }
-
-        if(spans[i].indexOf("%") > -1){
-          hidden = false
-          other = false
-          CreateDivDomElement()
-        }
-
-        if(hidden == false && other == false && spans[i].indexOf("%") <= -1 && spans[i].indexOf("~") <= -1){
-          TypeSet(spans, i)
-        }
-
-        i++;
-      }, 100);
-
-
-      setInterval(function(){
-        var collections = document.getElementsByTagName('hidden')
-        for(var j = 0; j < collections.length-1; j++){
-          var text = collections[j].childNodes[0].textContent
-          if (text.slice(text.length-1, text.length) == "_"){
-              text = text.slice(0, text.length-1)
+          else{
+            count = 0
           }
-          var punctuationless = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-          var finalString = punctuationless.replace(/\s{2,}/g," ");
-          text = finalString.toUpperCase();
-          dict = (thesaurusDataGrabbed[text])
-          if (dict != undefined){
-            var r = Math.floor(Math.random() * (dict.length-1)+1);
-            var test = dict[r]
-            for (var key in test) {
-                collections[j].childNodes[0].textContent = key
-            }
-          }
-        }
-      }, 300);
-    }
+          var list = document.getElementById("title_list");
+          var par = document.createElement('p')
 
-    GrabData()
-    function Data(){
-      var myNode = document.getElementsByTagName('missed-connection-container')[0]
-      while (myNode.firstChild) {
-          myNode.removeChild(myNode.firstChild);
-      }
-      console.log(typing)
-      clearInterval(typing)
-      console.log(typing)
-      var body = document.getElementById('missed-connection')
-      var i = 0;
-      var entries = SplitEntries(databaseDataGrabbed)
-      var spans = ScrapePosts(entries);
-      var postElements = GetTitlesAndPosts(entries)
-      var titles = postElements[0]
-      titles = CleanEntries(titles)
-      var posts = postElements[1]
-      posts = CleanEntries(posts);
+          par.style.position = 'absolute'
+          par.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
+          par.style.top = topnum
+          topnum = topnum + Math.floor(Math.random() * (150 - 20 + 1)) + 20;
+          var timeSpan = document.createElement('span')
+          timeSpan.id = "timeSpan"
+          time = entries[count]['time'];
+          timeSpan.textContent = time
+          par.appendChild(timeSpan)
 
-      GetRandomTitle(titles)
-      shuffle(posts)
-      phrases = SplitPosts(posts)
-      shuffle(phrases)
-      postBody = CreatePostBody(phrases)
-      var random_words = GetRandomWords(postBody)
+          var titleSpan = document.createElement('a')
+          titleSpan.id = "titleSpan"
+          titleSpan.href = "/missed"
+          title = entries[count]['title'];
+          titleSpan.textContent = title
+          par.appendChild(titleSpan)
 
-      for (var k = 0; k < random_words.length; k++){
-        words = random_words[k].split(' ')
-        for( var h =0; h < words.length; h++){
-         if (the_familiar.indexOf(words[h]) > -1 || the_other.indexOf(words[h]) > -1 ){
-            words[h] = "*" + words[h] + "%"
-          }
-        }
-        random_words[k] = words.join(' ')
-      }
+          var locationSpan = document.createElement('span')
+          loc = "("+(entries[count]['location'])+")"
+          locationSpan.textContent = loc
+          par.appendChild(locationSpan)
 
-      spans = random_words.join(' ')
-      console.log(spans)
-      CreateDivDomElement()
-      hidden = false
-      typing = setInterval(function(){
-        if (i >= spans.length){
-          spans = resetSpans(spans)
-          i = 0;
-          CreateDivDomElement()
-        }
-
-        if(spans[i].indexOf("~") > -1){
-          CreateHiddenDomElement()
-          hidden = true
-        }
-
-        if (hidden == true && spans[i].indexOf("~") == -1 && spans[i].indexOf("%") == -1){
-          TypeSetHidden(spans,i)
-        }
-
-        if(spans[i].indexOf("%") > -1){
-          hidden = false
-          CreateDivDomElement()
-          console.log('%')
-        }
-
-        if(hidden == false && spans[i].indexOf("%") <= -1 && spans[i].indexOf("~") <= -1){
-          TypeSet(spans, i)
-        }
-
-        i++;
-      }, 100);
-
-      setInterval(function(){
-        var collections = document.getElementsByTagName('hidden')
-        for(var j = 0; j < collections.length-1; j++){
-          var text = collections[j].childNodes[0].textContent
-          if (text.slice(text.length-1, text.length) == "_"){
-              text = text.slice(0, text.length-1)
-          }
-          var punctuationless = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-          var finalString = punctuationless.replace(/\s{2,}/g," ");
-          text = finalString.toUpperCase();
-          dict = (thesaurusDataGrabbed[text])
-          if (dict != undefined){
-            var r = Math.floor(Math.random() * (dict.length-1)+1);
-            var test = dict[r]
-            for (var key in test) {
-                collections[j].childNodes[0].textContent = key
-            }
-          }
-        }
-      }, 300);
-    }
-  </script>
-
+          list.appendChild(par)
+       }
+   });
+   </script>
+ </body>
 </html>

@@ -36,26 +36,27 @@
 
       jQuery.get('/raw_db', function(data) {
 
-        var entries = JSON.stringify(data)
-        entries = entries.split("\\")
+        entries = data["posts"]
+        console.log(entries)
 
          // 1. posts the document up into lines and from individiaul lines into titles and posts
          for (var i = 0; i < entries.length; i++){
-           if (entries[i].length > 17){
-             var limbs = entries[i].split("***");
+
+            console.log(entries[i]);
              var table = document.getElementById("botPosts");
              var row = table.insertRow(1);
              var cell1 = row.insertCell(0);
              var cell2 = row.insertCell(1);
              var cell3 = row.insertCell(2);
              var cell4 = row.insertCell(3);
-             title = limbs[0].substring(1, limbs[0].length-1)
+             title = entries[i]['title'];
+             console.log(title);
              cell1.innerHTML = title;
-             cell2.innerHTML = limbs[1];
-             cell3.innerHTML = limbs[3];
-             cell4.innerHTML = limbs[4];
+             cell2.innerHTML = entries[i]['body'];
+             cell3.innerHTML = entries[i]['location'];
+             cell4.innerHTML = entries[i]['time'];
            }
-         }
+         
       });
 
     </script>

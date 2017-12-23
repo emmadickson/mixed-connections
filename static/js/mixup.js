@@ -22,6 +22,17 @@ function CleanPost(post){
   return sentences
 }
 
+function CleanerPost(post){
+  sentences = [];
+  var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
+  if (phrase != null){
+    for (var j = 0; j < phrase.length; j++){
+      sentences.push(phrase[j]);
+    }
+  }
+  return sentences
+}
+
 function Scramble(originalText, domElement){
   var alteredText = originalText;
   for (var j = 0; j < 3; j++){
