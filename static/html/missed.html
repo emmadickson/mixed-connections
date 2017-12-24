@@ -5,71 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="js/jquery-3.2.1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-    <link id = "css" rel="stylesheet" href="../css/index.css">
-    <style>
-      header{
-        position: fixed;
-        top:0;
-        left:0;
-        min-height: 20px;
-        width: 100%;
-        padding-top: 10px;
-        display: block;
-        border-bottom: 1px #ccc solid;
-        background: #eee;
-        font-size: 16px;
-        vertical-align: top;
-        padding-bottom: 10px;
-      }
-
-      #title_list{
-        padding-top: 50px;
-      }
-     #pseudoBullet{
-       padding-right: 8px;
-     }
-     #timeSpan{
-       color:gray;
-       font-size:9px;
-       padding-right: 10px;
-     }
-     #titleSpan{
-       text-decoration: none;
-       color:blue;
-       padding-right: 10px;
-     }
-     #locationSpan{
-       color:black;
-       font-size: 11px;
-     }
-     #missed-symbol{
-       position: fixed;
-       left:8;
-       top:-3;
-       font-size: 2em;
-     }
-     #carrot{
-       position:fixed;
-       left: 30
-     }
-     #locationText{
-       position: fixed;
-       left:45;
-     }
-     #carrot2{
-       position:fixed;
-       left: 130
-     }
-     #missed-connection-reset{
-       position:fixed;
-       left: 145
-     }
-     #post_link{
-       position: fixed;
-       right: 8;
-       color:blue
-     }
-    </style>
+    <link id = "css" rel="stylesheet" href="../css/missed.css">
+    <link id = "css" rel="stylesheet" href="../css/header.css">
   </head>
 
   <body>
@@ -79,9 +16,8 @@
     <div id="button"><button type="button" onclick="Data()">Next</button></div>
   </body>
 
-  <script type="text/javascript" src="js/mixup.js"></script>
+  <script type="text/javascript" src="js/post_functions.js"></script>
   <script type="text/javascript" src="js/typing.js"></script>
-    <script type="text/javascript" src="js/util.js"></script>
   <script>
     // Constants
     CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
@@ -118,7 +54,6 @@
         }
 
         sentences = sentences.join(" ")
-        console.log(sentences)
         originalSin.textContent = sentences
       });
 
@@ -155,7 +90,6 @@
         }
 
         sentences = sentences.join(" ")
-        console.log(sentences)
         originalSin.textContent = sentences
       });
 
@@ -192,7 +126,6 @@
 }(window));
 
     function Data(){
-      console.log(timers.length)
       for(var i = timers.length; i--;){
         clearInterval(timers[i]);
       }

@@ -145,15 +145,17 @@ theOther = ["you", "your", "she", "he", "her", "his", "other", "them",
 "they", "their", "theirs", "we"]
 theFamiliar = [ "i", "me", "myself", "my" ]
 async function GrabData() {
-  thesaurusData = ""
-  dictionaryData = ""
+  entriesData = ""
   databaseData = ""
-  thesaurusDataGrabbed = await resolveThesaurusGrab(thesaurusData);
   databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
+  entriesDataGrabbed = await resolveEntriesGrab(entriesData);
+
 
   var body = document.getElementsByTagName('missed-connection-container')[0]
   var i = 0;
-  var entries = SplitEntries(databaseDataGrabbed)
+  var scraped_entries = SplitEntries(databaseDataGrabbed)
+  var user_entries = SplitEntries(entriesDataGrabbed)
+  var entries = scraped_entries.concat(user_entries)
   var spans = ScrapePosts(entries);
   var postElements = GetTitlesAndPosts(entries)
   var titles = postElements[0]

@@ -12,7 +12,6 @@ from random import shuffle
 import random
 import os
 from PIL import Image
-from BeautifulSoup import BeautifulSoup
 import urllib2
 import cStringIO
 
@@ -26,20 +25,22 @@ CRAIGSLIST_URLS = [
 ]
 NUMBER_OF_POSTS = 5
 DB_FILE = "static/db.json"
-imageHashes =  []
 ENTRIES_FILE = "static/user_entries.json"
+IMAGE_HASHES =  []
 
-
-def CollectEntriesHashes(storedEntries):
+def CollectEntriesHashes(entries):
+    '''Returns a list of hashes from the post body of the entries passed'''
     hashes = []
-    for entry in storedEntries:
+    for entry in entries:
         hash = entry['hash']
         hashes.append(hash)
     return hashes
 
-def CollectMissedConnectionsLink(randomLocationUrl):
+def CollectMissedConnectionsLink(location):
+    '''Returns a list of recent posts urls from the location specific missed
+    connection url passed'''
     craigslistMissedConnectionsUrls = []
-    randomCraigslistUrl = CRAIGSLIST_URLS[randomLocationUrl] + "/search/mis"
+    randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
     response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
@@ -48,11 +49,14 @@ def CollectMissedConnectionsLink(randomLocationUrl):
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
+    '''Returns the title of the passed page content'''
     title = pageContent.select('title')[0].get_text()
-    title = CleanTitle(title)
+    title = Clean(title)
     return title
 
 def GetLocation(randomLocationUrl):
+    '''Scrape a readable location from the location specific missed connections
+    url so that it can be displayed in the header'''
     location = CRAIGSLIST_URLS[randomLocationUrl]
     if ".org" in location:
         location = CRAIGSLIST_URLS[randomLocationUrl][8:-15]
@@ -61,47 +65,49 @@ def GetLocation(randomLocationUrl):
     return location
 
 def GetHash(postBody):
+    '''Returns a hash of the post body passed to it'''
     hashObject = hashlib.md5(postBody)
     hashedPostBody = hashObject.hexdigest()
     return hashedPostBody;
 
 def GetPageContent(linkToVisit):
+    '''Returns the page content of the link passed to it'''
     response = requests.get(linkToVisit)
     pageContent = bs4.BeautifulSoup(response.text, "html.parser")
     return pageContent;
 
 def GetBody(finalUrl):
+    '''Returns the body of the post from the url passed to it. Dependent
+    upon the structure of the craiglist page'''
     pageContent = GetPageContent(finalUrl)
     body = pageContent.select('section#postingbody')[0].get_text()
     body = body.split("QR Code Link to This Post")[1]
-    body = CleanPostBody(body)
+    body = Clean(body)
     return body
 
-def CleanPostBody(body):
-    body = re.sub('\n', '', body)
-    body = (body).replace('"', "'")
-    body = body.rstrip()
-    body = body.encode('utf-8')
-    return body
-
-def CleanTitle(title):
-    title = re.sub('\n', '', title)
-    title = (title).replace('"', "'")
-    title = title.encode('utf-8')
-    return title
+def Clean(content):
+    ''''Returns a slightly styled version of the content passed to it'''
+    content = re.sub('\n', '', content)
+    content = (content).replace('"', "'")
+    content = content.rstrip()
+    content = content.encode('utf-8')
+    return content
 
 def HashExists(hashedPostBody, hashes):
+    '''Checks if the hash exists in the collected hashes'''
     if (hashedPostBody not in hashes):
         return True
     else:
         return False
 
 def CreateEntry(pageContent, finalUrl, randomLocationUrl):
+    '''Returns a json compliant post'''
     title = GetTitle(pageContent)
     today = datetime.date.today()
     location = GetLocation(randomLocationUrl)
     body = GetBody(finalUrl)
     hashedPostBody = GetHash(body)
+    # For debugging purposes
     print("Post from " + location + " added")
     dbEntry = "{ \"title\": " + "\"" + title + "\"" +  ", \"body\": " \
     + "\"" + body + "\"" + ", \"location\": " + "\"" + location + "\"" + \
@@ -110,6 +116,7 @@ def CreateEntry(pageContent, finalUrl, randomLocationUrl):
     return dbEntry
 
 def WriteStoreToFile(file, storedEntries):
+    '''Writes a list of passed entries to the passed file'''
     textEntries = open(file, 'w')
     textEntries.write("{\"posts\":[")
     for x in range(0, len(storedEntries)-2):
@@ -121,13 +128,36 @@ def WriteStoreToFile(file, storedEntries):
     textEntries.close()
 
 def ReadFile(DB_FILE):
+    '''Returns the data from the passed file'''
     with open(DB_FILE, 'r') as entriesFile:
         storedEntries = entriesFile.read()
     entriesFile.close()
     return storedEntries
 
+def ScrapeImages(finalUrl):
+    '''Scrapes all the images found in a post from the url passed'''
+    images = []
+    response = requests.get(finalUrl).text
+    soup = bs4.BeautifulSoup(response, "html.parser")
+    for link in soup.findAll('a', href=True, text=''):
+            if ('images' in link['href']):
+                images.append( link['href'] )
+    for img in soup.findAll('img'):
+        images.append(img['src'])
+    scraped_images = os.listdir("static/images/scraped_images")
+    image_number = len(scraped_images)
+
+    for img in images:
+        if ("50x50" not in img) and img not in IMAGE_HASHES:
+            file = cStringIO.StringIO(urllib2.urlopen(img).read())
+            img = Image.open(file)
+            image_number = image_number + 1
+            img.save("static/images/scraped_images/" + str(image_number) + ".jpg", "JPEG")
+
+            print "image saved!"
+
 @app.route('/missed')
-def render_index():
+def render_missed():
     return app.send_static_file('html/missed.html')
 
 @app.route('/db')
@@ -140,14 +170,10 @@ def render_raw_db():
 
 @app.route('/raw_entries')
 def render_raw_entries():
-    return app.send_static_file('user_entries.jsonl')
-
-@app.route('/raw_thesaurus')
-def render_raw_thesaurus():
-    return app.send_static_file('ea-thesaurus.json')
+    return app.send_static_file('entries.json')
 
 @app.route('/')
-def render_me():
+def render_index():
     return app.send_static_file('html/index.html')
 
 @app.route('/add', methods=['POST'])
@@ -163,24 +189,17 @@ def render_post_data():
 
     return app.send_static_file('html/feed.html')
 
-@app.route('/raw_dict')
-def render_raw_dict():
-    return app.send_static_file('dictionary.json')
-
 @app.route('/feed')
-def render_fibs():
+def render_feed():
     return app.send_static_file('html/feed.html')
-
-@app.route('/scraped_images')
-def render_scraped_images():
-    return app.send_static_file('images/scraped_images/')
 
 @app.route("/bots")
 def webscrape():
     # 1. Read in stored Missed Connections
     storedEntries = ReadFile(DB_FILE)
 
-    # 2. Clean stored Missed Connections
+    # 2. Load stored Missed Connections as json, if no previous entries
+    #   are found create empty lists
     if (len(storedEntries) > 2):
         Entries = json.loads(storedEntries)
         Entries = Entries['posts']
@@ -190,66 +209,50 @@ def webscrape():
         storedEntries = []
         Entries = []
 
-    newEntries = []
+    newEntries = []    # A list that stores the posts created from this call
+
     # 3. Collect hashes of stored Missed Connections
     hashes = CollectEntriesHashes(Entries)
 
+    # 4. Pick a random location, scrape recent posts and chose one to add
     for x in range(0, NUMBER_OF_POSTS):
-        # 4. Pick a location randomly
+
+        # 5. Pick a location randomly
         randomLocationUrl = random.randint(0,2)
-        # 4. Collect Missed Connections Post Link
+
+        # 6. Collect regional Missed Connections posts linkToVisit
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
-        # 5. Shuffle the collected links to randomize selection
+
+        # 7. Shuffle the collected links to randomize selection
         shuffle(craigslistMissedConnectionsUrls)
-        # 6. Get a random number
-        randomPostUrl = random.randint(0,len(craigslistMissedConnectionsUrls)-1)
-        # 7. Get Missed Connections post body from the new links
+
+        # 8. Get Missed Connections post body from the new links
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
+
+        # 9. Get a random number and use it to select the post to be added
+        randomPostUrl = random.randint(0,len(craigslistMissedConnectionsUrls)-1)
         finalUrl = craigslistMissedConnectionsUrls[randomPostUrl]
 
+        # 10. Collect the postBody from the selected post
         postBody = GetBody(finalUrl)
-        # 7. Hash the post body just gathered
+
+        # 11. Hash the post body just gathered
         hashedPostBody = GetHash(postBody)
-        # 8. Check if it's already in the store, if not add it
+
+        # 12. Check if it's already in the store, if not add it and scrape any images found in it
         hashExists = HashExists(hashedPostBody, hashes)
         if (hashExists == 1):
-
             pageContent = GetPageContent(finalUrl)
-            body = pageContent.select('section#postingbody')[0].get_text()
             dbEntry = CreateEntry(pageContent, finalUrl, randomLocationUrl)
-            print finalUrl
-            print dbEntry
-            images = []
-            response = requests.get(finalUrl).text
-            soup = bs4.BeautifulSoup(response, "html.parser")
-            for link in soup.findAll('a', href=True, text=''):
-                    if ('images' in link['href']):
-                        images.append( link['href'] )
-            for img in soup.findAll('img'):
-                images.append(img['src'])
-            scraped_images = os.listdir("static/images/scraped_images")
-            image_number = len(scraped_images)
-
-            for img in images:
-                if ("50x50" not in img) and img not in imageHashes:
-                    imageHashes.append(img)
-                    file = cStringIO.StringIO(urllib2.urlopen(img).read())
-                    img = Image.open(file)
-                    image_number = image_number + 1
-                    img.save("static/images/scraped_images/" + str(image_number) + ".jpg", "JPEG")
-
-                    print "image saved!"
-
+            ScrapeImages(finalUrl)
             newEntries.append(str(dbEntry))
 
-    # 9. Write all entries in the store to the db file
-    uberEntries = []
-    storedEntries
+    # 13. Write all entries in the store to the db file
+    uberEntries = [] # We've opened the file to write so we first must read in all old posts or they'll be lost
     for entry in storedEntries:
         entry = json.dumps(entry)
         uberEntries.append(entry)
-
-    uberEntries = uberEntries + newEntries
+    uberEntries = uberEntries + newEntries # Append the new entries to the old
     WriteStoreToFile('static/db.json', uberEntries)
     return app.send_static_file('html/bots.html')
 

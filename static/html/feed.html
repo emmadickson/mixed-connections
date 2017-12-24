@@ -60,24 +60,12 @@
   </head>
 
   <body id="body">
-    <blink><a href="/">What did You miss?</a></blink>
+    <div><a href="/">What did You miss?</a></div>
     <textarea name="post" id="input"></textarea>
     <canvas id="canvas1"></canvas>
   </form>
   </body>
-  <script type="text/javascript">
 
-    setInterval(function(){
-
-      $('blink').each(function() {
-
-        $(this).toggle();
-
-      });
-
-    }, 250);
-
-</script>
   <script>
   $(document).keypress(function(e) {
     if(e.which == 13) {

@@ -1,188 +1,133 @@
 <html>
+
  <head>
    <script src="js/jquery-3.2.1.min.js"></script>
-
-   <style>
-     header{
-       position: fixed;
-       top:0;
-       left:0;
-       min-height: 20px;
-       width: 100%;
-       padding-top: 10px;
-       display: block;
-       border-bottom: 1px #ccc solid;
-       background: #eee;
-       font-size: 16px;
-       vertical-align: top;
-       padding-bottom: 10px;
-     }
-     ::-webkit-scrollbar {
-      -webkit-appearance: none;
-      width: 7px;
-    }
-    ::-webkit-scrollbar-thumb {
-      border-radius: 4px;
-      background-color: rgba(0, 0, 0, .5);
-      -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-    }
-     html,body{
-       padding: 10px;
-       overflow-y: scroll;
-     }
-     #title_list{
-       padding-top: 50px;
-     }
-    #pseudoBullet{
-      padding-right: 8px;
-    }
-    #timeSpan{
-      color:gray;
-      font-size:9px;
-      padding-right: 10px;
-    }
-    #titleSpan{
-      text-decoration: none;
-      color:blue;
-      padding-right: 10px;
-    }
-    #locationSpan{
-      color:black;
-      font-size: 11px;
-    }
-    #missed-symbol{
-      position: fixed;
-      left:8;
-      top:-3;
-      font-size: 2em;
-    }
-    #carrot{
-      position:fixed;
-      left: 30
-    }
-    #locationText{
-      position: fixed;
-      left:45;
-    }
-    #carrot2{
-      position:fixed;
-      left: 130
-    }
-    #missed-connection-reset{
-      position:fixed;
-      left: 145
-    }
-    #post_link{
-      position: fixed;
-      right: 8;
-      color:blue
-    }
-   </style>
-
+   <link id = "css" rel="stylesheet" href="../css/header.css">
+   <link id = "css" rel="stylesheet" href="../css/index.css">
  </head>
 
  <body>
    <header> <span id="missed-symbol">&#9993;</span> <span id="carrot"> < </span> <span id="locationText"> pittsburgh </span> <span id="carrot2"> < </span> <a id=missed-connection-reset href="/">missed connections</a> <a id="post_link" href="/feed">post</a></header>
-
    <div id="title_list"></div>
  </body>
 
- <script type="text/javascript" src="js/mixup.js"></script>
  <script type="text/javascript" src="js/typing.js"></script>
- <script>
-   // Constants
-   CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
 
-   // 3. Use a set interval to constantly Scramble location text
-  var ScrambledLocation = document.getElementById("locationText");
+ <script type="text/javascript">
+   setInterval(function(){
+     $('blink').each(function() {
+       $(this).toggle();
+     });
+   }, Math.floor(Math.random() * (250 - 100 + 1)) + 100);
+</script>
+
+ <script>
+  // Constants
+  CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
+
+  // 1. Use a set interval to constantly Scramble location text
+  var scrambledLocation = document.getElementById("locationText");
   var locationText = document.getElementById("locationText");
   var originalLocation = locationText.textContent;
+
   interval = setInterval(function(){
-   Scramble(originalLocation, ScrambledLocation)
-  }, 150);
+     Scramble(originalLocation, scrambledLocation)
+    }, 150);
+
   interval = setInterval(function(){
-   var new_location = Math.floor((Math.random() * 2) + 0);
-   locationText.textContent = CRAIGSLIST_LOCATIONS[new_location]
+     var newLocation = Math.floor((Math.random() * 2) + 0);
+     locationText.textContent = CRAIGSLIST_LOCATIONS[newLocation]
   }, 250);
 
-    var topnum = 50;
-     jQuery.get('/raw_db', function(data) {
+  // 2. Grab 20 initial titles, format them and add them to the page
+  var topNum = 100; // Sets the distance of the list from the header in pixels
+  jQuery.get('/raw_db', function(data) {
+    entries = data["posts"]
 
-       entries = data["posts"]
-        // 1. posts the document up into lines and from individiaul lines into titles and posts
-        for (var i = 0; i < 20; i++){
-            var list = document.getElementById("title_list");
-            var par = document.createElement('p')
-            par.style.position = 'absolute'
-            par.style.left = 100;
-            par.style.top = topnum
+    // 1.Chops the document up into lines and from individual lines into titles and posts
+    for (var i = 0; i < 20; i++){
+        var list = document.getElementById("title_list");
+        var par = document.createElement('p')
+        par.style.position = 'absolute'
+        par.style.left = 100;
+        par.style.top = topNum
 
-            topnum = topnum + 50;
-            var pseudoBullet = document.createElement('span')
-            pseudoBullet.id = "pseudoBullet"
-            pseudoBullet.textContent = "*"
-            par.appendChild(pseudoBullet)
+        topNum = topNum + 50;
+        var pseudoBullet = document.createElement('span')
+        pseudoBullet.id = "pseudoBullet"
+        pseudoBullet.textContent = "*"
+        par.appendChild(pseudoBullet)
 
-            var timeSpan = document.createElement('span')
-            timeSpan.id = "timeSpan"
-            time = entries[i]['time'];
-            timeSpan.textContent = time
-            par.appendChild(timeSpan)
+        var timeSpan = document.createElement('span')
+        timeSpan.id = "timeSpan"
+        time = entries[i]['time'];
+        timeSpan.textContent = time
+        par.appendChild(timeSpan)
 
-            var titleSpan = document.createElement('a')
-            titleSpan.id = "titleSpan"
-            titleSpan.href = "/missed"
-            title = entries[i]['title'];
-            titleSpan.textContent = title
-            par.appendChild(titleSpan)
+        var titleSpan = document.createElement('a')
+        titleSpan.id = "titleSpan"
+        titleSpan.href = "/missed"
+        title = entries[i]['title'];
+        titleSpan.textContent = title
+        par.appendChild(titleSpan)
 
-            var locationSpan = document.createElement('span')
-            loc = "("+(entries[i]['location'])+")"
-            locationSpan.textContent = loc
-            par.appendChild(locationSpan)
+        var locationSpan = document.createElement('span')
+        loc = "("+(entries[i]['location'])+")"
+        locationSpan.textContent = loc
+        par.appendChild(locationSpan)
 
-            list.appendChild(par)
-          }
-     });
-    var count = 50;
-     $(window).scroll(function(){
+        list.appendChild(par)
+      }
+    });
 
-       if ($(window).scrollTop() >= $(document).height()-$(window).height()){
+    // 3. Constantly add jumbled title to the bottom of the page
+    var count = 50; // Pick up where we left off with the last title in the available titles
+    var blink = false;
+    $(window).scroll(function(){
+     if ($(window).scrollTop() >=($(document).height()-$(window).height())/2){
 
-          if (count != entries.length-1){
-            count = count + 1
-          }
-          else{
-            count = 0
-          }
-          var list = document.getElementById("title_list");
+       // Reset so that we're always pulling in titles and scrolling
+        if (count != entries.length-1){
+          count = count + 1
+        }
+        else{
+          count = 0
+          blink = true
+        }
+
+        if (blink == true){
+          var par = document.createElement('blink')
+        }
+        else{
           var par = document.createElement('p')
+        }
+        var list = document.getElementById("title_list");
 
-          par.style.position = 'absolute'
-          par.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
-          par.style.top = topnum
-          topnum = topnum + Math.floor(Math.random() * (150 - 20 + 1)) + 20;
-          var timeSpan = document.createElement('span')
-          timeSpan.id = "timeSpan"
-          time = entries[count]['time'];
-          timeSpan.textContent = time
-          par.appendChild(timeSpan)
+        par.style.position = 'absolute'
+        par.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
+        par.style.top = topNum
+        topNum = topNum + Math.floor(Math.random() * (150 - 20 + 1)) + 20;
+        var timeSpan = document.createElement('span')
+        timeSpan.id = "timeSpan"
+        time = entries[count]['time'];
+        timeSpan.textContent = time
+        par.appendChild(timeSpan)
 
-          var titleSpan = document.createElement('a')
-          titleSpan.id = "titleSpan"
-          titleSpan.href = "/missed"
-          title = entries[count]['title'];
-          titleSpan.textContent = title
-          par.appendChild(titleSpan)
+        var titleSpan = document.createElement('a')
+        titleSpan.id = "titleSpan"
+        titleSpan.href = "/missed"
+        title = entries[count]['title'];
+        titleSpan.textContent = title
+        par.appendChild(titleSpan)
 
-          var locationSpan = document.createElement('span')
-          loc = "("+(entries[count]['location'])+")"
-          locationSpan.textContent = loc
-          par.appendChild(locationSpan)
+        var locationSpan = document.createElement('span')
+        loc = "("+(entries[count]['location'])+")"
+        locationSpan.textContent = loc
+        par.appendChild(locationSpan)
 
-          list.appendChild(par)
-       }
-   });
+        list.appendChild(par)
+     }
+    });
    </script>
  </body>
 </html>

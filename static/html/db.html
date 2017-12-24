@@ -37,12 +37,10 @@
       jQuery.get('/raw_db', function(data) {
 
         entries = data["posts"]
-        console.log(entries)
 
          // 1. posts the document up into lines and from individiaul lines into titles and posts
          for (var i = 0; i < entries.length; i++){
 
-            console.log(entries[i]);
              var table = document.getElementById("botPosts");
              var row = table.insertRow(1);
              var cell1 = row.insertCell(0);
@@ -50,13 +48,12 @@
              var cell3 = row.insertCell(2);
              var cell4 = row.insertCell(3);
              title = entries[i]['title'];
-             console.log(title);
              cell1.innerHTML = title;
              cell2.innerHTML = entries[i]['body'];
              cell3.innerHTML = entries[i]['location'];
              cell4.innerHTML = entries[i]['time'];
            }
-         
+
       });
 
     </script>
