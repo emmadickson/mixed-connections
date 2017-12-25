@@ -3,20 +3,8 @@
   <head>
     <script src="js/jquery-3.2.1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
-    <style>
-      body{
-        background-image: url('../images/ibm.gif');
-        margin: 0;
-        padding: 0;
-      }
-      #glitch{
-        font-family: 'VT323', monospace;
-        font-size: 250px;
-        color: white;
-        text-align: center;
-        width:100%;
-        height:100%
-      }
+    <link id = "css" rel="stylesheet" href="../css/bots.css">
+
     </style>
   </head>
 
@@ -24,10 +12,8 @@
      <img id="glitch" >
   </body>
 
-  <script type="text/javascript" src="js/util.js"></script>
-  <script type="text/javascript" src="js/original_gif.js"></script>
   <script type="text/javascript" src="js/gif_components.js"></script>
-<!--
+
   <script>
     function ReverseShuffle(color, gifObject, j){
       gifObject.globalColorTable[j] = color.slice(0,2);
@@ -94,5 +80,5 @@
     glitchedGif = HexToBase64(glitchedGif)
     gifDomElement.src = "data:image/png;base64," + glitchedGif
 
-  </script> -->
+  </script>
 </html>

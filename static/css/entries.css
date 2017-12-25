@@ -1,0 +1,24 @@
+body{
+  overflow-x: hidden;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+  table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    word-wrap: break-word;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even){background-color: #84b3ff}
+
+  th {
+    background-color: #465e84;
+    color: white;
+  }

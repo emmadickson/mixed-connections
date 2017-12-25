@@ -12,6 +12,7 @@
  </body>
 
  <script type="text/javascript" src="js/typing.js"></script>
+ <script type="text/javascript" src="js/post_functions.js"></script>
 
  <script type="text/javascript">
    setInterval(function(){
@@ -44,7 +45,7 @@
   jQuery.get('/raw_db', function(data) {
     entries = data["posts"]
 
-    // 1.Chops the document up into lines and from individual lines into titles and posts
+    // 3.Chops the document up into lines and from individual lines into titles and posts
     for (var i = 0; i < 20; i++){
         var list = document.getElementById("title_list");
         var par = document.createElement('p')
@@ -80,7 +81,7 @@
       }
     });
 
-    // 3. Constantly add jumbled title to the bottom of the page
+    // 4s. Constantly add jumbled title to the bottom of the page
     var count = 50; // Pick up where we left off with the last title in the available titles
     var blink = false;
     $(window).scroll(function(){

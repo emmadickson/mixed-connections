@@ -14,6 +14,7 @@ import os
 from PIL import Image
 import urllib2
 import cStringIO
+import subprocess
 
 app = Flask(__name__, static_url_path='')
 
@@ -24,9 +25,9 @@ CRAIGSLIST_URLS = [
 "https://pittsburgh.craigslist.org"
 ]
 NUMBER_OF_POSTS = 5
-DB_FILE = "static/db.json"
-ENTRIES_FILE = "static/user_entries.json"
-IMAGE_HASHES =  []
+DB_FILE = "static/data/db.json"
+ENTRIES_FILE = "static/data/entries.json"
+
 
 def CollectEntriesHashes(entries):
     '''Returns a list of hashes from the post body of the entries passed'''
@@ -137,6 +138,7 @@ def ReadFile(DB_FILE):
 def ScrapeImages(finalUrl):
     '''Scrapes all the images found in a post from the url passed'''
     images = []
+    IMAGE_HASHES =  []
     response = requests.get(finalUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
@@ -146,14 +148,15 @@ def ScrapeImages(finalUrl):
         images.append(img['src'])
     scraped_images = os.listdir("static/images/scraped_images")
     image_number = len(scraped_images)
-
+    print images
+    images = set(images)
+    print images
     for img in images:
         if ("50x50" not in img) and img not in IMAGE_HASHES:
             file = cStringIO.StringIO(urllib2.urlopen(img).read())
             img = Image.open(file)
             image_number = image_number + 1
             img.save("static/images/scraped_images/" + str(image_number) + ".jpg", "JPEG")
-
             print "image saved!"
 
 @app.route('/missed')
@@ -164,37 +167,50 @@ def render_missed():
 def render_db():
     return app.send_static_file('html/db.html')
 
+@app.route('/entries')
+def render_entries():
+    return app.send_static_file('html/entries.html')
+
 @app.route('/raw_db')
 def render_raw_db():
-    return app.send_static_file('db.json')
+    return app.send_static_file('data/db.json')
 
 @app.route('/raw_entries')
 def render_raw_entries():
-    return app.send_static_file('entries.json')
+    return app.send_static_file('data/entries.json')
 
 @app.route('/')
 def render_index():
     return app.send_static_file('html/index.html')
 
-@app.route('/add', methods=['POST'])
-def render_post_data():
+@app.route("/add", methods=["POST"])
+def add():
+    title = request.form['title']
+    text = request.form['text']
+    today = datetime.date.today()
+    storedEntries = ReadFile(ENTRIES_FILE)
 
-    if request.method == 'POST':
-        content = request.form
-        post = content['post']
+    if (len(storedEntries) > 2):
+        storedEntries = json.loads(storedEntries)
+        storedEntries = storedEntries['posts']
+    else:
+        storedEntries = []
 
-        f = open('static/user_entries.jsonl', 'a')
-        f.write(post)
-        f.write("\n")
+    user_entry = "{ \"title\": " + "\"" + title + "\"" +  ", \"body\": " \
+    + "\"" + text + "\"" + ", \"location\": " + "\"" + "cyberspace" + "\"" + \
+    ", \"time\": " + "\"" + str(today) + "\"" + "}"
 
-    return app.send_static_file('html/feed.html')
+    uberEntries = [] # We've opened the file to write so we first must read in all old posts or they'll be lost
+    for entry in storedEntries:
+        entry = json.dumps(entry)
+        uberEntries.append(json.loads(entry))
+    uberEntries.append(user_entry)
+    WriteStoreToFile('static/data/entries.json', uberEntries)
+    return app.send_static_file('html/mouth.html')
 
-@app.route('/feed')
-def render_feed():
-    return app.send_static_file('html/feed.html')
-
-@app.route("/bots")
+@app.route("/mouth")
 def webscrape():
+
     # 1. Read in stored Missed Connections
     storedEntries = ReadFile(DB_FILE)
 
@@ -244,6 +260,8 @@ def webscrape():
         if (hashExists == 1):
             pageContent = GetPageContent(finalUrl)
             dbEntry = CreateEntry(pageContent, finalUrl, randomLocationUrl)
+            print finalUrl
+            print dbEntry
             ScrapeImages(finalUrl)
             newEntries.append(str(dbEntry))
 
@@ -253,8 +271,9 @@ def webscrape():
         entry = json.dumps(entry)
         uberEntries.append(entry)
     uberEntries = uberEntries + newEntries # Append the new entries to the old
-    WriteStoreToFile('static/db.json', uberEntries)
-    return app.send_static_file('html/bots.html')
+    WriteStoreToFile('static/data/db.json', uberEntries)
+    subprocess.call('static/bash/gif_script.sh')
+    return app.send_static_file('html/mouth.html')
 
 
 if __name__ == '__main__':

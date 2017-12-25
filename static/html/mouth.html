@@ -1,0 +1,249 @@
+<head>
+  <link id = "css" rel="stylesheet" href="../css/mouth.css">
+  <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+</head>
+
+  <body id="body">
+    <div id="miss">What did You miss?</div>
+    <div id="form-main">
+    <div id="form-div">
+
+      <form class="form" id="form1" action="/add" method="POST">
+        <p class="title">
+          <input name="title" type="text" class="feedback-input" id="title" placeholder="Title" />
+        </p>
+        <p class="text">
+          <textarea name="text" class="feedback-input" id="comment" placeholder="Post"></textarea>
+        </p>
+        <div id="button" class="submit">
+          <input type="submit" value="SEND" id="button-blue"/>
+        </div>
+      </form>
+
+    </div>
+    <canvas id="canvas1"></canvas>
+  </body>
+
+<script>
+
+
+$(document).ready(function() {
+  var f = document.getElementById('miss');
+  setInterval(function() {
+      f.style.display = (f.style.display == 'none' ? '' : 'none');
+
+  }, 1000);
+
+
+});
+
+$(document).ready(function() {
+var f = document.getElementById('miss');
+setInterval(function() {
+  f.textContent = (f.textContent == ' what do You miss?' ? 'what did You miss?' : ' what do You miss?')
+  }, 500);
+});
+
+var circles = [],
+canvas = document.getElementById("canvas1"),
+context = canvas.getContext("2d"),
+
+// SETTINGS
+opacity = 0.5,
+startColorR = 0
+startColorG = 0
+startColorB = 0
+colors = []
+while(startColorR+startColorG+startColorB < 300){
+  startColorR = Math.floor((Math.random() * 205) + 1);
+  startColorG = Math.floor((Math.random() * 225) + 1);
+  startColorB = Math.floor((Math.random() * 225) + 1);
+}
+color1 = "rgba("+startColorR+", "+startColorG+", "+startColorB+ "," + opacity + ")"
+colors.push(color1)
+
+color2m = (Math.random() * 1.5) + 0.2
+
+startColorR = startColorR * color2m
+startColorG = startColorG * color2m
+startColorB = startColorB * color2m
+while(startColorR+startColorG+startColorB < 300){
+  startColorR = Math.floor((Math.random() * 125) + 1);
+  startColorG = Math.floor((Math.random() * 125) + 1);
+  startColorB = Math.floor((Math.random() * 125) + 1);
+}
+color2 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+colors.push(color2)
+
+color3m = (Math.random() * 1.5) + 0.2
+
+startColorR = startColorR * color3m
+startColorG = startColorG * color3m
+startColorB = startColorB * color3m
+while(startColorR+startColorG+startColorB < 300){
+  startColorR = Math.floor((Math.random() * 125) + 1);
+  startColorG = Math.floor((Math.random() * 125) + 1);
+  startColorB = Math.floor((Math.random() * 125) + 1);
+}
+color3 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+colors.push(color3)
+
+
+startColorR = startColorR * (Math.random() * 1.5) + 0.2
+startColorG = startColorG * (Math.random() * 1.5) + 0.2
+startColorB = startColorB * (Math.random() * 1.5) + 0.2
+while(startColorR+startColorG+startColorB < 60){
+  startColorR = Math.floor((Math.random() * 125) + 1);
+  startColorG = Math.floor((Math.random() * 125) + 1);
+  startColorB = Math.floor((Math.random() * 125) + 1);
+}
+color4 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+colors.push(color4)
+
+startColorR = startColorR * (Math.random() * 1.5) + 0.2
+startColorG = startColorG * (Math.random() * 1.5) + 0.2
+startColorB = startColorB * (Math.random() * 1.5) + 0.2
+while(startColorR+startColorG+startColorB < 60){
+  startColorR = Math.floor((Math.random() * 125) + 1);
+  startColorG = Math.floor((Math.random() * 125) + 1);
+  startColorB = Math.floor((Math.random() * 125) + 1);
+}
+color5 =  "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + opacity + ")"            // the opacity of the circles 0 to 1
+colors.push(color5)
+
+var body = document.getElementById('body')
+body.style.backgroundColor=colors[Math.floor((Math.random() * 4) + 0)]
+var words = document.getElementById("miss")
+words.style.color = "rgba("+startColorR + ", " + startColorG + ", " + startColorB+ "," + 0.7 + ")"            // the opacity of the circles 0 to 1
+var button = document.getElementById("button-blue")
+button.style.backgroundColor = colors[Math.floor((Math.random() * 4) + 0)]
+
+minSize = 1,                                        // the minimum size of the circles in px
+maxSize = 70,                                       // the maximum size of the circles in px
+numCircles = 400,
+minSpeed = -2,                                     // the minimum speed, recommended: -maxspeed
+maxSpeed = 2,                                      // the maximum speed of the circles
+expandState = true;                                // the direction of expansion
+
+function buildArray() {
+'use strict';
+
+for (var i =0; i < numCircles ; i++){
+    var color = Math.floor(Math.random() * (colors.length - 1 + 1)) + 1,
+        left = Math.floor(Math.random() * (canvas.width - 0 + 1)) + 0,
+        top = Math.floor(Math.random() * (canvas.height - 0 + 1)) + 0,
+        size = Math.floor(Math.random() * (maxSize - minSize + 1)) + minSize,
+        leftSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10,
+        topSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10,
+        expandState = expandState;
+
+        while(leftSpeed == 0 || topSpeed == 0){
+            leftSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10,
+            topSpeed = (Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed)/10;
+        }
+    var circle = {color:color, left:left, top:top, size:size, leftSpeed:leftSpeed, topSpeed:topSpeed, expandState:expandState };
+    circles.push(circle);
+}
+}
+
+function build(){
+'use strict';
+
+for(var h = 0; h < circles.length; h++){
+    var curCircle = circles[h];
+    context.fillStyle = colors[curCircle.color-1];
+    context.beginPath();
+    if(curCircle.left > canvas.width+curCircle.size){
+        curCircle.left = 0-curCircle.size;
+        context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+    }else if(curCircle.left < 0-curCircle.size){
+        curCircle.left = canvas.width+curCircle.size;
+        context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+    }else{
+        curCircle.left = curCircle.left+curCircle.leftSpeed;
+        context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+    }
+
+    if(curCircle.top > canvas.height+curCircle.size){
+        curCircle.top = 0-curCircle.size;
+        context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+
+    }else if(curCircle.top < 0-curCircle.size){
+        curCircle.top = canvas.height+curCircle.size;
+        context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+    }else{
+        curCircle.top = curCircle.top+curCircle.topSpeed;
+        if(curCircle.size != maxSize && curCircle.size != minSize && curCircle.expandState == false){
+          curCircle.size = curCircle.size-0.1;
+        }
+        else if(curCircle.size != maxSize && curCircle.size != minSize && curCircle.expandState == true){
+          curCircle.size = curCircle.size+0.1;
+        }
+        else if(curCircle.size == maxSize && curCircle.expandState == true){
+          curCircle.expandState = false;
+          curCircle.size = curCircle.size-0.1;
+        }
+        else if(curCircle.size == minSize && curCircle.expandState == false){
+          curCircle.expandState = true;
+          curCircle.size = curCircle.size+0.1;
+        }
+        context.arc(curCircle.left, curCircle.top, curCircle.size, 0, 2 * Math.PI, false);
+    }
+
+    context.closePath();
+    context.fill();
+    context.ellipse;
+}
+}
+
+
+var xVal = 0;
+
+window.requestAnimFrame = (function (callback) {
+'use strict';
+return window.requestAnimationFrame ||
+window.webkitRequestAnimationFrame ||
+window.mozRequestAnimationFrame ||
+window.oRequestAnimationFrame ||
+window.msRequestAnimationFrame ||
+function (callback) {
+    window.setTimeout(callback, 1000);
+};
+})();
+
+function animate() {
+'use strict';
+var canvas = document.getElementById("canvas1"),
+    context = canvas.getContext("2d");
+
+// clear the canvas
+context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+// draw the next frame
+xVal++;
+build();
+
+// request a new frame
+requestAnimFrame(function () {
+    animate();
+});
+}
+window.onload = function () {
+'use strict';
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+buildArray();
+animate();
+};
+
+
+window.onresize = function () {
+'use strict';
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+//buildArray();
+animate();
+};
+</script>
+</head>
