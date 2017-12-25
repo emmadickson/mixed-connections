@@ -24,7 +24,7 @@ CRAIGSLIST_URLS = [
 "https://raleigh.craigslist.org",
 "https://pittsburgh.craigslist.org"
 ]
-NUMBER_OF_POSTS = 5
+NUMBER_OF_POSTS = 1
 DB_FILE = "static/data/db.json"
 ENTRIES_FILE = "static/data/entries.json"
 
@@ -163,13 +163,13 @@ def ScrapeImages(finalUrl):
 def render_missed():
     return app.send_static_file('html/missed.html')
 
-@app.route('/db')
-def render_db():
-    return app.send_static_file('html/db.html')
-
-@app.route('/entries')
-def render_entries():
-    return app.send_static_file('html/entries.html')
+# @app.route('/db')
+# def render_db():
+#     return app.send_static_file('html/db.html')
+#
+# @app.route('/entries')
+# def render_entries():
+#     return app.send_static_file('html/entries.html')
 
 @app.route('/raw_db')
 def render_raw_db():
@@ -206,11 +206,6 @@ def add():
         uberEntries.append(json.loads(entry))
     uberEntries.append(user_entry)
     WriteStoreToFile('static/data/entries.json', uberEntries)
-    return app.send_static_file('html/mouth.html')
-
-@app.route("/mouth")
-def webscrape():
-
     # 1. Read in stored Missed Connections
     storedEntries = ReadFile(DB_FILE)
 
@@ -273,6 +268,10 @@ def webscrape():
     uberEntries = uberEntries + newEntries # Append the new entries to the old
     WriteStoreToFile('static/data/db.json', uberEntries)
     subprocess.call('static/bash/gif_script.sh')
+    return app.send_static_file('html/mouth.html')
+
+@app.route("/mouth")
+def webscrape():
     return app.send_static_file('html/mouth.html')
 
 

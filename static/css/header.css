@@ -11,6 +11,7 @@ header{
   font-size: 16px;
   vertical-align: top;
   padding-bottom: 10px;
+  font-family: serif;
 }
 ::-webkit-scrollbar {
  -webkit-appearance: none;
@@ -44,9 +45,9 @@ header{
 }
 #missed-symbol{
  position: fixed;
+ background-image: url(../images/icons/phone.png);
+
  left:8;
- top:-3;
- font-size: 2em;
 }
 #carrot{
  position:fixed;
