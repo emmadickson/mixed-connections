@@ -24,6 +24,7 @@ CRAIGSLIST_URLS = [
 "https://raleigh.craigslist.org",
 "https://pittsburgh.craigslist.org"
 ]
+
 NUMBER_OF_POSTS = 1
 DB_FILE = "static/data/db.json"
 ENTRIES_FILE = "static/data/entries.json"
@@ -42,11 +43,13 @@ def CollectMissedConnectionsLink(location):
     connection url passed'''
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
+    print(randomCraigslistUrl)
     response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
+    print(soup)
     for link in soup.findAll('a', href=True, text=''):
-            if ('html' in link['href']):
-                craigslistMissedConnectionsUrls.append( link['href'] )
+        if ('html' in link['href']):
+            craigslistMissedConnectionsUrls.append( link['href'] )
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
@@ -163,49 +166,16 @@ def ScrapeImages(finalUrl):
 def render_missed():
     return app.send_static_file('html/missed.html')
 
-# @app.route('/db')
-# def render_db():
-#     return app.send_static_file('html/db.html')
-#
-# @app.route('/entries')
-# def render_entries():
-#     return app.send_static_file('html/entries.html')
-
-@app.route('/raw_db')
-def render_raw_db():
-    return app.send_static_file('data/db.json')
-
-@app.route('/raw_entries')
-def render_raw_entries():
-    return app.send_static_file('data/entries.json')
-
 @app.route('/')
 def render_index():
     return app.send_static_file('html/index.html')
 
-@app.route("/add", methods=["POST"])
+@app.route('/raw_db')
+def render_db():
+    return app.send_static_file('data/db.json')
+
+@app.route("/add")
 def add():
-    title = request.form['title']
-    text = request.form['text']
-    today = datetime.date.today()
-    storedEntries = ReadFile(ENTRIES_FILE)
-
-    if (len(storedEntries) > 2):
-        storedEntries = json.loads(storedEntries)
-        storedEntries = storedEntries['posts']
-    else:
-        storedEntries = []
-
-    user_entry = "{ \"title\": " + "\"" + title + "\"" +  ", \"body\": " \
-    + "\"" + text + "\"" + ", \"location\": " + "\"" + "cyberspace" + "\"" + \
-    ", \"time\": " + "\"" + str(today) + "\"" + "}"
-
-    uberEntries = [] # We've opened the file to write so we first must read in all old posts or they'll be lost
-    for entry in storedEntries:
-        entry = json.dumps(entry)
-        uberEntries.append(json.loads(entry))
-    uberEntries.append(user_entry)
-    WriteStoreToFile('static/data/entries.json', uberEntries)
     # 1. Read in stored Missed Connections
     storedEntries = ReadFile(DB_FILE)
 
@@ -233,7 +203,7 @@ def add():
 
         # 6. Collect regional Missed Connections posts linkToVisit
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
-
+        print(craigslistMissedConnectionsUrls)
         # 7. Shuffle the collected links to randomize selection
         shuffle(craigslistMissedConnectionsUrls)
 
@@ -268,12 +238,7 @@ def add():
     uberEntries = uberEntries + newEntries # Append the new entries to the old
     WriteStoreToFile('static/data/db.json', uberEntries)
     subprocess.call('static/bash/gif_script.sh')
-    return app.send_static_file('html/mouth.html')
-
-@app.route("/mouth")
-def webscrape():
-    return app.send_static_file('html/mouth.html')
-
+    return app.send_static_file('html/missed.html')
 
 if __name__ == '__main__':
     app.run()

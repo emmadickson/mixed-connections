@@ -1,134 +1,115 @@
 <html>
-
- <head>
-   <script src="js/jquery-3.2.1.min.js"></script>
-   <link id = "css" rel="stylesheet" href="../css/header.css">
-   <link id = "css" rel="stylesheet" href="../css/index.css">
- </head>
-
+  <head>
+     <title>I miss you</title>
+     <script src="js/jquery-3.2.1.min.js"></script>
+     <link id = "css" rel="stylesheet" href="../css/header.css">
+     <link id = "css" rel="stylesheet" href="../css/index.css">
+  </head>
  <body>
-   <header> <span id="missed-symbol">&#9993;</span> <span id="carrot"> < </span> <span id="locationText"> pittsburgh </span> <span id="carrot2"> < </span> <a id=missed-connection-reset href="/">missed connections</a> <a id="post_link" href="/mouth">post</a></header>
-   <div id="title_list"></div>
- </body>
+  <header>
+    <img src="images/icons/phone.png">
+    <span id="carrot"> < </span>
+    <span id="locationText"> pittsburgh </span>
+    <span id="carrot2"> < </span>
+    <a id=missed-connection-reset href="/">missed connections</a>
+  </header>
+    <div id="title_list"></div>
+  </body>
 
- <script type="text/javascript" src="js/typing.js"></script>
- <script type="text/javascript" src="js/post_functions.js"></script>
-
- <script type="text/javascript">
-   setInterval(function(){
+  <script type="text/javascript" src="js/index_support.js"></script>
+  <script type="text/javascript" src="data/db.json"></script>
+  <script type="text/javascript">
+    // Function that allows the zombie blink tag to be reanimated
+    setInterval(function(){
      $('blink').each(function() {
        $(this).toggle();
      });
-   }, Math.floor(Math.random() * (250 - 100 + 1)) + 100);
-</script>
+    }, Math.floor(Math.random() * (1000 - 500 + 1)) + 500);
+  </script>
 
- <script>
-  // Constants
-  CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
+  <script>
+    // Constants
+    CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
 
-  // 1. Use a set interval to constantly Scramble location text
-  var scrambledLocation = document.getElementById("locationText");
-  var locationText = document.getElementById("locationText");
-  var originalLocation = locationText.textContent;
+    // 1. Use a set interval to constantly scramble location text
+    var scrambledLocation = document.getElementById("locationText");
+    var originalLocation = document.getElementById("locationText").textContent;
 
-  interval = setInterval(function(){
+    // Scrambles the location in the individual posts
+    interval = setInterval(function(){
      Scramble(originalLocation, scrambledLocation)
     }, 150);
 
-  interval = setInterval(function(){
-     var newLocation = Math.floor((Math.random() * 2) + 0);
-     locationText.textContent = CRAIGSLIST_LOCATIONS[newLocation]
-  }, 250);
-
-  // 2. Grab 20 initial titles, format them and add them to the page
-  var topNum = 100; // Sets the distance of the list from the header in pixels
-  jQuery.get('/raw_db', function(data) {
-    entries = data["posts"]
-
-    // 3.Chops the document up into lines and from individual lines into titles and posts
-    for (var i = 0; i < 20; i++){
-        var list = document.getElementById("title_list");
-        var par = document.createElement('p')
-        par.style.position = 'absolute'
-        par.style.left = 100;
-        par.style.top = topNum
-
-        topNum = topNum + 50;
-        var pseudoBullet = document.createElement('span')
-        pseudoBullet.id = "pseudoBullet"
-        pseudoBullet.textContent = "*"
-        par.appendChild(pseudoBullet)
-
-        var timeSpan = document.createElement('span')
-        timeSpan.id = "timeSpan"
-        time = entries[i]['time'];
-        timeSpan.textContent = time
-        par.appendChild(timeSpan)
-
-        var titleSpan = document.createElement('a')
-        titleSpan.id = "titleSpan"
-        titleSpan.href = "/missed"
-        title = entries[i]['title'];
-        titleSpan.textContent = title
-        par.appendChild(titleSpan)
-
-        var locationSpan = document.createElement('span')
-        loc = "("+(entries[i]['location'])+")"
-        locationSpan.textContent = loc
-        par.appendChild(locationSpan)
-
-        list.appendChild(par)
+    // Scrambles the listed titles when appropriate
+    interval = setInterval(function(){
+      eligible = document.getElementsByTagName("titleScram")
+      for (var i = 0; i < eligible.length; i++){
+        Scramble(eligible[i].textContent, eligible[i])
       }
-    });
+      }, 150);
 
-    // 4s. Constantly add jumbled title to the bottom of the page
-    var count = 50; // Pick up where we left off with the last title in the available titles
-    var blink = false;
+    // Scramble the location in the header
+    interval = setInterval(function(){
+       var newLocation = Math.floor((Math.random() * 2) + 0);
+       locationText.textContent = CRAIGSLIST_LOCATIONS[newLocation]
+    }, 250);
+
+
+    // 2. Grab 20 initial titles, format them and add them to the page
+    post_count = 0; // Indicates which post to pull from the array
+
+    var topNum = 100; // Sets the distance of the list from the header in pixels
+
+    jQuery.get('/raw_db', function(data) {
+      entries = data["posts"]
+      // 3.Chops the data up into posts and adds them to the page
+      for (var i = 0; i < 20; i++){
+          CreateCleanLine(0)
+        }
+      });
+
+    // 3. Constantly add jumbled title to the bottom of the page
+    var post_count = 1; // Pick up where we left off with the last title in the available titles
+    var images = false;
+    var imageCount = 0;
+
     $(window).scroll(function(){
-     if ($(window).scrollTop() >=($(document).height()-$(window).height())/2){
+     if ($(window).scrollTop() >=$(window).height()/4){
+        // Reset so that we're always pulling in titles and scrolling
+        post_count = post_count + 1
 
-       // Reset so that we're always pulling in titles and scrolling
-        if (count != entries.length-1){
-          count = count + 1
+        // Every other post should be abnormal in some way
+        if (post_count % 2 == true){
+          if (post_count >= entries.length / 3){
+            var par = document.createElement('blink')
+            par.style.fontSize = Math.floor(Math.random() * (200- 5)) + 5 + "px"
+            par.style.color = "#"+((1<<24)*Math.random()|0).toString(16)
+          }
+          else{
+           var par = document.createElement('p')
+          }
+          CreateLine(par, post_count)
         }
-        else{
-          count = 0
-          blink = true
-        }
-
-        if (blink == true){
-          var par = document.createElement('blink')
-        }
-        else{
+        if (post_count >= entries.length / 2){
           var par = document.createElement('p')
+          imageCount = Math.floor(Math.random() * (88 - 1) + 1);
+          par.style.backgroundImage = "url('../images/scraped_images/"+imageCount+ ".jpg')";
+          par.style.width="100%"
+          par.style.height=Math.floor(Math.random() * (8000 - 300) + 300);
+          CreateLine(par, post_count)
         }
-        var list = document.getElementById("title_list");
-
-        par.style.position = 'absolute'
-        par.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
-        par.style.top = topNum
-        topNum = topNum + Math.floor(Math.random() * (150 - 20 + 1)) + 20;
-        var timeSpan = document.createElement('span')
-        timeSpan.id = "timeSpan"
-        time = entries[count]['time'];
-        timeSpan.textContent = time
-        par.appendChild(timeSpan)
-
-        var titleSpan = document.createElement('a')
-        titleSpan.id = "titleSpan"
-        titleSpan.href = "/missed"
-        title = entries[count]['title'];
-        titleSpan.textContent = title
-        par.appendChild(titleSpan)
-
-        var locationSpan = document.createElement('span')
-        loc = "("+(entries[count]['location'])+")"
-        locationSpan.textContent = loc
-        par.appendChild(locationSpan)
-
-        list.appendChild(par)
+        else{
+          if (post_count >= 50){
+            var par = document.createElement('blink')
+            CreateMessyLine(par, post_count)
+          }
+          else{
+            var par = document.createElement('p')
+            CreateMessyLine(par, post_count)
+          }
+        }
      }
-    });
-   </script>
- </body>
+  });
+  </script>
+  </body>
 </html>

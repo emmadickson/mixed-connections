@@ -1,74 +1,56 @@
-ALPHABET = [
-"\u2020", "\u2021", "\u2022", "\u2023", "\u2024", "\u2025", "\u2026",
-"\u2027", "\u2028", "\u2029", "\u2031", "\u2039", "\u203A", "\u203B"
-, "\u203C", "\u203D", "\u203F", "\u2040", "\u2041", "\u2042", "\u2045"
-, "\u2046", "\u2047", "\u2048", "\u204A", "\u204B", "\u2058", "\u2059"];
+function resetSentences(post){
+  sentences = []
+  var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
+  if (phrase != null){
+    for (var j = 0; j < phrase.length; j++){
+      sentences.push(phrase[j]);
+    }
 
+  var myNode = document.getElementById('missed-connection')
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
+  }
+  shuffle(sentences)
+  sentences = sentences.join(' ')
+  return sentences;
+  }
+}
+
+function ScrapePosts(entries){
+  shuffle(entries)
+  return entries
+}
+
+function CreateDivDomElement(){
+  var body = document.getElementsByTagName('missed-connection-container')[0]
+  var div = document.createElement('missed-connection')
+  var other = document.getElementsByTagName('other')[document.getElementsByTagName('other').length-1]
+  if (other != undefined) {
+    other.textContent = other.textContent.slice(0, other.textContent.length-1)
+  }
+  body.appendChild(div)
+  return div
+}
 function shuffle(array) {
   for (let i = array.length; i; i--) {
       let j = Math.floor(Math.random() * i);
       [array[i - 1], array[j]] = [array[j], array[i - 1]];
   }
 }
+function TypeSet(spans, i, typing){
 
-function CleanPost(post){
-  sentences = [];
-  var phrase = post.textContent.match( /[^\.!\?]+[\.!\?]+/g );
-  if (phrase != null){
-    for (var j = 0; j < phrase.length; j++){
-      sentences.push(phrase[j]);
+  var div = document.getElementsByTagName('missed-connection')
+
+    div = div[div.length-1]
+    if (div == undefined){
+      clearInterval(typing)
     }
+    else{
+    div.textContent = div.textContent.slice(0, div.textContent.length-1)
+    div.textContent = div.textContent + spans[i]
+    div.textContent = div.textContent + "_"
   }
-  return sentences
 }
-
-function CleanerPost(post){
-  sentences = [];
-  var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
-  if (phrase != null){
-    for (var j = 0; j < phrase.length; j++){
-      sentences.push(phrase[j]);
-    }
-  }
-  return sentences
-}
-
-function Scramble(originalText, domElement){
-  var alteredText = originalText;
-  for (var j = 0; j < 3; j++){
-    var letterSelection = Math.floor((Math.random() * alteredText.length) + 0);
-    var letter = alteredText.indexOf(j);
-    var randomAlphabet = Math.floor((Math.random() * 25) + 0);
-    var replacementLetter = ALPHABET[randomAlphabet]
-    firstChunk = alteredText.slice(0,letterSelection-1);
-    secondChunk = alteredText.slice(letterSelection, alteredText.length)
-    lengthCheck = firstChunk + replacementLetter + secondChunk
-    if (lengthCheck.length == alteredText.length){
-        alteredText = lengthCheck;
-    }
-  }
-  domElement.textContent = alteredText
-}
-
-function SplitEntries(data){
-  var entries = (data)
-  entries = entries['posts']
-  return entries
-}
-
-function GetTitlesAndPosts(entries){
-  titles = []
-  posts = []
-
-  for (var i = 0; i < entries.length; i++){
-    title = entries[i].title
-    titles.push(title)
-    posts.push(entries[i].body);
-  }
-
-  return [titles, posts]
-}
-
 function CleanEntries(entries){
   var cleanedEntries = []
   for (var i = 0; i < entries.length; i++){
@@ -79,39 +61,66 @@ function CleanEntries(entries){
   return cleanedEntries
 }
 
-function GetRandomTitle(titles){
-  var randomTitle = titles[Math.floor(Math.random()*titles.length)];
-  var domTitle = document.getElementById('title');
-  domTitle.textContent = randomTitle;
+function TypeSetOther(spans, i, typing){
+  var div = document.getElementsByTagName('other')
+    div = div[div.length-1]
+  if (div == undefined){
+    clearInterval(typing)
+  }
+  else{
+
+    div.textContent = div.textContent.slice(0, div.textContent.length-1)
+    div.textContent = div.textContent + spans[i]
+    div.textContent = div.textContent + "_"
+  }
 }
 
-function SplitPosts(posts){
-  phrases = [];
-  for (var k = 0; k < posts.length; k++){
-    if (posts[k] != undefined){
-      var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
-      if (sentences != null){
-        for (var j = 0; j < sentences.length; j++){
-          phrases.push(sentences[j]);
-        }
-      }
-    }
-  }
-  return phrases
+function TypeSetReset(spans, i, hidden){
+    var div = document.getElementsByTagName('div')
+    div = div[div.length-1]
+    div.textContent = div.textContent.slice(0, div.textContent.length-1)
 }
 
-function CreatePostBody(phrases){
-  threads = [];
-  var postLength = Math.floor((Math.random() * 5) + 2);
-  var postBody = " ";
-
-  while (threads.length < postLength){
-    random = Math.floor(Math.random() * phrases.length-1);
-    selection = phrases[random];
-    if (threads.indexOf(selection) === -1){
-      threads.push(selection);
-    }
+function resetSpans(spans){
+  spans =  spans.match( /[^\.!\?]+[\.!\?]+/g );
+  shuffle(spans)
+  spans = spans.join(' ')
+  var myNode = document.getElementsByTagName('missed-connection-container')[0]
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
   }
+  return spans;
+}
 
-  return threads
+function resolveDatabaseGrab(x) {
+  return new Promise(resolve => {
+    var databaseGrab = $.get('/raw_db')
+    databaseGrab.done(function(data) {
+      databaseData = data
+      resolve(data)
+      console.log("successful database grab")
+    })
+  });
+}
+
+async function GrabData() {
+  entriesData = ""
+  databaseData = ""
+  databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
+
+  var body = document.getElementsByTagName('missed-connection-container')[0]
+  var i = 0;
+  var scraped_entries = SplitEntries(databaseDataGrabbed)
+  var postElements = GetTitlesAndPosts(scraped_entries)
+  var titles = postElements[0]
+  titles = CleanEntries(titles)
+  var posts = postElements[1]
+  posts = CleanEntries(posts);
+
+  GetRandomTitle(titles)
+  shuffle(posts)
+  phrases = SplitPosts(posts)
+  shuffle(phrases)
+  postBody = CreatePostBody(phrases)
+  body.textContent = postBody
 }

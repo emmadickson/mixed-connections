@@ -1,4 +1,11 @@
 html,body{
   padding: 10px;
   overflow-y: scroll;
+  overflow-x: hidden;
+}
+p{
+  color:blue
+}
+blink{
+  color:blue
 }
