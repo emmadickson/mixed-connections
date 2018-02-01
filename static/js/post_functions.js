@@ -102,6 +102,16 @@ function resolveDatabaseGrab(x) {
     })
   });
 }
+function CleanerPost(post){
+  sentences = [];
+  var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
+  if (phrase != null){
+    for (var j = 0; j < phrase.length; j++){
+      sentences.push(phrase[j]);
+    }
+  }
+  return sentences
+}
 
 async function GrabData() {
   entriesData = ""

@@ -43,10 +43,8 @@ def CollectMissedConnectionsLink(location):
     connection url passed'''
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
-    print(randomCraigslistUrl)
     response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
-    print(soup)
     for link in soup.findAll('a', href=True, text=''):
         if ('html' in link['href']):
             craigslistMissedConnectionsUrls.append( link['href'] )
@@ -151,9 +149,7 @@ def ScrapeImages(finalUrl):
         images.append(img['src'])
     scraped_images = os.listdir("static/images/scraped_images")
     image_number = len(scraped_images)
-    print images
     images = set(images)
-    print images
     for img in images:
         if ("50x50" not in img) and img not in IMAGE_HASHES:
             file = cStringIO.StringIO(urllib2.urlopen(img).read())
@@ -203,7 +199,7 @@ def add():
 
         # 6. Collect regional Missed Connections posts linkToVisit
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
-        print(craigslistMissedConnectionsUrls)
+
         # 7. Shuffle the collected links to randomize selection
         shuffle(craigslistMissedConnectionsUrls)
 
