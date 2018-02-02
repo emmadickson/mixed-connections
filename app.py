@@ -55,7 +55,7 @@ def GetTitle(pageContent):
     title = pageContent.select('title')[0].get_text()
     title = Clean(title)
     return title
-
+ 
 def GetLocation(randomLocationUrl):
     '''Scrape a readable location from the location specific missed connections
     url so that it can be displayed in the header'''
