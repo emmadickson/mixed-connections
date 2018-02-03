@@ -58,7 +58,7 @@
     }, 250);
 
 
-    // 2. Grab 20 initial titles, format them and add them to the page
+    // 2. Grab 40 initial titles, format them and add them to the page
     post_count = 0; // Indicates which post to pull from the array
 
     var topNum = 100; // Sets the distance of the list from the header in pixels
@@ -66,7 +66,7 @@
     jQuery.get('/raw_db', function(data) {
       entries = data["posts"]
       // 3.Chops the data up into posts and adds them to the page
-      for (var i = 0; i < 20; i++){
+      for (var i = 0; i < 40; i++){
           CreateCleanLine(0)
         }
       });

@@ -1,5 +1,5 @@
 
-// Creates the normal looking lines in the listed posts
+// Support function that creates the normal looking lines in the listed posts
 function CreateCleanLine(post_count){
   var list = document.getElementById("title_list");
   var par = document.createElement('p')
@@ -35,7 +35,7 @@ function CreateCleanLine(post_count){
   list.appendChild(par)
 }
 
-// Creates the off center lines in the listed post
+// Support function that creates the off center lines in the listed post
 function CreateMessyLine(par, count){
   var list = document.getElementById("title_list");
   par.id = 'post'
@@ -64,7 +64,7 @@ function CreateMessyLine(par, count){
   list.appendChild(par)
 }
 
-// Creates the scrambled lines in the listed posts
+// Support function that creates the scrambled lines in the listed posts
 function CreateLine(par, count){
   // 1. Use a set interval to constantly Scramble location text
   var list = document.getElementById("title_list");

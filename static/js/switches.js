@@ -98,9 +98,8 @@ function CreatePostBody(phrases){
   return threads
 }
 
+// Support function to scrape and add new posts
 async function Grab() {
-  console.log("grab?")
   $.get( "add", function( data ) {
-    console.log( "Load was performed." );
   });
 }

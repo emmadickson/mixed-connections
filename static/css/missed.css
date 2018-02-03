@@ -25,7 +25,6 @@ body{
   position: relative;
   overflow: hidden;
 }
-
 header{
   position: absolute;
   top:0;
@@ -40,7 +39,6 @@ header{
   font-size: 16px;
   vertical-align: top;
 }
-
 h1{
   position: absolute;
   top: 25;
@@ -55,7 +53,6 @@ h1{
   font-weight: bold;
   text-align: left;
 }
-
 #missed-connection {
   position:absolute;
   top:150;
@@ -66,11 +63,9 @@ h1{
   pointer-events: none;
   z-index:2;
 }
-
 #locationText {
   padding-left: 15px;
 }
-
 #button{
   position: absolute;
   left:5;

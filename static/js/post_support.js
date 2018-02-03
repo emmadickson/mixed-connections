@@ -1,3 +1,4 @@
+//Support function that shuffles the sentences in a post
 function resetSentences(post){
   sentences = []
   var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
@@ -16,11 +17,7 @@ function resetSentences(post){
   }
 }
 
-function ScrapePosts(entries){
-  shuffle(entries)
-  return entries
-}
-
+// Support function that creates a dom element to be used in apost
 function CreateDivDomElement(){
   var body = document.getElementsByTagName('missed-connection-container')[0]
   var div = document.createElement('missed-connection')
@@ -31,12 +28,16 @@ function CreateDivDomElement(){
   body.appendChild(div)
   return div
 }
+
+// Support function that shuffles given array
 function shuffle(array) {
   for (let i = array.length; i; i--) {
       let j = Math.floor(Math.random() * i);
       [array[i - 1], array[j]] = [array[j], array[i - 1]];
   }
 }
+
+// Support function to imitate typing
 function TypeSet(spans, i, typing){
 
   var div = document.getElementsByTagName('missed-connection')
@@ -51,6 +52,8 @@ function TypeSet(spans, i, typing){
     div.textContent = div.textContent + "_"
   }
 }
+
+// Support function that weeds out null data
 function CleanEntries(entries){
   var cleanedEntries = []
   for (var i = 0; i < entries.length; i++){
@@ -61,37 +64,7 @@ function CleanEntries(entries){
   return cleanedEntries
 }
 
-function TypeSetOther(spans, i, typing){
-  var div = document.getElementsByTagName('other')
-    div = div[div.length-1]
-  if (div == undefined){
-    clearInterval(typing)
-  }
-  else{
-
-    div.textContent = div.textContent.slice(0, div.textContent.length-1)
-    div.textContent = div.textContent + spans[i]
-    div.textContent = div.textContent + "_"
-  }
-}
-
-function TypeSetReset(spans, i, hidden){
-    var div = document.getElementsByTagName('div')
-    div = div[div.length-1]
-    div.textContent = div.textContent.slice(0, div.textContent.length-1)
-}
-
-function resetSpans(spans){
-  spans =  spans.match( /[^\.!\?]+[\.!\?]+/g );
-  shuffle(spans)
-  spans = spans.join(' ')
-  var myNode = document.getElementsByTagName('missed-connection-container')[0]
-  while (myNode.firstChild) {
-      myNode.removeChild(myNode.firstChild);
-  }
-  return spans;
-}
-
+// Support function to grab stored posts
 function resolveDatabaseGrab(x) {
   return new Promise(resolve => {
     var databaseGrab = $.get('/raw_db')
@@ -102,6 +75,8 @@ function resolveDatabaseGrab(x) {
     })
   });
 }
+
+// Support function to break up a post into sentences
 function CleanerPost(post){
   sentences = [];
   var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
@@ -113,6 +88,7 @@ function CleanerPost(post){
   return sentences
 }
 
+// Support function to create post
 async function GrabData() {
   entriesData = ""
   databaseData = ""
