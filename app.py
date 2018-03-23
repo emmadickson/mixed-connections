@@ -232,9 +232,12 @@ def add():
     for entry in storedEntries:
         entry = json.dumps(entry)
         uberEntries.append(entry)
+    print("Before writing")
     uberEntries = uberEntries + newEntries # Append the new entries to the old
     WriteStoreToFile('static/data/db.json', uberEntries)
+    print("after")
     subprocess.call('static/bash/gif_script.sh')
+    print("gif")
     return app.send_static_file('html/missed.html')
 
 if __name__ == '__main__':
