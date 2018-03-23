@@ -25,7 +25,7 @@ CRAIGSLIST_URLS = [
 "https://pittsburgh.craigslist.org"
 ]
 
-NUMBER_OF_POSTS = 251
+NUMBER_OF_POSTS = 1
 DB_FILE = "static/data/db.json"
 ENTRIES_FILE = "static/data/entries.json"
 
@@ -232,7 +232,6 @@ def add():
     for entry in storedEntries:
         entry = json.dumps(entry)
         uberEntries.append(entry)
-    print("before write")
     uberEntries = uberEntries + newEntries # Append the new entries to the old
     WriteStoreToFile('static/data/db.json', uberEntries)
     subprocess.call('static/bash/gif_script.sh')
