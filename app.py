@@ -55,7 +55,7 @@ def GetTitle(pageContent):
     title = pageContent.select('title')[0].get_text()
     title = Clean(title)
     return title
- 
+
 def GetLocation(randomLocationUrl):
     '''Scrape a readable location from the location specific missed connections
     url so that it can be displayed in the header'''
@@ -225,6 +225,7 @@ def add():
             print dbEntry
             ScrapeImages(finalUrl)
             newEntries.append(str(dbEntry))
+
 
     # 13. Write all entries in the store to the db file
     uberEntries = [] # We've opened the file to write so we first must read in all old posts or they'll be lost
