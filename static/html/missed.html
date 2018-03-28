@@ -1,0 +1,178 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>do You miss me?</title>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <link id = "css" rel="stylesheet" href="../css/missed.css">
+    <link id = "css" rel="stylesheet" href="../css/header.css">
+    <link rel="icon" href="../images/scraped_images/mix.gif" type="image/gif">
+  </head>
+
+  <body>
+    <header> <img src="images/icons/phone.png" height="20" width="20"> <span id="carrot"> < </span> <span id="locationText"> pittsburgh </span> <span id="carrot2"> < </span> <a id=missed-connection-reset href="/">missed connections</a> </header>
+    <h1 id="title"> </h1>
+    <missed-connection-container></missed-connection-container>
+    <div id="button"><button type="button" onclick="Data()">Next</button></div>
+  </body>
+
+  <script type="text/javascript" src="js/switches.js"></script>
+  <script type="text/javascript" src="js/post_support.js"></script>
+  <script>
+    // Constants
+    CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
+
+    // 2. Use set interval to Scramble the title text on hover
+    $("#title").hover(
+     function(){
+       var titleDomElement = document.getElementById("title")
+       var originalText = titleDomElement.textContent;
+       interval = setInterval(function(){
+         Scramble(originalText, titleDomElement)
+       }, 150);
+       Scramble(originalText, titleDomElement)
+     },
+     function(){
+       clearInterval(interval)
+     });
+
+     $("#title").click(
+      function(){
+        var childNodes = document.getElementsByTagName("missed-connection-container")[0].childNodes
+        var post = ""
+        for (var k = 0; k < childNodes.length; k++){
+          post = post + childNodes[k].textContent
+        }
+        sentences = CleanerPost(post)
+        shuffle(sentences)
+
+        var childNodes = document.getElementsByTagName("missed-connection-container")[0].childNodes
+        var originalSin = document.getElementsByTagName("missed-connection-container")[0]
+
+        for (var k = 0; k < childNodes.length; k++){
+          originalSin.removeChild(childNodes[k])
+        }
+
+        sentences = sentences.join(" ")
+        originalSin.textContent = sentences
+      });
+
+       // 3. Use a set interval to constantly Scramble location text
+      var ScrambledLocation = document.getElementById("locationText");
+      var locationText = document.getElementById("locationText");
+      var originalLocation = locationText.textContent;
+      interval = setInterval(function(){
+       Scramble(originalLocation, ScrambledLocation)
+      }, 150);
+      interval = setInterval(function(){
+       var new_location = Math.floor((Math.random() * 2) + 0);
+       locationText.textContent = CRAIGSLIST_LOCATIONS[new_location]
+      }, 250);
+
+      // 4. Create the mixed connection
+      GrabData()
+
+      // 5. Reshuffle the post sentences when you click on the recombined title
+      $("#title").click(
+        function(){
+          var childNodes = document.getElementsByTagName("missed-connection-container")[0].childNodes
+          var post = ""
+          for (var k = 0; k < childNodes.length; k++){
+            post = post + childNodes[k].textContent
+          }
+          sentences = CleanerPost(post)
+          shuffle(sentences)
+
+          var childNodes = document.getElementsByTagName("missed-connection-container")[0].childNodes
+          var originalSin = document.getElementsByTagName("missed-connection-container")[0]
+
+          for (var k = 0; k < childNodes.length; k++){
+            originalSin.removeChild(childNodes[k])
+          }
+
+          sentences = sentences.join(" ")
+          originalSin.textContent = sentences
+        });
+
+      // 6. Removes old set interval functions
+      (function(w) {
+        var oldST = w.setTimeout;
+        var oldSI = w.setInterval;
+        var oldCI = w.clearInterval;
+        var timers = [];
+        w.timers = timers;
+        w.setTimeout = function(fn, delay) {
+            var id = oldST(function() {
+                fn && fn();
+                removeTimer(id);
+            }, delay);
+            timers.push(id);
+            return id;
+        };
+        w.setInterval = function(fn, delay) {
+            var id = oldSI(fn, delay);
+            timers.push(id);
+            return id;
+        };
+        w.clearInterval = function(id) {
+            oldCI(id);
+            removeTimer(id);
+        };
+        w.clearTimeout = w.clearInterval;
+
+        function removeTimer(id) {
+            var index = timers.indexOf(id);
+            if (index >= 0)
+                timers.splice(index, 1);
+        }
+      }(window));
+
+      function Data(){
+        for(var i = timers.length; i--;){
+          clearInterval(timers[i]);
+        }
+
+        var myNode = document.getElementsByTagName('missed-connection-container')[0]
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+
+        var body = document.getElementsByTagName('missed-connection-container')[0]
+        var i = 0;
+        var entries = SplitEntries(databaseDataGrabbed)
+        var spans = shuffle(entries);
+        var postElements = GetTitlesAndPosts(entries)
+        var titles = postElements[0]
+        titles = CleanEntries(titles)
+        var posts = postElements[1]
+        posts = CleanEntries(posts);
+
+        GetRandomTitle(titles)
+        shuffle(posts)
+        phrases = SplitPosts(posts)
+        shuffle(phrases)
+        postBody = CreatePostBody(phrases)
+        selectedWords = postBody
+        other = false;
+        CreateDivDomElement()
+        spans = selectedWords.join(' ')
+
+        var i = 0;
+        typing = setInterval(function(){
+          if (i >= spans.length ){
+            clearInterval(typing)
+          }
+          else{
+            TypeSet(spans, i, typing)
+          }
+          i++;
+        }, 100);
+
+      }
+    // 6. Create a post as soon as you enter the page
+    $(document).ready(function(){
+      Grab()
+    });
+  </script>
+
+</html>
