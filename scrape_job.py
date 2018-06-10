@@ -24,7 +24,7 @@ CRAIGSLIST_URLS = [
 "https://pittsburgh.craigslist.org"
 ]
 
-NUMBER_OF_POSTS = 10
+NUMBER_OF_POSTS = 5
 DB_FILE = "static/data/db.json"
 ENTRIES_FILE = "static/data/db.json"
 
