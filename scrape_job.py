@@ -244,5 +244,4 @@ while True:
     count = count + 1
     sleep = random.randint(1,43200)
     print("\n\n Done for %s seconds, count: %s" % (sleep, count))
-    subprocess.call('static/bash/alert.sh')
     time.sleep(sleep)
