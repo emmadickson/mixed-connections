@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-espeak "We've got a live one here!"
+( speaker-test -t sine -f 1000 )& pid=$! ; sleep .5s ; kill -9 $pid
