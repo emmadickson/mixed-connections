@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-git add static/data/
+git add static/
 git commit -m '!'
 git push origin master -f
