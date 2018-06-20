@@ -86,38 +86,40 @@
         // Reset so that we're always pulling in titles and scrolling
         post_count = post_count + 1
 
-        // Every other post should be abnormal in some way
-        if (post_count % 2 == true){
-          if (post_count >= entries.length / 3){
-            var par = document.createElement('blink')
-            par.style.fontSize = Math.floor(Math.random() * (200- 5)) + 5 + "px"
-            par.style.color = "#"+((1<<24)*Math.random()|0).toString(16)
+          // Every other post should be abnormal in some way
+          if (post_count % 2 == true){
+            if (post_count >= entries.length / 3){
+              var par = document.createElement('blink')
+              par.style.fontSize = Math.floor(Math.random() * (200- 5)) + 5 + "px"
+              par.style.color = "#"+((1<<24)*Math.random()|0).toString(16)
+            }
+            else{
+             var par = document.createElement('p')
+            }
+            CreateLine(par, post_count)
           }
-          else{
-           var par = document.createElement('p')
-          }
-          CreateLine(par, post_count)
-        }
-        if (post_count >= entries.length / 2){
-          var par = document.createElement('p')
-          imageCount = Math.floor(Math.random() * (88 - 1) + 1);
-          par.style.backgroundImage = "url('../images/scraped_images/"+imageCount+ ".jpg')";
-          par.style.width="100%"
-          par.style.height=Math.floor(Math.random() * (8000 - 300) + 300);
-          CreateLine(par, post_count)
-        }
-        else{
-          if (post_count >= 50){
-            var par = document.createElement('blink')
-            CreateMessyLine(par, post_count)
-          }
-          else{
+          if (post_count >= entries.length / 2){
             var par = document.createElement('p')
-            CreateMessyLine(par, post_count)
+            imageCount = Math.floor(Math.random() * (88 - 1) + 1);
+            par.style.backgroundImage = "url('../images/scraped_images/"+imageCount+ ".jpg')";
+            par.style.width="100%"
+            par.style.height=Math.floor(Math.random() * (8000 - 300) + 300);
+            CreateLine(par, post_count)
           }
-        }
-     }
-  });
+          else{
+            if (post_count >= 50){
+              var par = document.createElement('blink')
+              CreateMessyLine(par, post_count)
+            }
+            else{
+              var par = document.createElement('p')
+              CreateMessyLine(par, post_count)
+            }
+          }
+       }
+    });
+    });
+
   </script>
   </body>
 </html>

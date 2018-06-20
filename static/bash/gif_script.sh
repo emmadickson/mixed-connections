@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 cd static/images/scraped_images
-delay=$(jot -r 1  50 300)
+delay=$(awk -v min=50 -v max=300 'BEGIN{srand(); print int(min+rand()*(max-min+1))}')
 convert -delay $delay -loop 0 *.jpg ../mix.gif

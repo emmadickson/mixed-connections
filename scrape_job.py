@@ -24,7 +24,7 @@ CRAIGSLIST_URLS = [
 "https://pittsburgh.craigslist.org"
 ]
 
-NUMBER_OF_POSTS = 10
+NUMBER_OF_POSTS = 5
 DB_FILE = "static/data/db.json"
 ENTRIES_FILE = "static/data/db.json"
 
@@ -242,7 +242,6 @@ count = 0
 while True:
     main()
     count = count + 1
-    subprocess.call('static/bash/alert.sh')
     sleep = random.randint(1,43200)
     print("\n\n Done for %s seconds, count: %s" % (sleep, count))
     time.sleep(sleep)
