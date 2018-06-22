@@ -235,13 +235,9 @@ def main():
     WriteStoreToFile(('static/data/%s/%s.json' % (directory, datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))), newEntries)
 
     subprocess.call('static/bash/gif_script.sh')
-    subprocess.call('static/bash/commit.sh')
     return
 
 count = 0
 while True:
     main()
-    count = count + 1
-    sleep = random.randint(1,43200)
-    print("\n\n Done for %s seconds, count: %s" % (sleep, count))
-    time.sleep(sleep)
+    print("\n\n Done")
