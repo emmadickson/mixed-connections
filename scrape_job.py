@@ -22,7 +22,7 @@ CRAIGSLIST_URLS = [
 NUMBER_OF_POSTS = 5
 DB_FILE = "static/data/db.json"
 DATABASE_URL = os.environ['postgres://pkszoedlaykwsk:2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b@ec2-54-83-0-158.compute-1.amazonaws.com:5432/d42mu98rpmdqbj']
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
 cursor = conn.cursor()
 
 def CollectEntriesHashes(entries):
