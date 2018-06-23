@@ -90,13 +90,6 @@ def Clean(content):
     content = content.encode('utf-8')
     return content
 
-def HashExists(hashedPostBody, hashes):
-    '''Checks if the hash exists in the collected hashes'''
-    if (hashedPostBody not in hashes):
-        return True
-    else:
-        return False
-
 def GetQueryData(pageContent, finalUrl, randomLocationUrl):
     '''Returns a json compliant post'''
     title = GetTitle(pageContent)
@@ -165,15 +158,10 @@ def main():
         randomPostUrl = random.randint(0,len(craigslistMissedConnectionsUrls)-1)
         finalUrl = craigslistMissedConnectionsUrls[randomPostUrl]
 
-        # 10. Collect the postBody from the selected post
-        postBody = GetBody(finalUrl)
-
-        # 11. Hash the post body just gathered
-        hashedPostBody = GetHash(postBody)
-
         # 12. Check if it's already in the store, if not add it and scrape any images found in it
-        hashExists = HashExists(hashedPostBody, hashes)
         pageContent = GetPageContent(finalUrl)
+        
+        data = GetQueryData(pageContent, finalUrl, randomLocationUrl)
 
         query =  "INSERT INTO posts_scraped (body,time, hash, location, title) VALUES (%s, %s, %s, %s, %s);"
         cursor.execute(query, data)
