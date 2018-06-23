@@ -5,7 +5,7 @@ import hashlib
 import re
 import json
 import datetime
-from random import shuffle
+import random
 import os
 from PIL import Image
 import cStringIO
@@ -123,7 +123,7 @@ def ScrapeImages(finalUrl):
         images.append(img['src'])
 
     scraped_images = os.listdir("static/images/scraped_images")
-    shuffle(scraped_images)
+    random.shuffle(scraped_images)
     opened_images = []
 
     for x in range(0, len(scraped_images)):
@@ -156,7 +156,7 @@ def main():
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
 
         # 7. Shuffle the collected links to randomize selection
-        shuffle(craigslistMissedConnectionsUrls)
+        random.shuffle(craigslistMissedConnectionsUrls)
 
         # 8. Get Missed Connections post body from the new links
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
