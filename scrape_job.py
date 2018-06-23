@@ -156,7 +156,11 @@ def main():
         data = GetQueryData(pageContent, finalUrl, randomLocationUrl)
 
         query =  "INSERT INTO posts_scraped (body,time, hash, location, title) VALUES (%s, %s, %s, %s, %s);"
-        cursor.execute(query, data)
+        try:
+            cursor.execute(query, data)
+            print("Post has been added to the database")
+        except:
+            print("Post is already in the database")
         ScrapeImages(finalUrl)
 
     subprocess.call('static/bash/gif_script.sh')
