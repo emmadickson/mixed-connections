@@ -160,14 +160,12 @@ def main():
 
         # 12. Check if it's already in the store, if not add it and scrape any images found in it
         pageContent = GetPageContent(finalUrl)
-        
+
         data = GetQueryData(pageContent, finalUrl, randomLocationUrl)
 
         query =  "INSERT INTO posts_scraped (body,time, hash, location, title) VALUES (%s, %s, %s, %s, %s);"
         cursor.execute(query, data)
         ScrapeImages(finalUrl)
-        newEntries.append(str(dbEntry))
-
 
     subprocess.call('static/bash/gif_script.sh')
     return
