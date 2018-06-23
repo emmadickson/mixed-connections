@@ -25,14 +25,6 @@ DATABASE_URL='postgres://pkszoedlaykwsk:2ff4fae6161d29c22cf40f349faaa1e48d8524aa
 conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
 cursor = conn.cursor()
 
-def CollectEntriesHashes(entries):
-    '''Returns a list of hashes from the post body of the entries passed'''
-    hashes = []
-    for entry in entries:
-        hash = entry['hash']
-        hashes.append(hash)
-    return hashes
-
 def CollectMissedConnectionsLink(location):
     '''Returns a list of recent posts urls from the location specific missed
     connection url passed'''
