@@ -1,21 +1,16 @@
-from flask import request
 import requests
 import socks
-import socket
 import bs4
 import hashlib
 import re
 import json
 import datetime
 from random import shuffle
-import random
 import os
 from PIL import Image
-import urllib2
 import cStringIO
+import psycopg2
 import subprocess
-import time
-import glob
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -26,8 +21,9 @@ CRAIGSLIST_URLS = [
 
 NUMBER_OF_POSTS = 5
 DB_FILE = "static/data/db.json"
-ENTRIES_FILE = "static/data/db.json"
-
+DATABASE_URL = os.environ['postgres://pkszoedlaykwsk:2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b@ec2-54-83-0-158.compute-1.amazonaws.com:5432/d42mu98rpmdqbj']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+cursor = conn.cursor()
 
 def CollectEntriesHashes(entries):
     '''Returns a list of hashes from the post body of the entries passed'''
@@ -101,7 +97,7 @@ def HashExists(hashedPostBody, hashes):
     else:
         return False
 
-def CreateEntry(pageContent, finalUrl, randomLocationUrl):
+def GetQueryData(pageContent, finalUrl, randomLocationUrl):
     '''Returns a json compliant post'''
     title = GetTitle(pageContent)
     today = datetime.date.today()
@@ -109,28 +105,10 @@ def CreateEntry(pageContent, finalUrl, randomLocationUrl):
     body = GetBody(finalUrl)
     hashedPostBody = GetHash(body)
     # For debugging purposes
+
     print("Post from %s added" % location)
-    dbEntry = "{ \"title\": \"%s\" , \"body\": \"%s\", \"location\": \"%s\", \"time\": \"%s\", \"hash\":\"%s\"}"  % (title, body, location, str(today), str(hashedPostBody))
-    return dbEntry
-
-def WriteStoreToFile(file, storedEntries):
-    '''Writes a list of passed entries to the passed file'''
-    textEntries = open(file, 'w')
-    textEntries.write("{\"posts\":[")
-    for x in range(0, len(storedEntries)-2):
-        if (storedEntries[x] != None and len(storedEntries[x]) > 2):
-            textEntries.write(str(storedEntries[x]))
-            textEntries.write(",")
-    textEntries.write(storedEntries[len(storedEntries)-1])
-    textEntries.writelines("]}")
-    textEntries.close()
-
-def ReadFile(DB_FILE):
-    '''Returns the data from the passed file'''
-    with open(DB_FILE, 'r') as entriesFile:
-        storedEntries = entriesFile.read()
-    entriesFile.close()
-    return storedEntries
+    print(body)
+    return (title, body, location, str(today), str(hashedPostBody))
 
 def ScrapeImages(finalUrl):
     '''Scrapes and shuffles all the images found in a post from the url passed'''
@@ -167,24 +145,6 @@ def ScrapeImages(finalUrl):
             print "image saved!"
 
 def main():
-    # 1. Read in stored Missed Connections
-    storedEntries = ReadFile(DB_FILE)
-
-    # 2. Load stored Missed Connections as json, if no previous entries
-    #   are found create empty lists
-    if (len(storedEntries) > 2):
-        Entries = json.loads(storedEntries)
-        Entries = Entries['posts']
-        storedEntries = json.loads(storedEntries)
-        storedEntries = storedEntries['posts']
-    else:
-        storedEntries = []
-        Entries = []
-
-    newEntries = []    # A list that stores the posts created from this call
-
-    # 3. Collect hashes of stored Missed Connections
-    hashes = CollectEntriesHashes(Entries)
 
     # 4. Pick a random location, scrape recent posts and chose one to add
     for x in range(0, NUMBER_OF_POSTS):
@@ -213,31 +173,17 @@ def main():
 
         # 12. Check if it's already in the store, if not add it and scrape any images found in it
         hashExists = HashExists(hashedPostBody, hashes)
-        if (hashExists == 1):
-            pageContent = GetPageContent(finalUrl)
-            dbEntry = CreateEntry(pageContent, finalUrl, randomLocationUrl)
-            print finalUrl
-            print dbEntry
-            ScrapeImages(finalUrl)
-            newEntries.append(str(dbEntry))
+        pageContent = GetPageContent(finalUrl)
 
+        query =  "INSERT INTO posts_scraped (body,time, hash, location, title) VALUES (%s, %s, %s, %s, %s);"
+        cursor.execute(query, data)
+        ScrapeImages(finalUrl)
+        newEntries.append(str(dbEntry))
 
-    # 13. Write all entries in the store to the db file
-    uberEntries = [] # We've opened the file to write so we first must read in all old posts or they'll be lost
-    for entry in storedEntries:
-        entry = json.dumps(entry)
-        uberEntries.append(entry)
-    uberEntries = uberEntries + newEntries # Append the new entries to the old
-    WriteStoreToFile(('static/data/db.json'), uberEntries)
-    directory = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
-    if not os.path.isdir("static/data/%s" % directory):
-        os.makedirs("static/data/%s" % directory)
-    WriteStoreToFile(('static/data/%s/%s.json' % (directory, datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))), newEntries)
 
     subprocess.call('static/bash/gif_script.sh')
     return
 
-count = 0
-while True:
-    main()
-    print("\n\n Done")
+
+main()
+print("\n\n Done")
