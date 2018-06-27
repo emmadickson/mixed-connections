@@ -152,7 +152,7 @@ def main():
 
         data = GetQueryData(pageContent, finalUrl, randomLocationUrl)
 
-        query =  "INSERT INTO posts_scraped (body, hash, location, time, title) VALUES (%s, %s, %s, %s, %s);"
+        query =  "INSERT INTO posts_scraped (title, body, location, time, hash) VALUES (%s, %s, %s, %s, %s);"
         try:
             conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
             cursor = conn.cursor()
