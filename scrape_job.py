@@ -21,8 +21,7 @@ CRAIGSLIST_URLS = [
 
 NUMBER_OF_POSTS = 5
 DATABASE_URL='postgres://pkszoedlaykwsk:2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b@ec2-54-83-0-158.compute-1.amazonaws.com:5432/d42mu98rpmdqbj'
-conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
-cursor = conn.cursor()
+
 
 def CollectMissedConnectionsLink(location):
     '''Returns a list of recent posts urls from the location specific missed
@@ -87,12 +86,12 @@ def GetQueryData(pageContent, finalUrl, randomLocationUrl):
     today = datetime.date.today()
     location = GetLocation(randomLocationUrl)
     body = GetBody(finalUrl)
-    hashedPostBody = GetHash(body)
+    hashedPost = GetHash(body)
     # For debugging purposes
 
-    print("Post from %s added" % location)
+    print("Post from %s fetched" % location)
     print(body)
-    return (title, body, location, str(today), str(hashedPostBody))
+    return (title, body, location, str(today), str(hashedPost))
 
 def ScrapeImages(finalUrl):
     '''Scrapes and shuffles all the images found in a post from the url passed'''
@@ -129,8 +128,7 @@ def ScrapeImages(finalUrl):
             print "image saved!"
 
 def main():
-
-    # 4. Pick a random location, scrape recent posts and chose one to add
+    #   4. Pick a random location, scrape recent posts and chose one to add
     for x in range(0, NUMBER_OF_POSTS):
 
         # 5. Pick a location randomly
@@ -154,14 +152,19 @@ def main():
 
         data = GetQueryData(pageContent, finalUrl, randomLocationUrl)
 
-        query =  "INSERT INTO posts_scraped (body,time, hash, location, title) VALUES (%s, %s, %s, %s, %s);"
+        query =  "INSERT INTO posts_scraped (body, hash, location, time, title) VALUES (%s, %s, %s, %s, %s);"
         try:
-            cursor.execute(query, data)
-            print("Post has been added to the database")
-        except:
-            print("Post is already in the database")
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
+            cursor = conn.cursor()
+            t = cursor.execute(query, data)
+            print(t)
+            conn.commit()
+            cursor.close()
+            conn.close()
+            print("Post has been added to the database\n")
+        except Exception as e:
+            print("Error %s" % e)
         ScrapeImages(finalUrl)
-
     subprocess.call('static/bash/gif_script.sh')
     return
 
