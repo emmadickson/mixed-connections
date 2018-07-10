@@ -3,6 +3,7 @@ from flask import request
 import requests
 from retrieve_posts import scrape
 from flask import jsonify
+from operator import itemgetter
 
 
 app = Flask(__name__, static_url_path='')
@@ -19,6 +20,8 @@ def render_index():
 @app.route('/raw_db')
 def render_db():
     json_object = scrape()
+    posts = json_object['posts']
+    json_object['posts'] = sorted(posts,  key=itemgetter('time'), reverse=True)
     return jsonify(json_object)
 
 if __name__ == '__main__':
