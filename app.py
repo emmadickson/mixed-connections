@@ -3,7 +3,6 @@ from flask import request
 import requests
 from retrieve_posts import scrape
 from flask import jsonify
-from operator import itemgetter
 from dateutil import parser
 
 
