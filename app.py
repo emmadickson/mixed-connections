@@ -26,7 +26,7 @@ def render_db():
         d = parser.parse(date)
         post['time'] = d.strftime("%Y-%m-%d")
 
-    json_object['posts'] = sorted(posts, key=itemgetter('time'), reverse=True)
+    json_object['posts'] = sorted(posts, key=itemgetter('time'), reverse=False)
     return jsonify(json_object)
 
 if __name__ == '__main__':
