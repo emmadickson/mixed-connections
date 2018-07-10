@@ -4,6 +4,7 @@ import requests
 from retrieve_posts import scrape
 from flask import jsonify
 from operator import itemgetter
+from dateutil import parser
 
 
 app = Flask(__name__, static_url_path='')
@@ -21,7 +22,12 @@ def render_index():
 def render_db():
     json_object = scrape()
     posts = json_object['posts']
-    json_object['posts'] = sorted(posts,  key=itemgetter('time'), reverse=True)
+    for post in posts:
+        date = post['time']
+        d = parser.parse(date)
+        post['time'] = d.strftime("%Y-%m-%d")
+
+    json_object['posts'] = sorted(posts, key=itemgetter('time'), reverse=True)
     return jsonify(json_object)
 
 if __name__ == '__main__':
