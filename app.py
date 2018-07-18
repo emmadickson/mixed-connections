@@ -32,7 +32,7 @@ def render_pretty_db():
         post['time'] = d.strftime("%Y-%m-%d")
 
     test = sorted(posts, key=itemgetter('time'), reverse=False)
-
+    print(test)
     return jsonify(test)
 
 if __name__ == '__main__':
