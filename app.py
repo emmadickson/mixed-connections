@@ -3,7 +3,6 @@ from flask import request
 import requests
 from retrieve_posts import scrape
 from flask import jsonify
-from dateutil import parser
 
 
 app = Flask(__name__, static_url_path='')
@@ -20,13 +19,11 @@ def render_index():
 @app.route('/raw_db')
 def render_db():
     json_object = scrape()
-    posts = json_object['posts']
-    for post in posts:
-        date = post['time']
-        d = parser.parse(date)
-        post['time'] = d.strftime("%Y-%m-%d")
+    return jsonify(json_object)
 
-    json_object['posts'] = sorted(posts, key=itemgetter('time'), reverse=False)
+@app.route('/pretty_db')
+def render_pretty_db():
+    json_object = scrape()
     return jsonify(json_object)
 
 if __name__ == '__main__':
