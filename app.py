@@ -4,6 +4,7 @@ import requests
 from retrieve_posts import scrape
 from flask import jsonify
 from dateutil import parser
+import operator
 
 
 app = Flask(__name__, static_url_path='')
@@ -31,8 +32,7 @@ def render_pretty_db():
         d = parser.parse(date)
         post['time'] = d.strftime("%Y-%m-%d")
 
-    test = sorted(posts, key=itemgetter('time'), reverse=False)
-    print(test)
+    json_object['posts'].sort(key=operator.itemgetter('time'))
     return jsonify(json_object)
 
 if __name__ == '__main__':
