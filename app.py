@@ -33,7 +33,7 @@ def render_pretty_db():
 
     test = sorted(posts, key=itemgetter('time'), reverse=False)
     print(test)
-    return jsonify(test)
+    return jsonify(json_object)
 
 if __name__ == '__main__':
     app.run()
