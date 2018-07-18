@@ -28,7 +28,7 @@ def render_pretty_db():
     posts = json_object['posts']
     for post in posts:
         date = post['time']
-        d = parser.parse(date)
+        d.strftime("%Y-%m-%d") = parser.parse(date)
         print(d)
     return jsonify(json_object)
 
