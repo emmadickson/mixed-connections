@@ -30,7 +30,10 @@ def render_pretty_db():
         date = post['time']
         d = parser.parse(date)
         post['time'] = d.strftime("%Y-%m-%d")
-    return jsonify(json_object)
+
+    test = sorted(posts, key=itemgetter('time'), reverse=False)
+
+    return jsonify(test)
 
 if __name__ == '__main__':
     app.run()
