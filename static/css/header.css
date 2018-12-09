@@ -13,58 +13,59 @@ header{
   padding-bottom: 10px;
   font-family: serif;
 }
+
 ::-webkit-scrollbar {
  -webkit-appearance: none;
  width: 7px;
 }
+
 ::-webkit-scrollbar-thumb {
  border-radius: 4px;
  background-color: rgba(0, 0, 0, .5);
  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
-#title_list{
-  padding-top: 50px;
-}
+
 #pseudoBullet{
  padding-right: 8px;
 }
+
 #timeSpan{
  color:gray;
  font-size:9px;
  padding-right: 10px;
 }
+
 #titleSpan{
  text-decoration: none;
  color:blue;
  padding-right: 10px;
 }
+
 #locationSpan{
  color:black;
  font-size: 11px;
 }
+
 img{
   padding-left: 8px;
-  width:20px;
-  height:20px;
 }
+
 #carrot{
  position:fixed;
  left: 30
 }
+
 #locationText{
  position: fixed;
  left:45;
 }
+
 #carrot2{
  position:fixed;
  left: 130
 }
+
 #missed-connection-reset{
  position:fixed;
  left: 145
-}
-#post_link{
- position: fixed;
- right: 15;
- color:blue
 }

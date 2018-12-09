@@ -2,121 +2,154 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
      <title>i miss You</title>
+
+     <!-- Compiled and minified jquery -->
      <script src="../js/jquery-3.2.1.min.js"></script>
+     <!-- Custom CSS -->
      <link id = "css" rel="stylesheet" href="../css/header.css">
      <link id = "css" rel="stylesheet" href="../css/index.css">
+
      <meta name="description" content="i miss You: Recombinant, ever changing craiglist missed connections.">
      <meta name="keywords" content="Mixed Connections, Mixed, Connections, Mixed Connections, Mixed Connections, i miss You">
      <link rel="icon" href="../images/scraped_images/1.jpg" type="image/gif">
   </head>
 
  <body>
-  <header>
-    <img src="../images/icons/phone.png">
-    <span id="carrot"> < </span>
-    <span id="locationText"> pittsburgh </span>
-    <span id="carrot2"> < </span>
-    <a id=missed-connection-reset href="/">missed connections</a>
-  </header>
 
-    <div id="title_list"></div>
+    <header>
+      <img width=20 height=20 src="../images/icons/phone.png">
+      <span id="carrot"> < </span>
+      <span id="locationText"> pittsburgh </span>
+      <span id="carrot2"> < </span>
+      <a id=missed-connection-reset href="/">missed connections</a>
+    </header>
+      <!-- I know html this non traditional tag is an ~artistic~ choice !-->
+      <title-list></title-list>
 
   </body>
 
   <script type="text/javascript" src="../js/index_support.js"></script>
   <script type="text/javascript" src="../js/switches.js"></script>
-  <script type="text/javascript">
+
+  <script>
+    // Constants
+    CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
+
+    // 1. Declare all the set intervals needed
+    var scrambledLocation = document.getElementById("locationText");
+    var originalLocation = document.getElementById("locationText").textContent;
+
     // Function that allows the zombie blink tag to be reanimated
     setInterval(function(){
      $('blink').each(function() {
        $(this).toggle();
      });
     }, Math.floor(Math.random() * (1000 - 500 + 1)) + 500);
-  </script>
 
-  <script>
-    // Constants
-    CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
-
-    // 1. Use a set interval to constantly scramble location text
-    var scrambledLocation = document.getElementById("locationText");
-    var originalLocation = document.getElementById("locationText").textContent;
-
-    // Scrambles the location in the individual posts
+    // Scrambles the location in the header
     interval = setInterval(function(){
-     Scramble(originalLocation, scrambledLocation)
+     scramble(originalLocation, scrambledLocation)
     }, 150);
 
     // Scrambles the listed titles when appropriate
     interval = setInterval(function(){
       eligible = document.getElementsByTagName("titleScram")
       for (var i = 0; i < eligible.length; i++){
-        Scramble(eligible[i].textContent, eligible[i])
+        scramble(eligible[i].textContent, eligible[i])
       }
       }, 150);
 
-    // Scramble the location in the header
-    interval = setInterval(function(){
-       var newLocation = Math.floor((Math.random() * 2) + 0);
-       locationText.textContent = CRAIGSLIST_LOCATIONS[newLocation]
-    }, 250);
-
-
-    // 2. Grab 40 initial titles, format them and add them to the page
-    post_count = 0; // Indicates which post to pull from the array
-
-    var topNum = 100; // Sets the distance of the list from the header in pixels
+    // 2. Grab initial title, format it and add it to the page forty times
+    postCount = 0; // Indicates which post to pull from the array
 
     jQuery.get('/raw_db', function(data) {
       entries = data["posts"]
       // 3.Chops the data up into posts and adds them to the page
       for (var i = 0; i < 40; i++){
-          CreateCleanLine(0)
+          var par = document.createElement('p')
+          par = createBullet(par)
+          par = createTimeSpan(par, entries, 0)
+          par = createTitle(par, entries, 0)
+          par = createLocation(par, entries, 0)
+          topNum = styleCleanLine(par, topNum)
         }
       });
 
     // 3. Constantly add jumbled title to the bottom of the page
-    var post_count = 1; // Pick up where we left off with the last title in the available titles
-    var images = false;
+    postCount = postCount + 1; // Pick up where we left off with the next title in the available titles
     var imageCount = 0;
+    var topNum = 100;
 
+    // If we're scrolling and we haven't seen all of the posts, keep going.
     $(window).scroll(function(){
-     if ($(window).scrollTop() >= $(window).height()){
-        // Reset so that we're always pulling in titles and scrolling
-        post_count = post_count + 1
+     if (postCount <= entries.length){
+        // We're acutally going linearlly through all of the posts. This ensures we see them all.
+        postCount = postCount + 1
 
-          // Every other post should be abnormal in some way
-          if (post_count % 2 == true){
-            if (post_count >= entries.length / 3){
-              var par = document.createElement('blink')
-              par.style.fontSize = Math.floor(Math.random() * (200- 5)) + 5 + "px"
-              par.style.color = "#"+((1<<24)*Math.random()|0).toString(16)
-            }
-            else{
-             var par = document.createElement('p')
-            }
-            CreateLine(par, post_count)
+        // Create the element for the line, if we've seen 100 posts its a ~40 percent chance if it will be a blink or p tag.
+        var par = document.createElement('p')
+
+        if (postCount >=100){
+          random = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+          if (random <= 4){
+            var par = document.createElement('blink')
           }
-          if (post_count >= entries.length / 2){
-            var par = document.createElement('p')
+        }
+
+        // Even numbered post should be off center and scrambled
+        if (postCount % 2 === 0){
+          par = createBullet(par)
+          par = createTimeSpan(par, entries, postCount)
+          par = createScrambledTitle(par, entries, postCount)
+          par = createLocation(par, entries, postCount)
+          topNum = styleMessyLine(par, topNum)
+
+          // If we have seen 20% of the posts the odd number posts should have random style elements
+          if (postCount >= entries.length * .2){
+            random = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+            if (random <= 4){
+              children = par.children;
+              color = "#"+((1<<24)*Math.random()|0).toString(16)
+              size = Math.floor(Math.random() * (100 - 8 + 1)) + 8;
+
+              children[2].style.color = color
+              children[3].style.color = color
+              children[2].style.fontSize = size
+              children[3].style.fontSize = size
+            }
+          }
+
+          // If we have seen 40% of the posts we should start adding scraped images in addition to the posts
+          if (postCount >= entries.length * .3){
+            var img = document.createElement('p')
+            img.style.position = 'absolute'
+            img.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
+            img.style.top = topNum
             imageCount = Math.floor(Math.random() * (88 - 1) + 1);
-            par.style.backgroundImage = "url('../images/scraped_images/"+imageCount+ ".jpg')";
-            par.style.width="100%"
-            par.style.height=Math.floor(Math.random() * (8000 - 300) + 300);
-            CreateLine(par, post_count)
+            img.style.backgroundImage = "url('../images/scraped_images/"+imageCount+ ".jpg')";
+
+            height = Math.floor(Math.random() * (3000 - 500) + 500);
+            width = Math.floor(Math.random() * (3000 - 500) + 500);
+            height = height * (postCount/entries.length)
+            width = width * (postCount/entries.length)
+            img.style.width = width
+            img.style.height = height
+
+            var list = document.getElementsByTagName("title-list")[0];
+            list.appendChild(img)
           }
-          else{
-            if (post_count >= 50){
-              var par = document.createElement('blink')
-              CreateMessyLine(par, post_count)
-            }
-            else{
-              var par = document.createElement('p')
-              CreateMessyLine(par, post_count)
-            }
-          }
-       }
+        }
+        // Odd number posts should be off center and unscrambled
+        else{
+          par = createBullet(par)
+          par = createTimeSpan(par, entries, postCount)
+          par = createTitle(par, entries, postCount)
+          par = createLocation(par, entries, postCount)
+          topNum = styleMessyLine(par, topNum)
+        }
+      }
     });
   </script>
   </body>

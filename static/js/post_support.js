@@ -1,24 +1,7 @@
-//Support function that shuffles the sentences in a post
-function resetSentences(post){
-  sentences = []
-  var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
-  if (phrase != null){
-    for (var j = 0; j < phrase.length; j++){
-      sentences.push(phrase[j]);
-    }
+// Support functions for the missed page
 
-  var myNode = document.getElementById('missed-connection')
-  while (myNode.firstChild) {
-      myNode.removeChild(myNode.firstChild);
-  }
-  shuffle(sentences)
-  sentences = sentences.join(' ')
-  return sentences;
-  }
-}
-
-// Support function that creates a dom element to be used in apost
-function CreateDivDomElement(){
+// Support function that creates a dom element to be used in a post
+function createDivDomElement(){
   var body = document.getElementsByTagName('missed-connection-container')[0]
   var div = document.createElement('missed-connection')
   var other = document.getElementsByTagName('other')[document.getElementsByTagName('other').length-1]
@@ -37,9 +20,36 @@ function shuffle(array) {
   }
 }
 
-// Support function to imitate typing
-function TypeSet(spans, i, typing){
+// Support function to split up entries
+function splitEntries(data){
+  var entries = (data)
+  entries = entries['posts']
+  return entries
+}
 
+// Support function to return lists of titles and posts
+function getTitlesAndPosts(entries){
+  titles = []
+  posts = []
+
+  for (var i = 0; i < entries.length; i++){
+    title = entries[i].title
+    titles.push(title)
+    posts.push(entries[i].body);
+  }
+
+  return [titles, posts]
+}
+
+// Support function to return random title
+function getRandomTitle(titles){
+  var randomTitle = titles[Math.floor(Math.random()*titles.length)];
+  var domTitle = document.getElementById('title');
+  domTitle.textContent = randomTitle;
+}
+
+// Support function to imitate typing
+function typeSet(spans, i, typing){
   var div = document.getElementsByTagName('missed-connection')
 
     div = div[div.length-1]
@@ -54,7 +64,7 @@ function TypeSet(spans, i, typing){
 }
 
 // Support function that weeds out null data
-function CleanEntries(entries){
+function cleanEntries(entries){
   var cleanedEntries = []
   for (var i = 0; i < entries.length; i++){
      if (entries[i] != undefined){
@@ -77,7 +87,7 @@ function resolveDatabaseGrab(x) {
 }
 
 // Support function to break up a post into sentences
-function CleanerPost(post){
+function cleanerPost(post){
   sentences = [];
   var phrase = post.match( /[^\.!\?]+[\.!\?]+/g );
   if (phrase != null){
@@ -88,25 +98,58 @@ function CleanerPost(post){
   return sentences
 }
 
+// Support function to build post body
+function createPostBody(phrases){
+  threads = [];
+  var postLength = Math.floor((Math.random() * 5) + 2);
+  var postBody = " ";
+
+  while (threads.length < postLength){
+    random = Math.floor(Math.random() * phrases.length-1);
+    selection = phrases[random];
+    if (threads.indexOf(selection) === -1){
+      threads.push(selection);
+    }
+  }
+
+  return threads
+}
+
+//Support function to split a post up into individual sentences
+function splitPosts(posts){
+  phrases = [];
+  for (var k = 0; k < posts.length; k++){
+    if (posts[k] != undefined){
+      var sentences = posts[k].match( /[^\.!\?]+[\.!\?]+/g );
+      if (sentences != null){
+        for (var j = 0; j < sentences.length; j++){
+          phrases.push(sentences[j]);
+        }
+      }
+    }
+  }
+  return phrases
+}
+
 // Support function to create post
-async function GrabData() {
+async function grabData() {
   entriesData = ""
   databaseData = ""
   databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
 
   var body = document.getElementsByTagName('missed-connection-container')[0]
   var i = 0;
-  var scraped_entries = SplitEntries(databaseDataGrabbed)
-  var postElements = GetTitlesAndPosts(scraped_entries)
+  var scraped_entries = splitEntries(databaseDataGrabbed)
+  var postElements = getTitlesAndPosts(scraped_entries)
   var titles = postElements[0]
-  titles = CleanEntries(titles)
+  titles = cleanEntries(titles)
   var posts = postElements[1]
-  posts = CleanEntries(posts);
+  posts = cleanEntries(posts);
 
-  GetRandomTitle(titles)
+  getRandomTitle(titles)
   shuffle(posts)
-  phrases = SplitPosts(posts)
+  phrases = splitPosts(posts)
   shuffle(phrases)
-  postBody = CreatePostBody(phrases)
+  postBody = createPostBody(phrases)
   body.textContent = postBody
 }

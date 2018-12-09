@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 import requests
-from retrieve_posts import scrape
+from retrieve_posts import retrieve_posts
 from flask import jsonify
 from dateutil import parser
 import operator
@@ -20,12 +20,12 @@ def render_index():
 
 @app.route('/raw_db')
 def render_db():
-    json_object = scrape()
+    json_object = retrieve_posts()
     return jsonify(json_object)
 
 @app.route('/pretty_db')
 def render_pretty_db():
-    json_object = scrape()
+    json_object = retrieve_posts()
     posts = json_object['posts']
     for post in posts:
         date = post['time']

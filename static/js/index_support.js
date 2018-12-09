@@ -1,97 +1,75 @@
+// Support functions for the index page
 
-// Support function that creates the normal looking lines in the listed posts
-function CreateCleanLine(post_count){
-  var list = document.getElementById("title_list");
-  var par = document.createElement('p')
-  par.id = 'post'
-  par.style.position = 'absolute'
-  par.style.left = 100;
-  par.style.top = topNum
-
-  topNum = topNum + 50;
+// Support function that creates the bullets for each post
+function createBullet(par){
   var pseudoBullet = document.createElement('span')
   pseudoBullet.id = "pseudoBullet"
   pseudoBullet.textContent = "*"
   par.appendChild(pseudoBullet)
+  return par
+}
 
+// Support function that creates the Time Stamp for each post
+function createTimeSpan(par, entries, postCount){
   var timeSpan = document.createElement('span')
   timeSpan.id = "timeSpan"
-  time = entries[post_count]['time'];
+  time = entries[postCount]['time'];
   timeSpan.textContent = time
   par.appendChild(timeSpan)
+  return par
+}
 
+// Support function that creates the Titile for each post
+function createTitle(par, entries, postCount){
   var titleSpan = document.createElement('a')
   titleSpan.id = "titleSpan"
   titleSpan.href = "/missed"
-  title = entries[post_count]['title'];
+  title = entries[postCount]['title'];
   titleSpan.textContent = title
   par.appendChild(titleSpan)
-
-  var locationSpan = document.createElement('span')
-  loc = "("+(entries[post_count]['location'])+")"
-  locationSpan.textContent = loc
-  par.appendChild(locationSpan)
-
-  list.appendChild(par)
+  return par
 }
 
-// Support function that creates the off center lines in the listed post
-function CreateMessyLine(par, count){
-  var list = document.getElementById("title_list");
-  par.id = 'post'
-  par.style.position = 'absolute'
-  par.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
-  par.style.top = topNum
-  topNum = topNum + Math.floor(Math.random() * (150 - 20 + 1)) + 20;
-  var timeSpan = document.createElement('span')
-  timeSpan.id = "timeSpan"
-  time = entries[count]['time'];
-  timeSpan.textContent = time
-  par.appendChild(timeSpan)
-
+// Support function that creates a scrambling title for each post
+function createScrambledTitle(par, entries, postCount){
   var titleSpan = document.createElement('a')
-  titleSpan.id = "titleSpan"
-  titleSpan.href = "/missed"
-  title = entries[count]['title'];
-  titleSpan.textContent = title
-  par.appendChild(titleSpan)
-
-  var locationSpan = document.createElement('span')
-  loc = "("+(entries[count]['location'])+")"
-  locationSpan.textContent = loc
-  par.appendChild(locationSpan)
-
-  list.appendChild(par)
-}
-
-// Support function that creates the scrambled lines in the listed posts
-function CreateLine(par, count){
-  // 1. Use a set interval to constantly Scramble location text
-  var list = document.getElementById("title_list");
-  par.id = 'post'
-  par.style.position = 'absolute'
-  par.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
-  par.style.top = topNum
-  topNum = topNum + Math.floor(Math.random() * (150 - 20 + 1)) + 20;
-  var timeSpan = document.createElement('span')
-  timeSpan.id = "timeSpan"
-  time = entries[count]['time'];
-  timeSpan.textContent = time
-  par.appendChild(timeSpan)
-
-  var a = document.createElement('a')
   var titleScram = document.createElement('titleScram')
   titleScram.id = "titleScram"
   titleScram.href = "/missed"
-  title = entries[count]['title'];
+  title = entries[postCount]['title'];
   titleScram.textContent = title
-  a.appendChild(titleScram)
-  par.appendChild(a)
+  titleSpan.appendChild(titleScram)
+  par.appendChild(titleSpan)
+  return par
+}
 
+// Support function that creates the location for each post
+function createLocation(par, entries, postCount){
+  var list = document.getElementsByTagName("title-list")[0];
   var locationSpan = document.createElement('span')
-  loc = "("+(entries[count]['location'])+")"
+  locationSpan.style.color = 'blue'
+  loc = "("+(entries[postCount]['location'])+")"
   locationSpan.textContent = loc
   par.appendChild(locationSpan)
-
   list.appendChild(par)
+  return par
+}
+
+// Support function that styles the post as a normally aligned line
+function styleCleanLine(line, topNum){
+  line.style.position = 'absolute'
+  line.style.left = 100;
+  line.style.top = topNum
+  topNum = topNum + 50;
+  return topNum
+}
+
+// Support function that styles the off center lines in the post
+function styleMessyLine(par, topNum){
+  par.style.position = 'absolute'
+  par.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
+  par.style.top = topNum
+  topNum = topNum + Math.floor(Math.random() * (150 - 50 + 1)) + 50;
+  var a = document.createElement('a')
+  return topNum
 }
