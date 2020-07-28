@@ -12,6 +12,7 @@ header{
   vertical-align: top;
   padding-bottom: 10px;
   font-family: serif;
+  z-index: 100;
 }
 
 ::-webkit-scrollbar {

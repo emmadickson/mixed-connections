@@ -107,7 +107,7 @@
           topNum = styleMessyLine(par, topNum)
 
           // If we have seen 20% of the posts the odd number posts should have random style elements
-          if (postCount >= entries.length * .2){
+          if (postCount >= 200){
             random = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
             if (random <= 4){
               children = par.children;
@@ -122,7 +122,7 @@
           }
 
           // If we have seen 40% of the posts we should start adding scraped images in addition to the posts
-          if (postCount >= entries.length * .3){
+          if (postCount >= 300){
             var img = document.createElement('p')
             img.style.position = 'absolute'
             img.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
