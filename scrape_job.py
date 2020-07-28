@@ -19,7 +19,7 @@ CRAIGSLIST_URLS = [
 "https://pittsburgh.craigslist.org"
 ]
 
-NUMBER_OF_POSTS = 15
+NUMBER_OF_POSTS = 3
 DATABASE_URL='postgres://pkszoedlaykwsk:2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b@ec2-54-83-0-158.compute-1.amazonaws.com:5432/d42mu98rpmdqbj'
 
 
@@ -104,28 +104,25 @@ def ScrapeImages(finalUrl):
                 images.append( link['href'] )
     for img in soup.findAll('img'):
         images.append(img['src'])
-
-    scraped_images = os.listdir("static/images/scraped_images")
-    random.shuffle(scraped_images)
-    opened_images = []
-
-    for x in range(0, len(scraped_images)):
-        opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % x))
-
-    for x in range(0, len(scraped_images)-1):
-        os.remove("static/images/scraped_images/%s.jpg" % x)
-
-    for x in range(0, len(opened_images)):
-        opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
-
-    image_number = len(scraped_images)
+    
+    print("images found: %s" % len(images))
     for img in images:
+        scraped_images = os.listdir("static/images/scraped_images")
+        random.shuffle(scraped_images)
+        opened_images = []
+        
+        for i in range(0, len(scraped_images)):
+            opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
+
+        for x in range(0, len(opened_images)):
+            opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
+
         if ("50x50" not in img) and img not in IMAGE_HASHES:
             file = cStringIO.StringIO(urllib2.urlopen(img).read())
             img = Image.open(file)
             image_number = image_number + 1
             img.save("static/images/scraped_images/%s.jpg" % image_number, "JPEG")
-            print "image saved!"
+            print("image saved!")
 
 def main():
     #   4. Pick a random location, scrape recent posts and chose one to add
@@ -165,7 +162,20 @@ def main():
         except Exception as e:
             print("Error %s" % e)
         ScrapeImages(finalUrl)
-    subprocess.call('static/bash/gif_script.sh')
+        
+    scraped_images = os.listdir("static/images/scraped_images")
+    random.shuffle(scraped_images)
+    opened_images = []
+    
+    for i in range(0, len(scraped_images)):
+        opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
+        
+    for x in range(0, len(opened_images)):
+        opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
+
+    im = Image.new('RGB', (200,200), (0,0,0))
+    im.save('static/images/mix.gif', save_all=True, append_images=opened_images)
+
     return
 
 
