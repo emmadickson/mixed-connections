@@ -1,0 +1,37 @@
+version: '3'
+services:
+  web:
+    build: ./web
+    container_name: web
+    restart: always
+    environment:
+      - APP_NAME=app
+    expose:
+      - 8080
+    links:
+      - postgres:postgres
+    volumes:
+      - web-data:/usr/src/app/static
+    env_file: 
+      - .env
+
+  nginx:
+    image: webapp-nginx
+    build: ./nginx
+    ports:
+      - 5000:80
+    depends_on:
+      - web
+
+  postgres:
+    restart: always
+    build: ./postgres
+    container_name: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data:
+  web-data:
