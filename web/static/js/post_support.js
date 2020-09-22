@@ -86,6 +86,18 @@ function resolveDatabaseGrab(x) {
   });
 }
 
+// Support function to grab stored posts
+function resolvePostGrab(x) {
+  return new Promise(resolve => {
+    var databaseGrab = $.get('/random_post')
+    databaseGrab.done(function(data) {
+      databaseData = data
+      resolve(data)
+      console.log("successful post grab")
+    })
+  });
+}
+
 // Support function to break up a post into sentences
 function cleanerPost(post){
   sentences = [];
@@ -135,7 +147,7 @@ function splitPosts(posts){
 async function grabData() {
   entriesData = ""
   databaseData = ""
-  databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
+  databaseDataGrabbed = await resolvePostGrab(databaseData);
 
   var body = document.getElementsByTagName('missed-connection-container')[0]
   var i = 0;

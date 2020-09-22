@@ -4,10 +4,6 @@ services:
     build: ./web
     container_name: web
     restart: always
-    environment:
-      - APP_NAME=app
-    expose:
-      - 8080
     links:
       - postgres:postgres
     volumes:
@@ -28,10 +24,11 @@ services:
     build: ./postgres
     container_name: postgres
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5432:5432"
+      - 5432:5432
+    env_file: 
+      - .env
 
 volumes:
-  db-data:
   web-data:

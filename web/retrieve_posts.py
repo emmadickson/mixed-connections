@@ -1,16 +1,43 @@
 import psycopg2
+import os
+import csv
+
+def retrieve_random_post():
+    '''Retrieves random post from db'''
+    DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+
+    conn = psycopg2.connect(DATABASE_URL, user='postgres', password='postgres' )
+    cur = conn.cursor()
+    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped OFFSET floor(random()*(SELECT count(*) from posts_scraped)) LIMIT 1;" )
+
+    return str(cur.fetchall()[0])
 
 def retrieve_posts():
     '''Retrieves posts from db so that users can view them'''
-    DATABASE_URL='postgres://pkszoedlaykwsk:2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b@ec2-54-83-0-158.compute-1.amazonaws.com:5432/d42mu98rpmdqbj'
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
+    DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+    conn = psycopg2.connect(DATABASE_URL, user='postgres', password='postgres')
     cur = conn.cursor()
     json_object = {"posts":[]}
-    cur.execute( "SELECT title, body, time, location, hash FROM posts_scraped" )
-    for title, body, time, location, hash in cur.fetchall() :
-        post = {"title": title, "body": body, "time": time, "location": location, "hash": hash}
+    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped" )
+    for body,time,hash,location,title in cur.fetchall() :
+        post = {"body": body, "time": time, "hash": hash, "location": location, "title": title}
         json_object['posts'].append(post)
-
+    
     t = json_object['posts']
     del t[0]
     return json_object
+    
+def retrieve_posts_csv():
+    '''Retrieves posts from db as csv so users can seed their own db'''
+    DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+
+    conn = psycopg2.connect(DATABASE_URL, user='postgres', password='postgres' )
+    cur = conn.cursor()
+    posts = "body,time,hash,location,title\n"
+    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped" )
+    for body,time,hash,location,title in cur.fetchall() :
+        post = '"%s",%s,%s,%s,"%s"\n' % (body,time,hash,location,title)
+        posts = posts + post   
+    return posts
+        
+    

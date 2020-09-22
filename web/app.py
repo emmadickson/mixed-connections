@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, send_file, make_response
 from flask import request
 import requests
-from retrieve_posts import retrieve_posts
+from retrieve_posts import retrieve_posts, retrieve_posts_csv, retrieve_random_post
 from flask import jsonify
 from dateutil import parser
 import operator
@@ -24,6 +24,19 @@ def render_db():
     json_object = retrieve_posts()
     return jsonify(json_object)
 
+@app.route('/random_post')
+def render_random_post():
+    return retrieve_random_post()
+    
+@app.route('/output.csv')
+def download_csv():  
+    csv = retrieve_posts_csv()
+    response = make_response(csv)
+    cd = 'attachment; filename=output.csv'
+    response.headers['Content-Disposition'] = cd 
+    response.mimetype='text/csv'
+    return response
+    
 @app.route('/pretty_db')
 def render_pretty_db():
     json_object = retrieve_posts()
@@ -34,7 +47,7 @@ def render_pretty_db():
         post['time'] = d.strftime("%Y-%m-%d")
 
     json_object['posts'].sort(key=operator.itemgetter('time'), reverse=True)
-    return jsonify(json_object)
+    return jsonify(json_object)['posts']
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
