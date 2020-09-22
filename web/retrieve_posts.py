@@ -24,7 +24,6 @@ def retrieve_posts():
         json_object['posts'].append(post)
     
     t = json_object['posts']
-    del t[0]
     return json_object
     
 def retrieve_posts_csv():

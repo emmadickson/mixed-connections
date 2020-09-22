@@ -11,6 +11,8 @@ from PIL import Image
 import cStringIO
 import psycopg2
 import subprocess
+import boto3 
+from botocore.exceptions import NoCredentialsError
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -22,6 +24,27 @@ CRAIGSLIST_URLS = [
 NUMBER_OF_POSTS = 15
 DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
 
+ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
+SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+
+
+def upload_to_aws(local_file, bucket, s3_file):
+    s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
+                      aws_secret_access_key=SECRET_KEY)
+
+    try:
+        s3.upload_file(local_file, bucket, s3_file)
+        print("Upload Successful")
+        return True
+    except FileNotFoundError:
+        print("The file was not found")
+        return False
+    except NoCredentialsError:
+        print("Credentials not available")
+        return False
+
+
+uploaded = upload_to_aws('local_file', 'bucket_name', 's3_file_name')
 
 def CollectMissedConnectionsLink(location):
     '''Returns a list of recent posts urls from the location specific missed
@@ -175,9 +198,12 @@ def main():
 
     im = Image.new('RGB', (200,200), (0,0,0))
     im.save('static/images/mix.gif', save_all=True, append_images=opened_images)
-
+    upload_to_aws('static/images/mix.gif', 'mixed-connections-gifs', 'mix.gif')
+    
+    requests.get('0.0.0.0/output.csv')
+    upload_to_aws('output.csv', 'mixed-connections', 'output.csv')
     return
 
 
 main()
-print("\n\n Done")
+print("\n\nDone")

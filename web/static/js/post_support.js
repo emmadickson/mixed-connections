@@ -43,9 +43,8 @@ function getTitlesAndPosts(entries){
 
 // Support function to return random title
 function getRandomTitle(titles){
-  var randomTitle = titles[Math.floor(Math.random()*titles.length)];
   var domTitle = document.getElementById('title');
-  domTitle.textContent = randomTitle;
+  domTitle.textContent = titles;
 }
 
 // Support function to imitate typing
@@ -72,18 +71,6 @@ function cleanEntries(entries){
     }
   }
   return cleanedEntries
-}
-
-// Support function to grab stored posts
-function resolveDatabaseGrab(x) {
-  return new Promise(resolve => {
-    var databaseGrab = $.get('/raw_db')
-    databaseGrab.done(function(data) {
-      databaseData = data
-      resolve(data)
-      console.log("successful database grab")
-    })
-  });
 }
 
 // Support function to grab stored posts
@@ -152,14 +139,11 @@ async function grabData() {
   var body = document.getElementsByTagName('missed-connection-container')[0]
   var i = 0;
   var scraped_entries = splitEntries(databaseDataGrabbed)
-  var postElements = getTitlesAndPosts(scraped_entries)
-  var titles = postElements[0]
-  titles = cleanEntries(titles)
-  var posts = postElements[1]
-  posts = cleanEntries(posts);
+  console.log(scraped_entries)
+  var titles = scraped_entries[4]
+  var posts = scraped_entries[0]
 
   getRandomTitle(titles)
-  shuffle(posts)
   phrases = splitPosts(posts)
   shuffle(phrases)
   postBody = createPostBody(phrases)
