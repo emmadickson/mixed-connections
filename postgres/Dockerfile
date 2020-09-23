@@ -8,5 +8,5 @@ RUN curl -o /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq &
   chmod +x /usr/local/bin/jq
 
 COPY output.csv /docker-entrypoint-initdb.d/
-ADD init.sql /docker-entrypoint-initdb.d/
+
 

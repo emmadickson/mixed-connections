@@ -2,7 +2,6 @@ from flask import Flask, send_file, make_response
 from flask import request
 import requests
 from retrieve_posts import retrieve_posts, retrieve_posts_csv, retrieve_random_post
-from scrape_job import main as scrape_main
 from flask import jsonify
 from dateutil import parser
 import operator
@@ -48,11 +47,7 @@ def render_pretty_db():
         d = parser.parse(date)
         post['time'] = d.strftime("%Y-%m-%d")
     json_object['posts'].sort(key=operator.itemgetter('time'), reverse=True)
-    return json_object['posts']
-
-@app.route('/scrape')
-def scrape_db():
-    return scrape_main()
+    return jsonify(json_object)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

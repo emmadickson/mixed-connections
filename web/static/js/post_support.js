@@ -43,8 +43,9 @@ function getTitlesAndPosts(entries){
 
 // Support function to return random title
 function getRandomTitle(titles){
+  var randomTitle = titles[Math.floor(Math.random()*titles.length)];
   var domTitle = document.getElementById('title');
-  domTitle.textContent = titles;
+  domTitle.textContent = randomTitle;
 }
 
 // Support function to imitate typing
@@ -74,13 +75,13 @@ function cleanEntries(entries){
 }
 
 // Support function to grab stored posts
-function resolvePostGrab(x) {
+function resolveDatabaseGrab(x) {
   return new Promise(resolve => {
     var databaseGrab = $.get('/random_post')
     databaseGrab.done(function(data) {
       databaseData = data
       resolve(data)
-      console.log("successful post grab")
+      console.log("successful database grab")
     })
   });
 }
@@ -134,16 +135,19 @@ function splitPosts(posts){
 async function grabData() {
   entriesData = ""
   databaseData = ""
-  databaseDataGrabbed = await resolvePostGrab(databaseData);
+  databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
 
   var body = document.getElementsByTagName('missed-connection-container')[0]
   var i = 0;
   var scraped_entries = splitEntries(databaseDataGrabbed)
-  console.log(scraped_entries)
-  var titles = scraped_entries[4]
-  var posts = scraped_entries[0]
+  var postElements = getTitlesAndPosts(scraped_entries)
+  var titles = postElements[0]
+  titles = cleanEntries(titles)
+  var posts = postElements[1]
+  posts = cleanEntries(posts);
 
   getRandomTitle(titles)
+  shuffle(posts)
   phrases = splitPosts(posts)
   shuffle(phrases)
   postBody = createPostBody(phrases)

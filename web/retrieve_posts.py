@@ -8,9 +8,14 @@ def retrieve_random_post():
 
     conn = psycopg2.connect(DATABASE_URL, user='postgres', password='postgres' )
     cur = conn.cursor()
-    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped OFFSET floor(random()*(SELECT count(*) from posts_scraped)) LIMIT 1;" )
+    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped OFFSET floor(random()*(SELECT count(*) from posts_scraped)) LIMIT 25;" )
+    json_object = {"posts":[]}
+    for body,time,hash,location,title in cur.fetchall() :
+        post = {"body": body, "time": time, "hash": hash, "location": location, "title": title}
+        json_object['posts'].append(post)
 
-    return str(cur.fetchall()[0])
+    t = json_object['posts']
+    return json_object
 
 def retrieve_posts():
     '''Retrieves posts from db so that users can view them'''
