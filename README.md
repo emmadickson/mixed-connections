@@ -1,3 +1,13 @@
+# Run your own!
+Pull the dockerize branch of Mixed Connections and run 
+```docker compose build```
+then 
+```docker compose up```
+In order to pull a current version of the full data hit the endpoint of the official mixedconnections.us/output.csv 
+and place the resulting file in the postgres folder. 
+
+To scrape more posts for your database you can run
+```python scrape_job.py number_of_posts```
 # mixed-connections
 
 Mixed Connections explores how people express longing within a digital landscape. It  uses Craigslist, a classified ad service that offers regionally-specific sites within a universal template, to ask: How do anonymity and location shape the presentation of identity? This piece continually scrapes real Craigslist Missed Connections posts from all of the places that the artist has lived (Pittsburgh, PA; New York, NY; and Durham, NC) and recombines isolated posts into new, interwoven narratives.
