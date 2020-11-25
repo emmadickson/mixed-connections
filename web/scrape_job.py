@@ -8,13 +8,13 @@ import datetime
 import random
 import os
 from PIL import Image
-import cStringIO
+import io
 import psycopg2
 import subprocess
 import boto3 
 import datetime 
-
-import sys 
+import sys
+from retrieve_posts import retrieve_posts_csv
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -111,6 +111,8 @@ def ScrapeImages(finalUrl):
     IMAGE_HASHES =  []
     response = requests.get(finalUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
+    # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
+'''
     for link in soup.findAll('a', href=True, text=''):
             if ('images' in link['href']):
                 images.append( link['href'] )
@@ -130,11 +132,11 @@ def ScrapeImages(finalUrl):
             opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
 
         if ("50x50" not in img) and img not in IMAGE_HASHES:
-            file = cStringIO.StringIO(urllib2.urlopen(img).read())
+            file = io.StringIO(urllib2.urlopen(img).read())
             img = Image.open(file)
             image_number = image_number + 1
             img.save("static/images/scraped_images/%s.jpg" % image_number, "JPEG")
-            print("image saved!")
+            print("image saved!")'''
 
 def main():
     #   4. Pick a random location, scrape recent posts and chose one to add
@@ -177,8 +179,8 @@ def main():
     scraped_images = os.listdir("static/images/scraped_images")
     random.shuffle(scraped_images)
     opened_images = []
-    
-    for i in range(0, len(scraped_images)-1):
+    # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
+'''    for i in range(0, len(scraped_images)-1):
         opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
         
     for x in range(0, len(opened_images)):
@@ -187,9 +189,12 @@ def main():
     im = Image.new('RGB', (200,200), (0,0,0))
     im.save('static/images/scraped_images/mix.gif', save_all=True, append_images=opened_images)
     upload_to_aws('static/images/scraped_images/mix.gif', 'mixed-connections-images', 'mix_%s.gif' % (datetime.datetime.now()))
-    
-    requests.get('%s/output.csv' % os.environ.get('FLASK_HOST'))
-    upload_to_aws('output.csv', 'mixed-connections', 'output.csv')
+    '''
+    csv = retrieve_posts_csv()
+    csv_file = open('output.csv', 'w')
+    csv_file.write(csv)
+    csv_file.close()
+    upload_to_aws('output.csv', 'mixed-connections', 'output_%s.csv' % datetime.date.today())
     return
 
 
