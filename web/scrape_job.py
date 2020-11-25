@@ -179,8 +179,14 @@ def main():
     scraped_images = os.listdir("static/images/scraped_images")
     random.shuffle(scraped_images)
     opened_images = []
+    csv = retrieve_posts_csv()
+    csv_file = open('output.csv', 'w')
+    csv_file.write(csv)
+    csv_file.close()
+    upload_to_aws('output.csv', 'mixed-connections', 'output_%s.csv' % datetime.datetime.now())
+
     # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
-'''    for i in range(0, len(scraped_images)-1):
+    '''for i in range(0, len(scraped_images)-1):
         opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
         
     for x in range(0, len(opened_images)):
@@ -190,13 +196,8 @@ def main():
     im.save('static/images/scraped_images/mix.gif', save_all=True, append_images=opened_images)
     upload_to_aws('static/images/scraped_images/mix.gif', 'mixed-connections-images', 'mix_%s.gif' % (datetime.datetime.now()))
     '''
-    csv = retrieve_posts_csv()
-    csv_file = open('output.csv', 'w')
-    csv_file.write(csv)
-    csv_file.close()
-    upload_to_aws('output.csv', 'mixed-connections', 'output_%s.csv' % datetime.date.today())
     return
-
+    
 
 main()
 print("Done Scraping")
