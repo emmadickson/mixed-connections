@@ -103,7 +103,7 @@ def GetQueryData(pageContent, finalUrl, randomLocationUrl):
 
     print("Post from %s fetched" % location)
     print(body)
-    return (title, body, location, str(today), str(hashedPost))
+    return (title.decode('utf-8'), body.decode('utf-8'), str(location), str(today), str(hashedPost))
 
 def ScrapeImages(finalUrl):
     '''Scrapes and shuffles all the images found in a post from the url passed'''
@@ -176,13 +176,14 @@ def main():
             print("Error %s" % e)
         ScrapeImages(finalUrl)
         
-    scraped_images = os.listdir("static/images/scraped_images")
-    random.shuffle(scraped_images)
-    opened_images = []
+    #scraped_images = os.listdir("static/images/scraped_images")
+    r#andom.shuffle(scraped_images)
+    #opened_images = []
     csv = retrieve_posts_csv()
     csv_file = open('output.csv', 'w')
     csv_file.write(csv)
     csv_file.close()
+
     upload_to_aws('output.csv', 'mixed-connections', 'output_%s.csv' % datetime.datetime.now())
 
     # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
