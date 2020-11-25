@@ -177,7 +177,7 @@ def main():
         ScrapeImages(finalUrl)
         
     #scraped_images = os.listdir("static/images/scraped_images")
-    r#andom.shuffle(scraped_images)
+    #random.shuffle(scraped_images)
     #opened_images = []
     csv = retrieve_posts_csv()
     csv_file = open('output.csv', 'w')
