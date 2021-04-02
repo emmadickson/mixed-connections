@@ -20,7 +20,7 @@ CRAIGSLIST_URLS = [
 ]
 
 NUMBER_OF_POSTS = 15
-DATABASE_URL='postgres://pkszoedlaykwsk:2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b@ec2-54-83-0-158.compute-1.amazonaws.com:5432/d42mu98rpmdqbj'
+DATABASE_URL='postgres://lymvmwhtzfwild:fa8fc31e36f104f9186b3b9fa510e12a0fa6c2c5a096cea30a3573ec8c722341@ec2-54-235-108-217.compute-1.amazonaws.com:5432/d24c2ee90prajs'
 
 
 def CollectMissedConnectionsLink(location):
