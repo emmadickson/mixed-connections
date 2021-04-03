@@ -10,7 +10,7 @@ import json
 
 
 app = Flask(__name__, static_url_path='')
-app.config['DATABASE_URI'] = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+app.config['DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 @app.route('/missed')
 def render_missed():
