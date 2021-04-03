@@ -137,6 +137,7 @@ def ScrapeImages(finalUrl):
             print("image saved!")'''
 
 def main():
+    print("scrape job initiated")
     #   4. Pick a random location, scrape recent posts and chose one to add
     for x in range(0, NUMBER_OF_POSTS):
 
