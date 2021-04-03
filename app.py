@@ -1,15 +1,16 @@
-from flask import Flask
+from flask import Flask, send_file, make_response
 from flask import request
 import requests
-from retrieve_posts import retrieve_posts
+from retrieve_posts import retrieve_posts, retrieve_posts_csv, retrieve_random_post
 from flask import jsonify
 from dateutil import parser
 import operator
 import os
+import json
+
 
 app = Flask(__name__, static_url_path='')
-app.config['DATABASE_URI']=os.environ['DATABASE_URL']
-
+app.config['DATABASE_URI'] = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
 
 @app.route('/missed')
 def render_missed():
@@ -24,6 +25,19 @@ def render_db():
     json_object = retrieve_posts()
     return jsonify(json_object)
 
+@app.route('/random_post')
+def render_random_post():
+    return retrieve_random_post()
+    
+@app.route('/output.csv')
+def download_csv():  
+    csv = retrieve_posts_csv()
+    response = make_response(csv)
+    cd = 'attachment; filename=output.csv'
+    response.headers['Content-Disposition'] = cd 
+    response.mimetype='text/csv'
+    return response
+    
 @app.route('/pretty_db')
 def render_pretty_db():
     json_object = retrieve_posts()
@@ -32,7 +46,6 @@ def render_pretty_db():
         date = post['time']
         d = parser.parse(date)
         post['time'] = d.strftime("%Y-%m-%d")
-
     json_object['posts'].sort(key=operator.itemgetter('time'), reverse=True)
     return jsonify(json_object)
 
