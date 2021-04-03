@@ -1,3 +1,36 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@emmadickson 
+emmadickson
+/
+mixed-connections
+1
+0
+0
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+7
+Insights
+Settings
+mixed-connections/web/scrape_job.py /
+@emmadickson
+emmadickson Update scrape_job.py
+Latest commit ea4e521 on Nov 25, 2020
+ History
+ 1 contributor
+204 lines (170 sloc)  7.46 KB
+  
 import requests
 import socks
 import bs4
@@ -8,9 +41,13 @@ import datetime
 import random
 import os
 from PIL import Image
-import cStringIO
+import io
 import psycopg2
 import subprocess
+import boto3 
+import datetime 
+import sys
+from retrieve_posts import retrieve_posts_csv
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -19,10 +56,18 @@ CRAIGSLIST_URLS = [
 "https://pittsburgh.craigslist.org"
 ]
 
-NUMBER_OF_POSTS = 15
-DATABASE_URL=os.environ['DATABASE_URL']
+NUMBER_OF_POSTS = int(sys.argv[1])
+DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
+SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
 
 
+def upload_to_aws(local_file, bucket, s3_file):
+    s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
+                      aws_secret_access_key=SECRET_KEY)
+    s3.upload_file(local_file, bucket, s3_file)
+    print("Upload Successful")
+    
 def CollectMissedConnectionsLink(location):
     '''Returns a list of recent posts urls from the location specific missed
     connection url passed'''
@@ -91,7 +136,7 @@ def GetQueryData(pageContent, finalUrl, randomLocationUrl):
 
     print("Post from %s fetched" % location)
     print(body)
-    return (title, body, location, str(today), str(hashedPost))
+    return (title.decode('utf-8'), body.decode('utf-8'), str(location), str(today), str(hashedPost))
 
 def ScrapeImages(finalUrl):
     '''Scrapes and shuffles all the images found in a post from the url passed'''
@@ -99,6 +144,8 @@ def ScrapeImages(finalUrl):
     IMAGE_HASHES =  []
     response = requests.get(finalUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
+    # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
+'''
     for link in soup.findAll('a', href=True, text=''):
             if ('images' in link['href']):
                 images.append( link['href'] )
@@ -113,16 +160,14 @@ def ScrapeImages(finalUrl):
         
         for i in range(0, len(scraped_images)):
             opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
-
         for x in range(0, len(opened_images)):
             opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
-
         if ("50x50" not in img) and img not in IMAGE_HASHES:
-            file = cStringIO.StringIO(urllib2.urlopen(img).read())
+            file = io.StringIO(urllib2.urlopen(img).read())
             img = Image.open(file)
             image_number = image_number + 1
             img.save("static/images/scraped_images/%s.jpg" % image_number, "JPEG")
-            print("image saved!")
+            print("image saved!")'''
 
 def main():
     #   4. Pick a random location, scrape recent posts and chose one to add
@@ -151,10 +196,9 @@ def main():
 
         query =  "INSERT INTO posts_scraped (title, body, location, time, hash) VALUES (%s, %s, %s, %s, %s);"
         try:
-            conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='lymvmwhtzfwild', password='fa8fc31e36f104f9186b3b9fa510e12a0fa6c2c5a096cea30a3573ec8c722341' )
+            conn = psycopg2.connect(DATABASE_URL)
             cursor = conn.cursor()
             t = cursor.execute(query, data)
-            print(t)
             conn.commit()
             cursor.close()
             conn.close()
@@ -163,21 +207,24 @@ def main():
             print("Error %s" % e)
         ScrapeImages(finalUrl)
         
-    scraped_images = os.listdir("static/images/scraped_images")
-    random.shuffle(scraped_images)
-    opened_images = []
-    
-    for i in range(0, len(scraped_images)):
+    #scraped_images = os.listdir("static/images/scraped_images")
+    #random.shuffle(scraped_images)
+    #opened_images = []
+    csv = retrieve_posts_csv()
+    csv_file = open('output.csv', 'w')
+    csv_file.write(csv)
+    csv_file.close()
+
+    upload_to_aws('output.csv', 'mixed-connections', 'output_%s.csv' % datetime.datetime.now())
+
+    # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
+    '''for i in range(0, len(scraped_images)-1):
         opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
         
     for x in range(0, len(opened_images)):
         opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
-
     im = Image.new('RGB', (200,200), (0,0,0))
-    im.save('static/images/mix.gif', save_all=True, append_images=opened_images)
-
+    im.save('static/images/scraped_images/mix.gif', save_all=True, append_images=opened_images)
+    upload_to_aws('static/images/scraped_images/mix.gif', 'mixed-connections-images', 'mix_%s.gif' % (datetime.datetime.now()))
+    '''
     return
-
-
-main()
-print("\n\n Done")
