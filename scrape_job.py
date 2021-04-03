@@ -164,7 +164,7 @@ def main():
 
         query =  "INSERT INTO posts_scraped (title, body, location, time, hash) VALUES (%s, %s, %s, %s, %s);"
         try:
-            conn = psycopg2.connect(DATABASE_URL)
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require', user=os.environ.get('DATABASE_USER'), password=os.environ.get('DATABASE_PASSWORD'))
             cursor = conn.cursor()
             t = cursor.execute(query, data)
             conn.commit()
