@@ -5,7 +5,7 @@ import csv
 
 def retrieve_random_post():
     '''Retrieves random post from db'''
-    DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+    DATABASE_URL =  os.environ.get('DATABASE_URL')
 
     conn = psycopg2.connect(DATABASE_URL, user='postgres', password='postgres' )
     cur = conn.cursor()
@@ -20,7 +20,7 @@ def retrieve_random_post():
 
 def retrieve_posts():
     '''Retrieves posts from db so that users can view them'''
-    DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+    DATABASE_URL =  os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(DATABASE_URL, user='postgres', password='postgres')
     cur = conn.cursor()
     json_object = {"posts":[]}
@@ -34,7 +34,7 @@ def retrieve_posts():
     
 def retrieve_posts_csv():
     '''Retrieves posts from db as csv so users can seed their own db'''
-    DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+    DATABASE_URL =  os.environ.get('DATABASE_URL')
 
     conn = psycopg2.connect(DATABASE_URL, user='postgres', password='postgres' )
     cur = conn.cursor()
