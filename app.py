@@ -5,10 +5,10 @@ from retrieve_posts import retrieve_posts
 from flask import jsonify
 from dateutil import parser
 import operator
-
+import os
 
 app = Flask(__name__, static_url_path='')
-app.config['DATABASE_URI']='postgres://jadwwyuaguvfhk:5db0b71a464acaab2ee269c222cbcfeed1e9f9ccd705c22988241ce9575ebc2c@ec2-54-235-108-217.compute-1.amazonaws.com:5432/d5h0m2ld7t3loi?sslmode=require'
+app.config['DATABASE_URI']=os.environ['DATABASE_URL']
 
 
 @app.route('/missed')

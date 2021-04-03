@@ -1,4 +1,5 @@
 import psycopg2
+import os 
 
 def retrieve_posts():
     '''Retrieves posts from db so that users can view them'''
