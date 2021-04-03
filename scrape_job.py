@@ -151,7 +151,7 @@ def main():
 
         query =  "INSERT INTO posts_scraped (title, body, location, time, hash) VALUES (%s, %s, %s, %s, %s);"
         try:
-            conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='lymvmwhtzfwild', password='fa8fc31e36f104f9186b3b9fa510e12a0fa6c2c5a096cea30a3573ec8c722341' )
             cursor = conn.cursor()
             t = cursor.execute(query, data)
             print(t)

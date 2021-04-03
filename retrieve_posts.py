@@ -2,8 +2,8 @@ import psycopg2
 
 def retrieve_posts():
     '''Retrieves posts from db so that users can view them'''
-    DATABASE_URL='postgres://lymvmwhtzfwild:fa8fc31e36f104f9186b3b9fa510e12a0fa6c2c5a096cea30a3573ec8c722341@ec2-54-235-108-217.compute-1.amazonaws.com:5432/d24c2ee90prajs'
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='pkszoedlaykwsk', password='2ff4fae6161d29c22cf40f349faaa1e48d8524aab1caf6eed72f773a31f0a91b' )
+    DATABASE_URL='postgres://jadwwyuaguvfhk:5db0b71a464acaab2ee269c222cbcfeed1e9f9ccd705c22988241ce9575ebc2c@ec2-54-235-108-217.compute-1.amazonaws.com:5432/d5h0m2ld7t3loi?sslmode=require'
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require', user='jadwwyuaguvfhk', password='5db0b71a464acaab2ee269c222cbcfeed1e9f9ccd705c22988241ce9575ebc2c' )
     cur = conn.cursor()
     json_object = {"posts":[]}
     cur.execute( "SELECT title, body, time, location, hash FROM posts_scraped" )
