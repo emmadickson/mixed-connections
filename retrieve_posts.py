@@ -24,7 +24,11 @@ def retrieve_posts():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require', user=os.environ.get('DATABASE_USER'), password=os.environ.get('DATABASE_PASSWORD'))
     cur = conn.cursor()
     json_object = {"posts":[]}
-    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped ORDER BY cast(time as DATE) ASC" )
+    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped WHERE hash='23e09d737b857818e1ef9aead02a1199'" )
+    for body,time,hash,location,title in cur.fetchall() :
+        post = {"body": body, "time": time, "hash": hash, "location": location, "title": title}
+        json_object['posts'].append(post)
+    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped ORDER BY cast(time as DATE) DESC" )
     for body,time,hash,location,title in cur.fetchall() :
         post = {"body": body, "time": time, "hash": hash, "location": location, "title": title}
         json_object['posts'].append(post)
