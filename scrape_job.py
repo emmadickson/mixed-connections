@@ -24,7 +24,7 @@ CRAIGSLIST_URLS = [
 ]
 
 NUMBER_OF_POSTS = int(sys.argv[1])
-DATABASE_URL = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
+DATABASE_URL =  os.environ.get('DATABASE_URL')
 ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
 SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
 
@@ -196,3 +196,6 @@ def main():
     upload_to_aws('static/images/scraped_images/mix.gif', 'mixed-connections-images', 'mix_%s.gif' % (datetime.datetime.now()))
     '''
     return
+
+if __name__ == "__main__":
+    main()
