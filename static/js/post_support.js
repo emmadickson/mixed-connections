@@ -77,7 +77,7 @@ function cleanEntries(entries){
 // Support function to grab stored posts
 function resolveDatabaseGrab(x) {
   return new Promise(resolve => {
-    var databaseGrab = $.get('/raw_db')
+    var databaseGrab = $.get('/random_post')
     databaseGrab.done(function(data) {
       databaseData = data
       resolve(data)
