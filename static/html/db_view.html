@@ -72,10 +72,10 @@
 
 
     jQuery.get('/pretty_db', function(data) {
-      entries = data["posts"]
+      console.log('data')
       // 3.Chops the data up into posts and adds them to the page
-      for (var i = 0; i < entries.length; i++){
-          loadTableData(entries[i]);
+      for (var i = 0; i < data.length; i++){
+          loadTableData(data[i]);
         }
       });
 
