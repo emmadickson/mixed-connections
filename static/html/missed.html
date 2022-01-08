@@ -147,7 +147,7 @@
         for(var i = timers.length; i--;){
           clearInterval(timers[i]);
         }
-
+        grabData()
         var myNode = document.getElementsByTagName('missed-connection-container')[0]
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
