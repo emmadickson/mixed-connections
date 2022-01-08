@@ -4,9 +4,11 @@ tr:nth-child(even) {
 tr {
   word-wrap: break-word;
 }
+
 td{
   padding: 15px;
 }
+
 table{
   table-layout:fixed;
   width:100%;
