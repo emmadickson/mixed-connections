@@ -3,7 +3,9 @@ tr:nth-child(even) {
 }
 tr {
   word-wrap: break-word;
-  padding:15px;
+}
+#body{
+  padding: 15px;
 }
 table{
   table-layout:fixed;

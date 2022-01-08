@@ -50,7 +50,7 @@ def render_pretty_db():
         date = post['time']
         d = parser.parse(date)
         post['time'] = d.strftime("%Y-%m-%d")
-    json_object['posts'].sort(key=operator.itemgetter('time'), reverse=True)
+    json_object['posts'].sort(key=operator.itemgetter('time'), reverse=True)[0:500]
     return jsonify(json_object)
 
 if __name__ == '__main__':
