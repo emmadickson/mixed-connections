@@ -9,7 +9,7 @@ def retrieve_random_post():
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require', user=os.environ.get('DATABASE_USER'), password=os.environ.get('DATABASE_PASSWORD'))
     cur = conn.cursor()
-    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped ORDER BY RANDOM() from posts_scraped)) LIMIT 50;" )
+    cur.execute( "SELECT body,time,hash,location,title FROM posts_scraped order by random() LIMIT 25;" )
     json_object = {"posts":[]}
     for body,time,hash,location,title in cur.fetchall() :
         post = {"body": body, "time": time, "hash": hash, "location": location, "title": title}
