@@ -1,0 +1,22 @@
+tr:nth-child(even) {
+  background-color: #D6EEEE;
+}
+tr {
+  word-wrap: break-word;
+  padding:15px;
+}
+table{
+  table-layout:fixed;
+  width:100%;
+}
+thead{
+  font-size: 28px;
+  font-family: arial;
+  padding-bottom: 100px;
+  height: 100px;
+}
+
+tbody{
+  font-family: arial;
+  font-size: 12;
+}

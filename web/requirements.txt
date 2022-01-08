@@ -5,12 +5,11 @@ click==6.7
 Flask==1.1.2
 idna==2.5
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.10.1
 MarkupSafe==1.1.1
 olefile==0.45.1
-Pillow==8.0.1
-psycopg2==2.7.5
-psycopg2-binary==2.7.5
+psycopg2
+psycopg2-binary
 PySocks==1.6.7
 requests==2.18.0
 SQLAlchemy==1.2.8

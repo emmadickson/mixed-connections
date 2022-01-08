@@ -11,8 +11,8 @@ from PIL import Image
 import io
 import psycopg2
 import subprocess
-import boto3 
-import datetime 
+import boto3
+import datetime
 import sys
 from retrieve_posts import retrieve_posts_csv
 
@@ -34,7 +34,7 @@ def upload_to_aws(local_file, bucket, s3_file):
                       aws_secret_access_key=SECRET_KEY)
     s3.upload_file(local_file, bucket, s3_file)
     print("Upload Successful")
-    
+
 def CollectMissedConnectionsLink(location):
     '''Returns a list of recent posts urls from the location specific missed
     connection url passed'''
@@ -105,39 +105,6 @@ def GetQueryData(pageContent, finalUrl, randomLocationUrl):
     print(body)
     return (title.decode('utf-8'), body.decode('utf-8'), str(location), str(today), str(hashedPost))
 
-def ScrapeImages(finalUrl):
-    '''Scrapes and shuffles all the images found in a post from the url passed'''
-    images = []
-    IMAGE_HASHES =  []
-    response = requests.get(finalUrl).text
-    soup = bs4.BeautifulSoup(response, "html.parser")
-    # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
-'''
-    for link in soup.findAll('a', href=True, text=''):
-            if ('images' in link['href']):
-                images.append( link['href'] )
-    for img in soup.findAll('img'):
-        images.append(img['src'])
-    
-    print("images found: %s" % len(images))
-    for img in images:
-        scraped_images = os.listdir("static/images/scraped_images")
-        random.shuffle(scraped_images)
-        opened_images = []
-        
-        for i in range(0, len(scraped_images)):
-            opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
-
-        for x in range(0, len(opened_images)):
-            opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
-
-        if ("50x50" not in img) and img not in IMAGE_HASHES:
-            file = io.StringIO(urllib2.urlopen(img).read())
-            img = Image.open(file)
-            image_number = image_number + 1
-            img.save("static/images/scraped_images/%s.jpg" % image_number, "JPEG")
-            print("image saved!")'''
-
 def main():
     #   4. Pick a random location, scrape recent posts and chose one to add
     for x in range(0, NUMBER_OF_POSTS):
@@ -174,31 +141,16 @@ def main():
             print("Post has been added to the database\n")
         except Exception as e:
             print("Error %s" % e)
-        ScrapeImages(finalUrl)
-        
-    #scraped_images = os.listdir("static/images/scraped_images")
-    #random.shuffle(scraped_images)
-    #opened_images = []
+
     csv = retrieve_posts_csv()
     csv_file = open('output.csv', 'w')
     csv_file.write(csv)
     csv_file.close()
 
-    upload_to_aws('output.csv', 'mixed-connections', 'output_%s.csv' % datetime.datetime.now())
+    upload_to_aws('output.csv', 'mixed-connections', 'output.csv')
 
-    # commented out 2020-11-25 because occasionally its failing and I'm not using it anyway
-    '''for i in range(0, len(scraped_images)-1):
-        opened_images.append(Image.open("static/images/scraped_images/%s.jpg" % i))
-        
-    for x in range(0, len(opened_images)):
-        opened_images[x].save(("static/images/scraped_images/%s" % scraped_images[x]), "JPEG")
-
-    im = Image.new('RGB', (200,200), (0,0,0))
-    im.save('static/images/scraped_images/mix.gif', save_all=True, append_images=opened_images)
-    upload_to_aws('static/images/scraped_images/mix.gif', 'mixed-connections-images', 'mix_%s.gif' % (datetime.datetime.now()))
-    '''
     return
-    
+
 
 main()
 print("Done Scraping")

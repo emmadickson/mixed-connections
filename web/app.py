@@ -1,5 +1,5 @@
 from flask import Flask, send_file, make_response
-from flask import request
+from flask import request, render_template
 import requests
 from retrieve_posts import retrieve_posts, retrieve_posts_csv, retrieve_random_post
 from flask import jsonify
@@ -8,13 +8,16 @@ import operator
 import os
 import json
 
-
 app = Flask(__name__, static_url_path='')
 app.config['DATABASE_URI'] = 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('POSTGRES_USER'), os.environ.get('POSTGRES_PASSWORD'), os.environ.get('POSTGRES_HOST'), os.environ.get('POSTGRES_PORT'), os.environ.get('POSTGRES_DB'))
 
 @app.route('/missed')
 def render_missed():
     return app.send_static_file('html/missed.html')
+
+@app.route('/formatted_db')
+def render_test():
+    return app.send_static_file('html/db_view.html')
 
 @app.route('/')
 def render_index():
@@ -28,16 +31,16 @@ def render_db():
 @app.route('/random_post')
 def render_random_post():
     return retrieve_random_post()
-    
+
 @app.route('/output.csv')
-def download_csv():  
+def download_csv():
     csv = retrieve_posts_csv()
     response = make_response(csv)
     cd = 'attachment; filename=output.csv'
-    response.headers['Content-Disposition'] = cd 
+    response.headers['Content-Disposition'] = cd
     response.mimetype='text/csv'
     return response
-    
+
 @app.route('/pretty_db')
 def render_pretty_db():
     json_object = retrieve_posts()

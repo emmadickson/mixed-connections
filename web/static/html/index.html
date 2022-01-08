@@ -85,7 +85,7 @@
     // If we're scrolling and we haven't seen all of the posts, keep going.
     $(window).scroll(function(){
      if (postCount <= entries.length){
-        // We're acutally going linearlly through all of the posts. This ensures we see them all.
+        // We're acutally going through all of the posts. This ensures we see them all.
         postCount = postCount + 1
 
         // Create the element for the line, if we've seen 100 posts its a ~40 percent chance if it will be a blink or p tag.
@@ -121,25 +121,6 @@
             }
           }
 
-          // If we have seen 40% of the posts we should start adding scraped images in addition to the posts
-          if (postCount >= 300){
-            var img = document.createElement('p')
-            img.style.position = 'absolute'
-            img.style.left = Math.floor(Math.random() * ($(window).width()-500 - 0 + 1)) + 0;
-            img.style.top = topNum
-            imageCount = Math.floor(Math.random() * (88 - 1) + 1);
-            img.style.backgroundImage = "url('../images/scraped_images/"+imageCount+ ".jpg')";
-
-            height = Math.floor(Math.random() * (3000) + 500);
-            width = Math.floor(Math.random() * (3000) + 500);
-            height = height * (postCount/entries.length)
-            width = width * (postCount/entries.length)
-            img.style.width = width
-            img.style.height = height
-
-            var list = document.getElementsByTagName("title-list")[0];
-            list.appendChild(img)
-          }
         }
         // Odd number posts should be off center and unscrambled
         else{
