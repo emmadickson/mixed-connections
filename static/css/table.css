@@ -4,7 +4,7 @@ tr:nth-child(even) {
 tr {
   word-wrap: break-word;
 }
-#postbody{
+td{
   padding: 15px;
 }
 table{
