@@ -143,11 +143,11 @@
         }
       }(window));
 
-      function Data(){
+      async function Data(){
         for(var i = timers.length; i--;){
           clearInterval(timers[i]);
         }
-        databaseDataGrabbed = resolveDatabaseGrab(databaseData);
+        databaseDataGrabbed = await resolveDatabaseGrab(databaseData);
         var myNode = document.getElementsByTagName('missed-connection-container')[0]
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
