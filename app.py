@@ -45,13 +45,13 @@ def download_csv():
 @app.route('/pretty_db')
 def render_pretty_db():
     json_object = retrieve_posts()
-    posts = json_object['posts'][0:200]
+    posts = json_object['posts']
     for post in posts:
         date = post['time']
         d = parser.parse(date)
         post['time'] = d.strftime("%Y-%m-%d")
     json_object['posts'].sort(key=operator.itemgetter('time'), reverse=True)
-    return jsonify(json_object)
+    return jsonify(json_object['posts'][0:200])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
