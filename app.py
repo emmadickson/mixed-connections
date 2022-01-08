@@ -54,7 +54,7 @@ def render_pretty_db():
 
     json_object['posts'].sort(key=operator.itemgetter('time'), reverse=True)
 
-    slimmed_posts = list(json_object['posts'])[0:200]
+    slimmed_posts = json_object['posts'][0:200]
     return jsonify(slimmed_posts)
 
 if __name__ == '__main__':
