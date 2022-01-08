@@ -1,0 +1,85 @@
+
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+     <title>i miss You</title>
+     <link id = "css" rel="stylesheet" href="../css/table.css">
+
+     <!-- Compiled and minified jquery -->
+     <script src="../js/jquery-3.2.1.min.js"></script>
+
+  </head>
+
+ <body>
+   <table>
+     <colgroup>
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 20%;">
+    </colgroup>
+  <thead>
+    <tr>
+      <th id="body">body</th>
+      <th id="time">time</th>
+      <th id="title">title</th>
+      <th id="location">location</th>
+      <th id="hash">hash</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+
+  </tbody>
+</table>
+
+</body>
+
+  <script>
+  function loadTableData(item) {
+    const table = document.getElementById("tableBody");
+      let row = document.createElement('tr');
+
+      let body = document.createElement('td');
+      body.id = 'body'
+      body.innerHTML = item.body;
+      row.appendChild(body)
+
+      let time = document.createElement('td');
+      time.id = 'time'
+      time.innerHTML = item.time;
+      row.appendChild(time)
+
+      let title = document.createElement('td');
+      title.id = 'title'
+      title.innerHTML = item.title;
+      row.appendChild(title)
+
+      let location = document.createElement('td');
+      location.id = 'location'
+      location.innerHTML = item.location;
+      row.appendChild(location)
+
+      let hash = document.createElement('td');
+      hash.id = 'hash'
+      hash.innerHTML = item.hash;
+      row.appendChild(hash)
+
+      table.appendChild(row)
+  }
+
+
+    jQuery.get('/pretty_db', function(data) {
+      entries = data["posts"]
+      // 3.Chops the data up into posts and adds them to the page
+      for (var i = 0; i < entries.length; i++){
+          loadTableData(entries[i]);
+        }
+      });
+
+
+  </script>
+  </body>
+</html>
