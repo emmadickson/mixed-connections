@@ -16,6 +16,10 @@ app.config['DATABASE_URI'] = os.environ.get('DATABASE_URL')
 def render_missed():
     return app.send_static_file('html/missed.html')
 
+@app.route('/formatted_db')
+def render_test():
+    return app.send_static_file('html/db_view.html')
+
 @app.route('/')
 def render_index():
     return app.send_static_file('html/index.html')
@@ -28,16 +32,16 @@ def render_db():
 @app.route('/random_post')
 def render_random_post():
     return retrieve_random_post()
-    
+
 @app.route('/output.csv')
-def download_csv():  
+def download_csv():
     csv = retrieve_posts_csv()
     response = make_response(csv)
     cd = 'attachment; filename=output.csv'
-    response.headers['Content-Disposition'] = cd 
+    response.headers['Content-Disposition'] = cd
     response.mimetype='text/csv'
     return response
-    
+
 @app.route('/pretty_db')
 def render_pretty_db():
     json_object = retrieve_posts()
@@ -50,4 +54,4 @@ def render_pretty_db():
     return jsonify(json_object)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
