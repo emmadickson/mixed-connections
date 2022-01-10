@@ -117,7 +117,12 @@ def main():
 
     dataframe = pd.DataFrame.from_records(json_object)
     print(dataframe)
-    dataframe.to_csv('output.csv', index=False)
+
+    now = datetime.datetime.now()
+    dt_string = now.strftime("%d_%m_%Y_%H:%M:%S")
+    f = open('f"output_{dt_string}.csv"', 'w')
+    f.close()
+    dataframe.to_csv(f"output_{dt_string}.csv", index=False)
     return
 
 
