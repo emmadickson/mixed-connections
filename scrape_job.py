@@ -137,6 +137,7 @@ def main():
             print("Post has been added to the database\n")
         except Exception as e:
             print("Error %s" % e)
+            continue
 
     csv = retrieve_posts_csv()
     csv_file = open('output.csv', 'w')
