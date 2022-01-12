@@ -7,6 +7,7 @@ import random
 import pandas as pd
 import sys
 from retrieve_posts import retrieve_posts_csv
+import os
 
 # Constants
 CRAIGSLIST_URLS = [
