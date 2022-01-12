@@ -1,18 +1,10 @@
 import requests
-import socks
 import bs4
 import hashlib
 import re
-import json
 import datetime
 import random
-import os
-from PIL import Image
-import io
-import psycopg2
-import subprocess
-import boto3
-import datetime
+import pandas as pd
 import sys
 from retrieve_posts import retrieve_posts_csv
 
