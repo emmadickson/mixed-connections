@@ -39,12 +39,11 @@ def CollectMissedConnectionsLink(location):
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
     print(f"random url: {randomCraigslistUrl}")
 
-    session = HTMLSession()
 
     r = session.get(randomCraigslistUrl)
 
     r.html.render()
-    response = r.html.text
+    response = r.html.absolute_links
 
     print(response)
     #response = requests.get(randomCraigslistUrl).text
@@ -114,6 +113,8 @@ def GetQueryData(pageContent, finalUrl, randomLocationUrl):
     return (title.decode('utf-8'), body.decode('utf-8'), str(location), str(today), str(hashedPost))
 
 def main():
+    session = HTMLSession()
+
     #   4. Pick a random location, scrape recent posts and chose one to add
     for x in range(0, NUMBER_OF_POSTS):
 
@@ -160,7 +161,7 @@ def main():
     csv_file = open(f'output_{datetime.date.today()}.csv', 'w')
     csv_file.write(csv)
     csv_file.close()
-
+    session.close()
     upload_to_aws('output.csv', 'mixed-connections', 'output.csv')
 
 
