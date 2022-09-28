@@ -76,7 +76,7 @@ def GetBody(finalUrl):
     upon the structure of the craiglist page'''
     print(f"finalUrl {finalUrl}")
     pageContent = GetPageContent(finalUrl)
-    print(f"pageContent{pageContent})
+    print(f"pageContent{pageContent}")
     body = pageContent.select('section#postingbody')[0].get_text()
     body = body.split("QR Code Link to This Post")[1]
     body = Clean(body)
