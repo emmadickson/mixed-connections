@@ -115,13 +115,12 @@ def main():
         # 7. Shuffle the collected links to randomize selection
         random.shuffle(craigslistMissedConnectionsUrls)
 
-        # 8. Get Missed Connections post body from the new links
-        craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
 
         # 9. Get a random number and use it to select the post to be added
         number_of_posts = len(craigslistMissedConnectionsUrls)
-        print(f"number_of_posts {number_of_posts}")
-        randomPostUrl = random.randint(0,number_of_posts)
+        print(f"number_of_posts {number_of_posts} found for location {randomLocationUrl}")
+        randomPostUrl = random.randint(1,number_of_posts)
+
         finalUrl = craigslistMissedConnectionsUrls[randomPostUrl]
 
         # 12. Check if it's already in the store, if not add it and scrape any images found in it
