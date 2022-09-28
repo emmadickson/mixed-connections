@@ -1,4 +1,5 @@
-import requests
+from requests_html import HTMLSession
+
 import bs4
 import hashlib
 import re
@@ -37,7 +38,16 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
     print(f"random url: {randomCraigslistUrl}")
-    response = requests.get(randomCraigslistUrl).text
+
+    session = HTMLSession()
+
+    r = session.get(randomCraigslistUrl)
+
+    r.html.render()
+    response = r.html.text
+
+    print(response)
+    #response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
         if ('html' in link['href']):
