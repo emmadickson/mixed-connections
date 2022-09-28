@@ -118,7 +118,9 @@ def main():
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
 
         # 9. Get a random number and use it to select the post to be added
-        randomPostUrl = random.randint(0,len(craigslistMissedConnectionsUrls)-1)
+        number_of_posts = len(craigslistMissedConnectionsUrls)-1
+        print(f"number_of_posts {number_of_posts}")
+        randomPostUrl = random.randint(0,number_of_posts)
         finalUrl = craigslistMissedConnectionsUrls[randomPostUrl]
 
         # 12. Check if it's already in the store, if not add it and scrape any images found in it
@@ -140,7 +142,7 @@ def main():
             continue
 
     csv = retrieve_posts_csv()
-    csv_file = open('output.csv', 'w')
+    csv_file = open(f'output_{datetime.date.today()}.csv', 'w')
     csv_file.write(csv)
     csv_file.close()
 
