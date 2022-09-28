@@ -148,6 +148,7 @@ def main():
 
     upload_to_aws('output.csv', 'mixed-connections', 'output.csv')
 
+
     return
 
 
