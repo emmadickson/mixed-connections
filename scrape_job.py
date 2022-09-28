@@ -40,9 +40,10 @@ def CollectMissedConnectionsLink(location):
     print(f"random url: {randomCraigslistUrl}")
 
     session = HTMLSession()
-
+    print(f"session opened {session}")
+    print(f"url to fetch {randomCraigslistUrl}")
     r = session.get(randomCraigslistUrl)
-
+    print(r)
     r.html.render()
     response = r.html.absolute_links
 
