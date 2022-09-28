@@ -76,7 +76,6 @@ def GetBody(finalUrl):
     upon the structure of the craiglist page'''
     print(f"finalUrl {finalUrl}")
     pageContent = GetPageContent(finalUrl)
-    print(f"pageContent{pageContent}")
     body = pageContent.select('section#postingbody')[0].get_text()
     body = body.split("QR Code Link to This Post")[1]
     body = Clean(body)
@@ -108,7 +107,7 @@ def main():
     for x in range(0, NUMBER_OF_POSTS):
 
         # 5. Pick a location randomly
-        randomLocationUrl = random.randint(0,2)
+        randomLocationUrl = random.randint(0,3)
 
         # 6. Collect regional Missed Connections posts linkToVisit
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
@@ -120,7 +119,7 @@ def main():
         craigslistMissedConnectionsUrls = CollectMissedConnectionsLink(randomLocationUrl)
 
         # 9. Get a random number and use it to select the post to be added
-        number_of_posts = len(craigslistMissedConnectionsUrls)-1
+        number_of_posts = len(craigslistMissedConnectionsUrls)
         print(f"number_of_posts {number_of_posts}")
         randomPostUrl = random.randint(0,number_of_posts)
         finalUrl = craigslistMissedConnectionsUrls[randomPostUrl]
