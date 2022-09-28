@@ -38,7 +38,6 @@ def CollectMissedConnectionsLink(location):
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
     print(f"random url: {randomCraigslistUrl}")
     response = requests.get(randomCraigslistUrl).text
-    print(response)
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
         if ('html' in link['href']):
@@ -121,6 +120,10 @@ def main():
         # 9. Get a random number and use it to select the post to be added
         number_of_posts = len(craigslistMissedConnectionsUrls)
         print(f"number_of_posts {number_of_posts} found for location {randomLocationUrl}")
+
+        if number_of_posts == 0:
+            return
+
         randomPostUrl = random.randint(1,number_of_posts)
 
         finalUrl = craigslistMissedConnectionsUrls[randomPostUrl]
