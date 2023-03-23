@@ -53,7 +53,7 @@ def CollectMissedConnectionsLink(location):
     content = driver.find_element(By.CLASS_NAME, "cl-content")
     content = content.find_element(By.CLASS_NAME, "cl-search-results")
     content = content.find_element(By.CLASS_NAME, "results")
-    content = content.find_element(By.TAG_NAME, "li")
+    content = content.find_elements(By.TAG_NAME, "li")
 
 
     for elem in content:
