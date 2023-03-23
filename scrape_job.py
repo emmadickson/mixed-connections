@@ -44,7 +44,6 @@ def CollectMissedConnectionsLink(location):
 
     r = session.get(randomCraigslistUrl)
 
-    r.html.render()
     links = r.html.absolute_links
     print(links)
     # Parse HTML and extract links
