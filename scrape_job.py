@@ -64,7 +64,7 @@ def CollectMissedConnectionsLink(location):
         container = elem.find_element(By.TAG_NAME, "div")
         link = container.find_element(By.TAG_NAME, "a")
         print(link)
-        href = linke.get_attribute('href')
+        href = link.get_attribute('href')
         if href is not None:
             craigslistMissedConnectionsUrls.append(href)
     print(craigslistMissedConnectionsUrls)
