@@ -49,16 +49,15 @@ def CollectMissedConnectionsLink(location):
 
 
     driver.get(randomCraigslistUrl)
-    print(randomCraigslistUrl)
     content = driver.find_element(By.CLASS_NAME, "cl-content")
     print(content)
     content = content.find_element(By.CLASS_NAME, "cl-search-results")
     print(content)
-    content = content.find_element(By.CLASS_NAME, "results")
+    content = content.find_element(By.CLASS_NAME, "cl-results-page")
     print(content)
     content = content.find_elements(By.TAG_NAME, "li")
     print(content)
-
+    print("BEORE")
     for elem in content:
         print("IN THE FOR LOOP")
         print(content)
