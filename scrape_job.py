@@ -50,8 +50,11 @@ def CollectMissedConnectionsLink(location):
 
     driver.get(randomCraigslistUrl)
     print(randomCraigslistUrl)
-    content = driver.find_elements(By.TAG_NAME, "a")
+    content = driver.find_elements(By.CLASS_NAME, "cl-search-result")
+    print(content)
     for elem in content:
+        link = elem.find_element(By.TAG_NAME, "a")
+
         href = elem.get_attribute('href')
         if href is not None:
             craigslistMissedConnectionsUrls.append(href)
