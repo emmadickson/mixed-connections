@@ -53,8 +53,8 @@ def CollectMissedConnectionsLink(location):
     for elem in content:
         href = elem.get_attribute('href')
         if href is not None:
-            craigslistMissedConnectionsUrls.append(href.get_attribute('href'))
-    print(content)
+            craigslistMissedConnectionsUrls.append(href)
+    print(craigslistMissedConnectionsUrls)
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
