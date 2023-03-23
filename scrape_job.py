@@ -10,6 +10,7 @@ from retrieve_posts import retrieve_posts_csv
 import os
 import psycopg2
 import boto3
+import requests
 # Constants
 CRAIGSLIST_URLS = [
 "https://newyork.craigslist.org",
