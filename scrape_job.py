@@ -49,6 +49,7 @@ def CollectMissedConnectionsLink(location):
 
 
     driver.get(randomCraigslistUrl)
+    print(randomCraigslistUrl)
     content = driver.find_elements(By.TAG_NAME, "a")
     for elem in content:
         href = elem.get_attribute('href')
