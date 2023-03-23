@@ -57,7 +57,7 @@ def CollectMissedConnectionsLink(location):
     print(content)
     print("cl-results-page")
     content = content.find_element(By.CLASS_NAME, "cl-results-page")
-    print(content)
+    print(content.text)
     print("li")
     content = content.find_elements(By.TAG_NAME, "li")
     print(content)
