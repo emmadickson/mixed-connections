@@ -43,7 +43,7 @@ def CollectMissedConnectionsLink(location):
     reqs = requests.get(randomCraigslistUrl)
 
     soup = bs4.BeautifulSoup(reqs.text, 'html.parser')
-
+    print(soup)
     urls = []
     for link in soup.find_all('a'):
         print(link.get('href'))
