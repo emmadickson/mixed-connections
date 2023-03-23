@@ -10,11 +10,7 @@ import os
 import psycopg2
 import boto3
 from selenium import webdriver
-from selenium.webdriver import Chrome
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
-import time
+
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -43,21 +39,14 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
 
-    # start by defining the options
-    options = webdriver.ChromeOptions()
-    options.headless = True # it's more scalable to work in headless mode
-    # normally, selenium waits for all resources to download
-    # we don't need it as the page also populated with the running javascript code.
-    options.page_load_strategy = 'none'
-    # this returns the path web driver downloaded
-    chrome_path = ChromeDriverManager().install()
-    chrome_service = Service(chrome_path)
-    # pass the defined options and service objects to initialize the web driver
-    driver = Chrome(options=options, service=chrome_service)
-    driver.implicitly_wait(5)
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
 
     driver.get(randomCraigslistUrl)
-    time.sleep(5)
     content = driver.find_element(By.CSS_SELECTOR, "a")
     print(content)
     return craigslistMissedConnectionsUrls
