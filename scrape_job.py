@@ -12,6 +12,8 @@ import psycopg2
 import boto3
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -43,11 +45,12 @@ def CollectMissedConnectionsLink(location):
     chrome_options = Options()
     chrome_options.add_argument("--headless")
 
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+
     driver.get(randomCraigslistUrl)
     links = driver.find_element_by_css_selector("a")
     print(links)
-    
+
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
