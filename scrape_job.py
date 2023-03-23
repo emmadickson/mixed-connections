@@ -9,7 +9,12 @@ from retrieve_posts import retrieve_posts_csv
 import os
 import psycopg2
 import boto3
-import socket
+from selenium import webdriver
+from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+import time
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -38,26 +43,23 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
 
-    HOST = randomCraigslistUrl
-    PORT = 80                # The standard port for HTTP is 80, for HTTPS it is 443
+    # start by defining the options
+    options = webdriver.ChromeOptions()
+    options.headless = True # it's more scalable to work in headless mode
+    # normally, selenium waits for all resources to download
+    # we don't need it as the page also populated with the running javascript code.
+    options.page_load_strategy = 'none'
+    # this returns the path web driver downloaded
+    chrome_path = ChromeDriverManager().install()
+    chrome_service = Service(chrome_path)
+    # pass the defined options and service objects to initialize the web driver
+    driver = Chrome(options=options, service=chrome_service)
+    driver.implicitly_wait(5)
 
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_address = (HOST, PORT)
-    client_socket.connect(server_address)
-
-    request_header = f'GET / HTTP/1.0\r\nHost: ${randomCraigslistUrl} \r\n\r\n'
-    client_socket.sendall(request_header)
-
-    response = ''
-    while True:
-        recv = client_socket.recv(1024)
-        if not recv:
-            break
-        response += str(recv)
-
-    print(response)
-    client_socket.close()
-
+    driver.get(randomCraigslistUrl)
+    time.sleep(5)
+    content = driver.find_element(By.CSS_SELECTOR, "a")
+    print(content)
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
