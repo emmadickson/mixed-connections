@@ -60,6 +60,8 @@ def CollectMissedConnectionsLink(location):
     print(content)
 
     for elem in content:
+        print("IN THE FOR LOOP")
+        print(content)
         container = elem.find_element(By.TAG_NAME, "div")
         link = container.find_element(By.TAG_NAME, "a")
         print(link)
