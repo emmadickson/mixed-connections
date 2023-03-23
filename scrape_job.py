@@ -50,7 +50,7 @@ def CollectMissedConnectionsLink(location):
 
     driver.get(randomCraigslistUrl)
     print(randomCraigslistUrl)
-    content = driver.find_elements(By.CLASS_NAME, "cl-search-result")
+    content = driver.find_elements(By.CLASS_NAME, "cl-content")
     print(content)
     for elem in content:
         link = elem.find_element(By.TAG_NAME, "a")
