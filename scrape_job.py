@@ -11,7 +11,7 @@ import psycopg2
 import boto3
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
+import requests
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -53,7 +53,7 @@ def CollectMissedConnectionsLink(location):
     for elem in content:
         href = elem.get_attribute('href')
         if href is not None:
-            craigslistMissedConnectionsUrls.append(href)
+            craigslistMissedConnectionsUrls.append(href.get_attribute('href'))
     print(content)
     return craigslistMissedConnectionsUrls
 
