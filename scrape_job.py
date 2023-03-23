@@ -11,6 +11,8 @@ import os
 import psycopg2
 import boto3
 import requests
+from requests_html import HTMLSession
+
 # Constants
 CRAIGSLIST_URLS = [
 "https://newyork.craigslist.org",
@@ -37,12 +39,14 @@ def CollectMissedConnectionsLink(location):
     connection url passed'''
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
-    print(f"random url: {randomCraigslistUrl}")
 
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+    session = HTMLSession()
 
-    response = requests.get(randomCraigslistUrl, headers=headers)
+    r = session.get(randomCraigslistUrl)
 
+    r.html.render()
+    links = r.html.absolute_links
+    print(links)
     # Parse HTML and extract links
     soup = bs4.BeautifulSoup(response.text, 'html.parser')
     print(soup)
