@@ -40,10 +40,11 @@ def CollectMissedConnectionsLink(location):
     print(f"random url: {randomCraigslistUrl}")
     response = requests.get(randomCraigslistUrl)
 
-    response = response.text
-
-    soup = bs4.BeautifulSoup(response, "html.parser")
-    print(soup.find('a')['href'])
+    # Parse HTML and extract links
+    soup = bs4.BeautifulSoup(response.text, 'html.parser')
+    print(soup)
+    links = soup.select('a')
+    print(links)
     for link in soup.findAll('a', href=True, text=''):
         if ('html' in link['href']):
             craigslistMissedConnectionsUrls.append( link['href'] )
