@@ -40,21 +40,14 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
 
-    session = HTMLSession()
-
     r = session.get(randomCraigslistUrl)
+    reqs = requests.get(randomCraigslistUrl)
 
-    links = r.html.absolute_links
-    print(links)
-    # Parse HTML and extract links
-    soup = bs4.BeautifulSoup(response.text, 'html.parser')
-    print(soup)
-    links = soup.select('a')
-    print(links)
-    for link in soup.findAll('a', href=True, text=''):
-        if ('html' in link['href']):
-            craigslistMissedConnectionsUrls.append( link['href'] )
-    print(craigslistMissedConnectionsUrls)
+    soup = BeautifulSoup(reqs.text, 'html.parser')
+
+    urls = []
+    for link in soup.find_all('a'):
+        print(link.get('href'))
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
