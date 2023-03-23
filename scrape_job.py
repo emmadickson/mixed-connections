@@ -10,8 +10,8 @@ from retrieve_posts import retrieve_posts_csv
 import os
 import psycopg2
 import boto3
-import requests
-from requests_html import HTMLSession
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -40,13 +40,14 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
 
-    reqs = requests.get(randomCraigslistUrl)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
 
-    soup = bs4.BeautifulSoup(reqs.text, 'html.parser')
-    print(soup)
-    urls = []
-    for link in soup.find_all('a'):
-        print(link.get('href'))
+    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver.get(randomCraigslistUrl)
+    links = driver.find_element_by_css_selector("a")
+    print(links)
+    
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
