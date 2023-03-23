@@ -44,13 +44,11 @@ def CollectMissedConnectionsLink(location):
     response = mybytes.decode("utf8")
     fp.close()
 
-    print(response)
-    #response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
         if ('html' in link['href']):
             craigslistMissedConnectionsUrls.append( link['href'] )
-    session.close()
+    print(craigslistMissedConnectionsUrls)
     return craigslistMissedConnectionsUrls
 
 def GetTitle(pageContent):
