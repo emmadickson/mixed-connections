@@ -53,9 +53,12 @@ def CollectMissedConnectionsLink(location):
     content = driver.find_element(By.CLASS_NAME, "cl-content")
     content = content.find_element(By.CLASS_NAME, "cl-search-results")
     content = content.find_element(By.CLASS_NAME, "results")
+    content = content.find_element(By.TAG_NAME, "li")
+
 
     for elem in content:
-        link = elem.find_element(By.TAG_NAME, "a")
+        container = elem.find_element(By.TAG_NAME, "div")
+        link = container.find_element(By.TAG_NAME, "a")
 
         href = elem.get_attribute('href')
         if href is not None:
