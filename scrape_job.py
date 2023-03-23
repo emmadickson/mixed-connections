@@ -54,13 +54,13 @@ def CollectMissedConnectionsLink(location):
     content = content.find_element(By.CLASS_NAME, "cl-search-results")
     content = content.find_element(By.CLASS_NAME, "results")
     content = content.find_elements(By.TAG_NAME, "li")
-
+    print(content)
 
     for elem in content:
         container = elem.find_element(By.TAG_NAME, "div")
         link = container.find_element(By.TAG_NAME, "a")
-
-        href = elem.get_attribute('href')
+        print(link)
+        href = linke.get_attribute('href')
         if href is not None:
             craigslistMissedConnectionsUrls.append(href)
     print(craigslistMissedConnectionsUrls)
