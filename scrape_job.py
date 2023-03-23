@@ -43,7 +43,7 @@ def CollectMissedConnectionsLink(location):
     chrome_options = Options()
     chrome_options.add_argument("--headless")
 
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(chrome_options=chrome_options)
 
     driver.get(randomCraigslistUrl)
     links = driver.find_element_by_css_selector("a")
