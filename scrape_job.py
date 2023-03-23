@@ -38,7 +38,10 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
     print(f"random url: {randomCraigslistUrl}")
-    response = requests.get(randomCraigslistUrl)
+
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+    response = requests.get(randomCraigslistUrl, headers=headers)
 
     # Parse HTML and extract links
     soup = bs4.BeautifulSoup(response.text, 'html.parser')
