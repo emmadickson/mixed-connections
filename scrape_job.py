@@ -1,5 +1,4 @@
-from requests_html import HTMLSession
-
+import urllib.request
 import bs4
 import hashlib
 import re
@@ -39,15 +38,13 @@ def CollectMissedConnectionsLink(location):
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
     print(f"random url: {randomCraigslistUrl}")
 
-    session = HTMLSession()
-    print(f"session opened {session}")
-    print(f"url to fetch {randomCraigslistUrl}")
-    r = session.get(randomCraigslistUrl)
-    print(r)
-    r.html.render()
-    response = r.html.absolute_links
+    fp = urllib.request.urlopen(randomCraigslistUrl)
+    mybytes = fp.read()
 
-    print(response)
+    mystr = mybytes.decode("utf8")
+    fp.close()
+
+    print(mystr)
     #response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
