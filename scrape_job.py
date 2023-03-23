@@ -37,12 +37,9 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
     print(f"random url: {randomCraigslistUrl}")
+    response = requests.get(randomCraigslistUrl)
 
-    fp = urllib.request.urlopen(randomCraigslistUrl)
-    mybytes = fp.read()
-
-    response = mybytes.decode("utf8")
-    fp.close()
+    response = response.text
 
     soup = bs4.BeautifulSoup(response, "html.parser")
     print(soup.find('a')['href'])
