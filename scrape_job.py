@@ -12,8 +12,6 @@ import psycopg2
 import boto3
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
 # Constants
 CRAIGSLIST_URLS = [
