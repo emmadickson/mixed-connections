@@ -1,4 +1,3 @@
-import urllib.request
 import bs4
 import hashlib
 import re
@@ -10,8 +9,7 @@ from retrieve_posts import retrieve_posts_csv
 import os
 import psycopg2
 import boto3
-from selenium.webdriver.chrome.options import Options
-from selenium import webdriver
+import socket
 
 # Constants
 CRAIGSLIST_URLS = [
@@ -40,14 +38,25 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
 
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    HOST = randomCraigslistUrl
+    PORT = 80                # The standard port for HTTP is 80, for HTTPS it is 443
 
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_address = (HOST, PORT)
+    client_socket.connect(server_address)
 
-    driver.get(randomCraigslistUrl)
-    links = driver.find_element_by_css_selector("a")
-    print(links)
+    request_header = f'GET / HTTP/1.0\r\nHost: ${randomCraigslistUrl} \r\n\r\n'
+    client_socket.sendall(request_header)
+
+    response = ''
+    while True:
+        recv = client_socket.recv(1024)
+        if not recv:
+            break
+        response += str(recv)
+
+    print(response)
+    client_socket.close()
 
     return craigslistMissedConnectionsUrls
 
