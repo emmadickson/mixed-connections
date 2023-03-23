@@ -16,3 +16,4 @@ boto3==1.17.44
 pandas
 requests
 selenium
+webdriver-manager
