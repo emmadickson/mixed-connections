@@ -40,7 +40,6 @@ def CollectMissedConnectionsLink(location):
     craigslistMissedConnectionsUrls = []
     randomCraigslistUrl = CRAIGSLIST_URLS[location] + "/search/mis"
 
-    r = session.get(randomCraigslistUrl)
     reqs = requests.get(randomCraigslistUrl)
 
     soup = BeautifulSoup(reqs.text, 'html.parser')
