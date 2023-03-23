@@ -41,10 +41,10 @@ def CollectMissedConnectionsLink(location):
     fp = urllib.request.urlopen(randomCraigslistUrl)
     mybytes = fp.read()
 
-    mystr = mybytes.decode("utf8")
+    response = mybytes.decode("utf8")
     fp.close()
 
-    print(mystr)
+    print(response)
     #response = requests.get(randomCraigslistUrl).text
     soup = bs4.BeautifulSoup(response, "html.parser")
     for link in soup.findAll('a', href=True, text=''):
