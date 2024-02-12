@@ -18,7 +18,8 @@ CRAIGSLIST_URLS = [
 "https://newyork.craigslist.org",
 "https://raleigh.craigslist.org",
 "https://pittsburgh.craigslist.org",
-"https://maine.craigslist.org"
+"https://maine.craigslist.org",
+"https://montreal.craigslist.org"
 ]
 
 NUMBER_OF_POSTS = int(sys.argv[1])
