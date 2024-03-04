@@ -23,7 +23,8 @@ missed-connection-container {
   display: flex;
   flex-direction: column;
   position: relative;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 50px;
   height: 100%;
   word-wrap: break-word;
 }
@@ -40,7 +41,7 @@ missed-connection-container {
   display: flex;
   flex-direction: column;
   height: 40%;
-  align-items: center;
+  align-items: flex-start;
 }
 .bottom{
   height: 10%;
