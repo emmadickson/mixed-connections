@@ -11,13 +11,39 @@ img{
 #title{
   margin-top: 50px;
   font-family: "Bitstream Vera Serif","Times New Roman",serif;
-  font-size: 28px;
+  font-size: 2vw;
   font-weight: bold;
   text-align: left;
 }
 
 missed-connection-container {
   font-family: "Times New Roman";
-  font-size: 16px;
-  padding-left: 20px;
+  font-size: 1vwpx;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+    height: 100%;
+    word-wrap: break-word;
+}
+.container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.top{
+  height: 5%;
+}
+.middle{
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  align-items: center;
+}
+.bottom{
+  height: 10%;
+  display: flex;
+  flex-direction: column;
+  width: 10%;
 }

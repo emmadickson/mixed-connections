@@ -25,10 +25,10 @@
       <a id=missed-connection-reset href="/">missed connections</a>
     </header>
 
-    <div class="row">
-      <div class="col s12"><h1 id="title"></h1></div>
-      <div class="col s8" style="padding-top:25px;"><missed-connection-container></missed-connection-container></div>
-      <div class="col s12" style="padding-top:25px;"> <button type="button" onclick="Data()">Next</button></div>
+    <div class="container">
+      <div class="top"><h1 id="title"></h1></div>
+      <div class="middle" style="padding-top:25px;"><missed-connection-container></missed-connection-container></div>
+      <div class="bottom" style="padding-top:25px;"> <button type="button" onclick="Data()">Next</button></div>
     </div>
   </body>
 
@@ -36,7 +36,7 @@
   <script type="text/javascript" src="../js/post_support.js"></script>
   <script>
     // Constants
-    CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh"]
+    CRAIGSLIST_LOCATIONS = ["newyork","raleigh","pittsburgh","maine"]
 
     // 2. Use set interval to Scramble the title text on hover
     $("#title").hover(
