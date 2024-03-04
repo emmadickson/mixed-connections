@@ -23,8 +23,8 @@ missed-connection-container {
   flex-direction: column;
   position: relative;
   justify-content: center;
-    height: 100%;
-    word-wrap: break-word;
+  height: 100%;
+  word-wrap: break-word;
 }
 .container{
   height: 100%;
@@ -38,7 +38,7 @@ missed-connection-container {
 .middle{
   display: flex;
   flex-direction: column;
-  height: 50%;
+  height: 40%;
   align-items: center;
 }
 .bottom{
