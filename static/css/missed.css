@@ -11,14 +11,14 @@ img{
 #title{
   margin-top: 50px;
   font-family: "Bitstream Vera Serif","Times New Roman",serif;
-  font-size: 2vw;
+  font-size: 3vw;
   font-weight: bold;
   text-align: left;
 }
 
 missed-connection-container {
   font-family: "Times New Roman";
-  font-size: 1vwpx;
+  font-size: 1.5vw;
   display: flex;
   flex-direction: column;
   position: relative;
